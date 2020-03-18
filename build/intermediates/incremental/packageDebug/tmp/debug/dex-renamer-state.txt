@@ -1,0 +1,4 @@
+#Mon Mar 09 08:33:47 CST 2020
+base.0=C\:\\Users\\Zady-\\Documents\\Tec\\Febrero Junio 2020\\Videojuegos\\SWING\\android\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
