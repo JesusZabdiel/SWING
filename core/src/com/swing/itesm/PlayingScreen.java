@@ -122,6 +122,7 @@ class PlayingScreen extends Pantalla {
         player.render(batch);
         personaje.render(batch);
         batch.end();
+        escenaMenu.draw();
 
 
 
