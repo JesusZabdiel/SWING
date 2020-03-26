@@ -1,0 +1,51 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.swing.itesm"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="14"
+8-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml
+10
+11    <application
+11-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:5:5-22:19
+12        android:allowBackup="true"
+12-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:6:9-35
+13        android:appCategory="game"
+13-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:9:9-35
+14        android:debuggable="true"
+15        android:icon="@drawable/ic_launcher"
+15-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:7:9-45
+16        android:isGame="true"
+16-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:8:9-30
+17        android:label="@string/app_name"
+17-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:10:9-41
+18        android:theme="@style/GdxTheme" >
+18-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:11:9-40
+19        <activity
+19-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:12:9-21:20
+20            android:name="com.swing.itesm.AndroidLauncher"
+20-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:13:13-59
+21            android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
+21-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:16:13-107
+22            android:label="@string/app_name"
+22-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:14:13-45
+23            android:screenOrientation="landscape" >
+23-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:15:13-50
+24            <intent-filter>
+24-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:17:13-20:29
+25                <action android:name="android.intent.action.MAIN" />
+25-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:18:17-69
+25-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:18:25-66
+26
+27                <category android:name="android.intent.category.LAUNCHER" />
+27-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:19:17-77
+27-->C:\Users\1058927895\OneDrive\Documentos\Android Projects\android\AndroidManifest.xml:19:27-74
+28            </intent-filter>
+29        </activity>
+30    </application>
+31
+32</manifest>
