@@ -1,4 +1,5 @@
-package mx.itesm.mcc;
+package com.swing.itesm;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -14,7 +15,7 @@ import com.badlogic.gdx.utils.Array;
 
 class PantallaShop extends Pantalla {
 
-    private final SWING juego;
+    private final Juego juego;
 
 
     private Texture texturaFondoShop;
@@ -24,7 +25,7 @@ class PantallaShop extends Pantalla {
 
 
 
-    public PantallaShop(SWING juego) {
+    public PantallaShop(Juego juego) {
         this.juego = juego;
     }
 

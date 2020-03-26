@@ -1,4 +1,4 @@
-package mx.itesm.mcc;
+package com.swing.itesm;
 
 
 import com.badlogic.gdx.Gdx;

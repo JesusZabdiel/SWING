@@ -1,4 +1,5 @@
-package mx.itesm.mcc;
+package com.swing.itesm;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,14 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 class PantallaMenu extends Pantalla {
 
-    private final SWING juego;
+    private final Juego juego;
 
     private Texture texturaFondo;
 
     // Menu
     private Stage escenaMenu;  // botones,....
 
-    public PantallaMenu(SWING juego) {
+    public PantallaMenu(Juego juego) {
         this.juego = juego;
     }
 
@@ -76,7 +77,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                juego.setScreen(new PantallaSwing(juego));
+                juego.setScreen(new PlayingScreen(juego));
             }
         });
 

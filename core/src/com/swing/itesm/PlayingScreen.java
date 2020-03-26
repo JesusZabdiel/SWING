@@ -5,7 +5,12 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 class PlayingScreen extends Pantalla {
 
@@ -33,6 +38,9 @@ class PlayingScreen extends Pantalla {
         this.juego = juego;
     }
 
+    // Menu
+    private Stage escenaMenu;  // botones,....
+
     @Override
     public void show() {
         cargarTexturas();
@@ -42,9 +50,33 @@ class PlayingScreen extends Pantalla {
 
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
+        crearMenu();
 
-        
+    }
+    private void crearMenu() {
 
+        escenaMenu = new Stage(vista);
+
+        // Boton Play
+        Texture texturaBtnMenu = new Texture("button_menu.png");
+        TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
+
+        ImageButton btnMenu = new ImageButton(trdMenu);
+
+        btnMenu.setPosition(0,0);
+
+        //Listener1
+        btnMenu.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                juego.setScreen(new PantallaMenu(juego));
+            }
+        });
+
+        escenaMenu.addActor(btnMenu);
+
+        Gdx.input.setInputProcessor(escenaMenu);
     }
 
     private void iniciarPersonaje() {

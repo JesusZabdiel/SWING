@@ -1,4 +1,5 @@
-package mx.itesm.mcc;
+package com.swing.itesm;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -14,7 +15,7 @@ import com.badlogic.gdx.utils.Array;
 
 class PantallaOptions extends Pantalla {
 
-    private final SWING juego;
+    private final Juego juego;
 
 
     private Texture texturaFondoOptions;
@@ -24,7 +25,7 @@ class PantallaOptions extends Pantalla {
 
 
 
-    public PantallaOptions(SWING juego) {
+    public PantallaOptions(Juego juego) {
         this.juego = juego;
     }
 
