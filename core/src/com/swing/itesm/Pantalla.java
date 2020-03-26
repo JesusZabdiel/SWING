@@ -1,20 +1,20 @@
-package com.swing.itesm;
+package mx.itesm.mcc;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 /**
  * Representa el comportamiento genérico de cualquier pantalla que forma
  * parte del juego
  */
-public abstract class Pantalla implements Screen{
+
+public abstract class Pantalla implements Screen
+{
     // Atributos disponibles en todas las clases del proyecto
     public static final float ANCHO = 1280;
     public static final float ALTO = 720;
@@ -41,7 +41,7 @@ public abstract class Pantalla implements Screen{
 
     // Borra la pantalla con fondo negro
     protected void borrarPantalla() {
-        Gdx.gl.glClearColor(0,1,0,1);
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
