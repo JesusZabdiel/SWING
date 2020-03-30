@@ -17,43 +17,49 @@ class PlayingScreen extends Pantalla {
     private final Juego juego;
 
     //jugability
-    private float velocity = 4;
+    public static float speed = 4;
 
 
     //Textures
     private Texture backTexture;
-    private Texture playerTexture;
+    private Texture texturaPersonaje;
+    private Texture texturePowerUp;
 
     //Objects
     private Background background;
     private Background backgroundD;
-    private  Player player;
+    //private  Player player;
     public Estado estado;
     private static int tempEstado;
     private Personaje personaje;
-    private Texture texturaPersonaje;
+    private PowerUp powerUp;
+
 
 
     public PlayingScreen(Juego juego) {
         this.juego = juego;
     }
 
-    // Menu
+    /*// Menu
     private Stage escenaMenu;  // botones,....
+    */
 
     @Override
     public void show() {
         cargarTexturas();
         createBackground();
-        createPlayer();
         iniciarPersonaje();
+        crearPowerUps();
 
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
-        crearMenu();
+        //crearMenu();
 
     }
-    private void crearMenu() {
+
+
+
+    /*private void crearMenu() {
 
         escenaMenu = new Stage(vista);
 
@@ -78,6 +84,10 @@ class PlayingScreen extends Pantalla {
 
         Gdx.input.setInputProcessor(escenaMenu);
     }
+     */
+    private void crearPowerUps() {
+        this.powerUp = new PowerUp(texturePowerUp);
+    }
 
     private void iniciarPersonaje() {
         personaje = new Personaje(texturaPersonaje);
@@ -91,24 +101,19 @@ class PlayingScreen extends Pantalla {
 
     }
     
-    private void createPlayer(){
-        player =  new Player(playerTexture,50,200);
-        estado = Estado.CORRIENDO_ABAJO;
-    }
-
-
-
     private void cargarTexturas() {
 
         backTexture = new Texture("PantallaJuego.jpg");
-        playerTexture = new Texture("redCircle.png");
+        //playerTexture = new Texture("redCircle.png");
         texturaPersonaje = new Texture("ninja.png");
+        texturePowerUp = new Texture("redCircle.png");
     }
 
     @Override
     public void render(float delta) {
         //Update
         moveBackgound();
+        powerUp.mover();
 
         tempEstado +=1;
         estado = personaje.mover(estado, tempEstado);
@@ -116,13 +121,13 @@ class PlayingScreen extends Pantalla {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        batch.draw(playerTexture,ANCHO/2f,ALTO/2f);
         background.render(batch);
         backgroundD.render(batch);
-        player.render(batch);
         personaje.render(batch);
+        powerUp.render(batch);
+
         batch.end();
-        escenaMenu.draw();
+        //escenaMenu.draw();
 
 
 
@@ -132,9 +137,8 @@ class PlayingScreen extends Pantalla {
 
         if(background.sprite.getX()+background.sprite.getWidth() == 0){
             background.sprite.setX(0);
-
         }
-        background.sprite.setX(background.sprite.getX()-velocity);
+        background.sprite.setX(background.sprite.getX()-speed);
         backgroundD.sprite.setX(background.sprite.getX()+background.sprite.getWidth());
 
     }
