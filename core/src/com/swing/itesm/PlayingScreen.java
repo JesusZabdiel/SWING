@@ -23,6 +23,7 @@ class PlayingScreen extends Pantalla {
     //Textures
     private Texture backTexture;
     private Texture texturaPersonaje;
+    private Texture rellenoPersonaje;
     private Texture texturePowerUp;
 
     //Objects
@@ -33,7 +34,6 @@ class PlayingScreen extends Pantalla {
     private static int tempEstado;
     private Personaje personaje;
     private PowerUp powerUp;
-
 
 
     public PlayingScreen(Juego juego) {
@@ -90,7 +90,7 @@ class PlayingScreen extends Pantalla {
     }
 
     private void iniciarPersonaje() {
-        personaje = new Personaje(texturaPersonaje);
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje);
         resetTempEstado();
         estado = Estado.CORRIENDO_ABAJO;
     }
@@ -105,7 +105,8 @@ class PlayingScreen extends Pantalla {
 
         backTexture = new Texture("PantallaJuego.jpg");
         //playerTexture = new Texture("redCircle.png");
-        texturaPersonaje = new Texture("ninja.png");
+        texturaPersonaje = new Texture("ninjaTempCont.png");
+        rellenoPersonaje = new Texture("ninjaTempFill.png");
         texturePowerUp = new Texture("redCircle.png");
     }
 
