@@ -2,6 +2,7 @@ package com.swing.itesm;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -26,6 +27,10 @@ class PlayingScreen extends Pantalla {
     private Texture rellenoPersonaje;
     private Texture texturePowerUp;
 
+    // Colores
+    private Color amarillo = new Color(0.9764f,0.7647f,0.2078f,1);
+    private Color azul = new Color(0.1529f,0.3647f,1,1);
+
     //Objects
     private Background background;
     private Background backgroundD;
@@ -34,6 +39,7 @@ class PlayingScreen extends Pantalla {
     private static int tempEstado;
     private Personaje personaje;
     private PowerUp powerUp;
+    private Color color;
 
 
     public PlayingScreen(Juego juego) {
@@ -90,7 +96,8 @@ class PlayingScreen extends Pantalla {
     }
 
     private void iniciarPersonaje() {
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje);
+        color = azul;
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
         resetTempEstado();
         estado = Estado.CORRIENDO_ABAJO;
     }
@@ -165,7 +172,6 @@ class PlayingScreen extends Pantalla {
     }
     public enum Estado{
         CORRIENDO_ABAJO,
-        CORRIENDO_ARRIBA,
         SALTANDO,
         BAJANDO,
         GANCHO_ARRIBA,
@@ -181,12 +187,7 @@ class PlayingScreen extends Pantalla {
                 estado = Estado.SALTANDO;
                 resetTempEstado();
                 return true;
-            }
-            if (estado == Estado.CORRIENDO_ARRIBA) {
-                estado = Estado.BAJANDO;
-                resetTempEstado();
-                return true;
-            } else {
+            }else {
                 return false;
             }
         }
@@ -201,7 +202,7 @@ class PlayingScreen extends Pantalla {
                 resetTempEstado();
                 return true;
             }
-            if (estado == Estado.CORRIENDO_ARRIBA || estado == Estado.GANCHO_ARRIBA) {
+            if (estado == Estado.GANCHO_ARRIBA) {
                 estado = Estado.GANCHO_ABAJO;
                 resetTempEstado();
                 return true;

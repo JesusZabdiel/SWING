@@ -16,7 +16,7 @@ public class Personaje {
     private int aceleracion = 2;
     private float fakeRoof = Juego.ALTO-60;
 
-    public Personaje(Texture textura, Texture relleno){
+    public Personaje(Texture textura, Texture relleno, Color chroma){
         temp = 0;
         sprite = new Sprite(textura,31,23,118,157);
         color = new Sprite(relleno, 31,23,118,157);
@@ -24,8 +24,7 @@ public class Personaje {
         color.setBounds(60,50, 150, 150);
 
 
-        color.setColor(249f/255,197f/255,53f/255,1);
-        //color.setColor(0.1529f,0.3647f,1,1);
+        color.setColor(chroma);
     }
 
     public Estado mover(Estado estado, int tempEstado){
@@ -71,19 +70,26 @@ public class Personaje {
                 color.setY(20);
                 return Estado.CORRIENDO_ABAJO;
             case SALTANDO:
-                sprite.setRegion(12,170,60,70);
-                sprite.setY(velocidad*temp-(aceleracion*(float)(Math.pow(temp,2)))/2);
-                if(velocidad*temp<(aceleracion*(float)(Math.pow(temp,2))))
-                    sprite.setRegion(90,170,60,70);
+                color.setRegion(31, 218, 122, 162);
+                sprite.setRegion(31, 218, 122, 162);
 
-                if (sprite.getY()<0) {
+                sprite.setY(velocidad*temp-(aceleracion*(float)(Math.pow(temp,2)))/2);
+                color.setY(velocidad*temp-(aceleracion*(float)(Math.pow(temp,2)))/2);
+
+                if(velocidad*temp<(aceleracion*(float)(Math.pow(temp,2)))) {
+                    color.setRegion(226, 218, 127, 162);
+                    sprite.setRegion(226, 218, 127, 162);
+                } if (sprite.getY()<0) {
                     PlayingScreen.resetTempEstado();
                     return Estado.CORRIENDO_ABAJO;
                 }
                 return Estado.SALTANDO;
             case BAJANDO:
-                sprite.setRegion(890,727,65,70);
+                color.setRegion(226, 218, 127, 162);
+                sprite.setRegion(226, 218, 127, 162);
+
                 sprite.setY(sprite.getY()-(aceleracion*(float)(Math.pow(temp,2)))/20);
+                color.setY(color.getY()-(aceleracion*(float)(Math.pow(temp,2)))/20);
 
                 if(sprite.getY()<=0) {
                     PlayingScreen.resetTempEstado();
@@ -91,24 +97,30 @@ public class Personaje {
                 }
                 return Estado.BAJANDO;
             case GANCHO_ABAJO:
-                sprite.setRegion(400,170,65,70);
+                color.setRegion(626, 218, 122, 162);
+                sprite.setRegion(626, 218, 122, 162);
+
+                color.setY(sprite.getY()-velocidad*temp/10);
                 sprite.setY(sprite.getY()-velocidad*temp/10);
+
                 if (sprite.getY()<=0) {
                     PlayingScreen.resetTempEstado();
                     return Estado.CORRIENDO_ABAJO;
                 }
                 return Estado.GANCHO_ABAJO;
             case GANCHO_ARRIBA:
-                sprite.setRegion(169,647,60,70);
+                color.setRegion(429, 218, 127, 162);
+                sprite.setRegion(429, 218, 127, 162);
+
+                color.setY(sprite.getY()+velocidad*temp/10);
                 sprite.setY(sprite.getY()+velocidad*temp/10);
+
                 if (sprite.getY()+sprite.getHeight()>fakeRoof){
                     PlayingScreen.resetTempEstado();
                     return Estado.BAJANDO;
                 }
                 return Estado.GANCHO_ARRIBA;
-            case CORRIENDO_ARRIBA:
-                sprite.setY(Juego.ALTO-sprite.getHeight());
-                return Estado.CORRIENDO_ARRIBA;
+
             default:
                 System.out.println("We have a problem");
                 sprite.setY(0);
