@@ -250,7 +250,7 @@ class PlayingScreen extends Pantalla {
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             estadoJuego = EstadoJuego.JUGANDO;
-            moveBackgound();
+
 
             return true;
         }
