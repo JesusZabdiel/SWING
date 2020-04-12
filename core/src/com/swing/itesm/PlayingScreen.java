@@ -2,15 +2,19 @@ package com.swing.itesm;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 class PlayingScreen extends Pantalla {
 
@@ -23,7 +27,12 @@ class PlayingScreen extends Pantalla {
     //Textures
     private Texture backTexture;
     private Texture texturaPersonaje;
+    private Texture rellenoPersonaje;
     private Texture texturePowerUp;
+
+    // Colores
+    private Color amarillo = new Color(0.9764f,0.7647f,0.2078f,1);
+    private Color azul = new Color(0.1529f,0.3647f,1,1);
 
     //Objects
     private Background background;
@@ -33,7 +42,11 @@ class PlayingScreen extends Pantalla {
     private static int tempEstado;
     private Personaje personaje;
     private PowerUp powerUp;
+    private Color color;
 
+    //Pausa
+    private EscenaPausa escenaPausa;
+    private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;  //Jugando, Pausado, Gano, Perdio
 
 
     public PlayingScreen(Juego juego) {
@@ -90,7 +103,8 @@ class PlayingScreen extends Pantalla {
     }
 
     private void iniciarPersonaje() {
-        personaje = new Personaje(texturaPersonaje);
+        color = azul;
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
         resetTempEstado();
         estado = Estado.CORRIENDO_ABAJO;
     }
@@ -105,7 +119,8 @@ class PlayingScreen extends Pantalla {
 
         backTexture = new Texture("PantallaJuego.jpg");
         //playerTexture = new Texture("redCircle.png");
-        texturaPersonaje = new Texture("ninja.png");
+        texturaPersonaje = new Texture("ninjaTempCont.png");
+        rellenoPersonaje = new Texture("ninjaTempFill.png");
         texturePowerUp = new Texture("redCircle.png");
     }
 
@@ -129,6 +144,10 @@ class PlayingScreen extends Pantalla {
         batch.end();
         //escenaMenu.draw();
 
+
+        if(estadoJuego == EstadoJuego.PAUSADO){
+            escenaPausa.draw();
+        }
 
 
     }
@@ -164,11 +183,11 @@ class PlayingScreen extends Pantalla {
     }
     public enum Estado{
         CORRIENDO_ABAJO,
-        CORRIENDO_ARRIBA,
         SALTANDO,
         BAJANDO,
         GANCHO_ARRIBA,
-        GANCHO_ABAJO
+        GANCHO_ABAJO,
+
     }
 
     private class ProcesadorEntrada implements InputProcessor {
@@ -176,18 +195,19 @@ class PlayingScreen extends Pantalla {
         //Si el personaje esta en el techo, se deja caer y prepara el gancho
         @Override
         public boolean keyDown(int keycode) {
-            if (estado == Estado.CORRIENDO_ABAJO) {
-                estado = Estado.SALTANDO;
-                resetTempEstado();
-                return true;
-            }
-            if (estado == Estado.CORRIENDO_ARRIBA) {
-                estado = Estado.BAJANDO;
-                resetTempEstado();
-                return true;
-            } else {
+            if (estadoJuego == EstadoJuego.JUGANDO) {
+                if (estado == Estado.CORRIENDO_ABAJO) {
+                    estado = Estado.SALTANDO;
+                    resetTempEstado();
+                    return true;
+                }
+            }else {
+
                 return false;
+
             }
+
+            return false;
         }
 
 
@@ -195,17 +215,21 @@ class PlayingScreen extends Pantalla {
         @Override
         public boolean keyUp(int keycode) {
 
-            if (estado == Estado.CORRIENDO_ABAJO || estado == Estado.GANCHO_ABAJO || estado == Estado.SALTANDO || estado == Estado.BAJANDO) {
-                estado = Estado.GANCHO_ARRIBA;
-                resetTempEstado();
-                return true;
+            if (estadoJuego == EstadoJuego.JUGANDO) {
+
+                if (estado == Estado.CORRIENDO_ABAJO || estado == Estado.GANCHO_ABAJO || estado == Estado.SALTANDO || estado == Estado.BAJANDO) {
+                    estado = Estado.GANCHO_ARRIBA;
+                    resetTempEstado();
+                    return true;
+                }
+                if (estado == Estado.GANCHO_ARRIBA) {
+                    estado = Estado.GANCHO_ABAJO;
+                    resetTempEstado();
+                    return true;
+                }
             }
-            if (estado == Estado.CORRIENDO_ARRIBA || estado == Estado.GANCHO_ARRIBA) {
-                estado = Estado.GANCHO_ABAJO;
-                resetTempEstado();
-                return true;
-            }
-            return false;
+                return false;
+
         }
 
         @Override
@@ -215,12 +239,20 @@ class PlayingScreen extends Pantalla {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            return false;
+            estadoJuego = EstadoJuego.PAUSADO;
+            if (escenaPausa == null) {
+                escenaPausa = new EscenaPausa(vista, batch);
+            }
+            return true;
         }
+
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
+            estadoJuego = EstadoJuego.JUGANDO;
+
+
+            return true;
         }
 
         @Override
@@ -237,5 +269,33 @@ class PlayingScreen extends Pantalla {
         public boolean scrolled(int amount) {
             return false;
         }
+    }
+
+    // Clase pausa ( ventana que se muestra cuando el usuario pausa la app)
+
+    class EscenaPausa extends Stage{
+
+        public EscenaPausa (Viewport vista, SpriteBatch batch){
+            super(vista, batch);
+
+            Pixmap pixmap = new Pixmap((int)(ANCHO*0.7f), (int)(ALTO*0.8f), Pixmap.Format.RGBA8888);
+
+            pixmap.setColor(255,255,255,0.5f);
+            pixmap.fillCircle(300,300,300);
+            Texture texturaCirculo = new Texture(pixmap);
+
+            Image imgCirculo = new Image(texturaCirculo);
+            imgCirculo.setPosition(ANCHO/2-pixmap.getWidth()/2,ALTO/2-pixmap.getHeight()/2);
+
+            this.addActor(imgCirculo);
+        }
+    }
+
+    private enum EstadoJuego {
+
+        JUGANDO,
+        PAUSADO,
+        GANO,
+        PERDIO,
     }
 }
