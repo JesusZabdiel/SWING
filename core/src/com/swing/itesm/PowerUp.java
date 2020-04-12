@@ -16,24 +16,22 @@ public class PowerUp {
 
 
     public void render(SpriteBatch batch){
-        if (probabilidadPowerUp()){
-            sprite.draw(batch);
-            }
+        sprite.draw(batch);
     }
 
     public void mover(){
-        this.sprite.setX(sprite.getX() - PlayingScreen.speed);
+        if(this.sprite.getX() > 0 - this.sprite.getWidth()){
+            this.sprite.setX(sprite.getX() - PlayingScreen.speed);
+        }else{
+            this.generarPosicionPowerUp();
+        }
+
     }
 
     private void generarPosicionPowerUp() {
-        float xPos = Pantalla.ANCHO;
-        float yPos = (int)((Math.random()* Pantalla.ALTO-sprite.getHeight())+sprite.getHeight()) ;
+        float xPos = (int)(((Math.random()* Pantalla.ANCHO-sprite.getWidth())+sprite.getWidth())+Pantalla.ANCHO);
+        float yPos = (int)((Math.random()* Pantalla.ALTO-sprite.getHeight()))+sprite.getHeight();
         this.sprite.setPosition(xPos,yPos);
-    }
-
-    public boolean probabilidadPowerUp(){
-        int probabilidad = ((int)(Math.random()*100))+1;
-        return probabilidad <= PROBABILIDAD_POWER_UP;
     }
 
 }
