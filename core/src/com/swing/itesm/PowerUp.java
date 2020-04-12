@@ -28,7 +28,7 @@ public class PowerUp {
 
     }
 
-    private void generarPosicionPowerUp() {
+    public void generarPosicionPowerUp() {
         float xPos = (int)(((Math.random()* Pantalla.ANCHO-sprite.getWidth())+sprite.getWidth())+Pantalla.ANCHO);
         float yPos = (int)((Math.random()* Pantalla.ALTO-sprite.getHeight()))+sprite.getHeight();
         this.sprite.setPosition(xPos,yPos);

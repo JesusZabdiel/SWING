@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -75,6 +77,23 @@ class PlayingScreen extends Pantalla {
 
     }
 
+    private void verificarColisiones() {
+        for (int i = vidaConstante.size-1; i > 0; i--) {
+            PowerUp pUp = vidaConstante.get(i);
+            Rectangle rectpUp = pUp.sprite.getBoundingRectangle();
+            Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
+            if (rectPlayer.overlaps(rectpUp)) {
+                pUp.generarPosicionPowerUp();
+                if (vidaJugador <=95){
+                    aumentarVida();
+                }
+            }
+        }
+    }
+
+    private void aumentarVida() {
+        vidaJugador += 5;
+    }
 
 
     /*private void crearMenu() {
@@ -140,6 +159,7 @@ class PlayingScreen extends Pantalla {
         moveBackgound();
         moverVidas();
         restarVida(delta);
+        verificarColisiones();
 
         tempEstado +=1;
         estado = personaje.mover(estado, tempEstado);
