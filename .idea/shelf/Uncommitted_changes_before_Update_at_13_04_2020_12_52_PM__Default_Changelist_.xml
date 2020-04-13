@@ -1,0 +1,49 @@
+<changelist name="Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]" date="1586800362640" recycled="false" toDelete="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 13/04/2020 12:52 PM [Default Changelist]" />
+  <binary>
+    <option name="BEFORE_PATH" value=".gradle/5.6.4/fileHashes/fileHashes.bin" />
+    <option name="AFTER_PATH" value=".gradle/5.6.4/fileHashes/fileHashes.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]/fileHashes.bin" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="core/build/classes/java/main/com/swing/itesm/PlayingScreen.class" />
+    <option name="AFTER_PATH" value="core/build/classes/java/main/com/swing/itesm/PlayingScreen.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]/PlayingScreen.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value=".gradle/5.6.4/fileHashes/resourceHashesCache.bin" />
+    <option name="AFTER_PATH" value=".gradle/5.6.4/fileHashes/resourceHashesCache.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]/resourceHashesCache.bin" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="core/build/libs/core-1.0.jar" />
+    <option name="AFTER_PATH" value="core/build/libs/core-1.0.jar" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]/core-1.0.jar" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value=".gradle/5.6.4/javaCompile/taskHistory.bin" />
+    <option name="AFTER_PATH" value=".gradle/5.6.4/javaCompile/taskHistory.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]/taskHistory.bin" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value=".gradle/5.6.4/executionHistory/executionHistory.bin" />
+    <option name="AFTER_PATH" value=".gradle/5.6.4/executionHistory/executionHistory.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]/executionHistory.bin" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value=".gradle/5.6.4/javaCompile/jarAnalysis.bin" />
+    <option name="AFTER_PATH" value=".gradle/5.6.4/javaCompile/jarAnalysis.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]/jarAnalysis.bin" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value=".gradle/5.6.4/javaCompile/classAnalysis.bin" />
+    <option name="AFTER_PATH" value=".gradle/5.6.4/javaCompile/classAnalysis.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]/classAnalysis.bin" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="core/build/classes/java/main/com/swing/itesm/PlayingScreen$ProcesadorEntrada.class" />
+    <option name="AFTER_PATH" value="core/build/classes/java/main/com/swing/itesm/PlayingScreen$ProcesadorEntrada.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_13_04_2020_12_52_PM_[Default_Changelist]/PlayingScreen$ProcesadorEntrada.class" />
+  </binary>
+</changelist>
