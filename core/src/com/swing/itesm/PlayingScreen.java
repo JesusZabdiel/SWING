@@ -5,15 +5,11 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 class PlayingScreen extends Pantalla {
@@ -22,6 +18,11 @@ class PlayingScreen extends Pantalla {
 
     //jugability
     public static float speed = 4;
+    public int vidaPorSegundo = 10;
+    private int aumentoVida = 4;
+    private float vidaJugador;
+    float barraVidaDimentions;
+    private float score;
 
 
     //Textures
@@ -29,6 +30,8 @@ class PlayingScreen extends Pantalla {
     private Texture texturaPersonaje;
     private Texture rellenoPersonaje;
     private Texture texturePowerUp;
+    private Texture barraVidaBack;
+    private Texture barraVida;
 
     // Colores
     private Color amarillo = new Color(0.9764f,0.7647f,0.2078f,1);
@@ -41,8 +44,10 @@ class PlayingScreen extends Pantalla {
     public Estado estado;
     private static int tempEstado;
     private Personaje personaje;
-    private PowerUp powerUp;
     private Color color;
+    private Array<PowerUp> vidaConstante;
+    private Marcador marcador;
+
 
     //Pausa
     private EscenaPausa escenaPausa;
@@ -63,13 +68,36 @@ class PlayingScreen extends Pantalla {
         createBackground();
         iniciarPersonaje();
         crearPowerUps();
-
+        crearMarcador();
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         //crearMenu();
 
     }
 
+    private void crearMarcador() {
+        this.marcador = new Marcador(Pantalla.ANCHO/2,Pantalla.ALTO-50);
+        this.score = 0;
+
+    }
+
+    private void verificarColisiones() {
+        for (int i = vidaConstante.size-1; i > 0; i--) {
+            PowerUp pUp = vidaConstante.get(i);
+            Rectangle rectpUp = pUp.sprite.getBoundingRectangle();
+            Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
+            if (rectPlayer.overlaps(rectpUp)) {
+                pUp.generarPosicionPowerUp();
+                if (vidaJugador <=100 -aumentoVida ){
+                    aumentarVida();
+                }
+            }
+        }
+    }
+
+    private void aumentarVida() {
+        vidaJugador += aumentoVida;
+    }
 
 
     /*private void crearMenu() {
@@ -99,7 +127,10 @@ class PlayingScreen extends Pantalla {
     }
      */
     private void crearPowerUps() {
-        this.powerUp = new PowerUp(texturePowerUp);
+        vidaConstante = new Array<>();
+        for (int i = 0; i<vidaPorSegundo; i++){
+            vidaConstante.add(new PowerUp(texturePowerUp));
+        }
     }
 
     private void iniciarPersonaje() {
@@ -107,6 +138,7 @@ class PlayingScreen extends Pantalla {
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
         resetTempEstado();
         estado = Estado.CORRIENDO_ABAJO;
+        vidaJugador = 100;
     }
 
     private void createBackground() {
@@ -118,17 +150,21 @@ class PlayingScreen extends Pantalla {
     private void cargarTexturas() {
 
         backTexture = new Texture("PantallaJuego.jpg");
-        //playerTexture = new Texture("redCircle.png");
         texturaPersonaje = new Texture("ninjaTempCont.png");
         rellenoPersonaje = new Texture("ninjaTempFill.png");
-        texturePowerUp = new Texture("redCircle.png");
+        texturePowerUp = new Texture("Life.png");
+        barraVida = new Texture("lifeBar.png");
+        barraVidaBack = new Texture("lifeBarBack.png");
     }
 
     @Override
     public void render(float delta) {
         //Update
         moveBackgound();
-        powerUp.mover();
+        moverVidas();
+        restarVida(delta);
+        verificarColisiones();
+        aumentarPuntos(delta);
 
         tempEstado +=1;
         estado = personaje.mover(estado, tempEstado);
@@ -139,8 +175,20 @@ class PlayingScreen extends Pantalla {
         background.render(batch);
         backgroundD.render(batch);
         personaje.render(batch);
-        powerUp.render(batch);
+        batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
+        if(vidaJugador >=0){
+            batch.draw(barraVida,Pantalla.ANCHO-barraVida.getWidth()-15,
+                    Pantalla.ALTO - barraVida.getHeight()-15,barraVidaDimentions,barraVida.getHeight());
+        }
 
+
+
+
+        for (PowerUp pUp: vidaConstante ) {
+            pUp.render(batch);
+        }
+
+        marcador.render(batch);
         batch.end();
         //escenaMenu.draw();
 
@@ -149,7 +197,21 @@ class PlayingScreen extends Pantalla {
             escenaPausa.draw();
         }
 
+    }
 
+    private void aumentarPuntos(float delta) {
+        marcador.marcar(delta);
+    }
+
+    private void restarVida(float delta) {
+        vidaJugador -= speed*delta;
+        barraVidaDimentions = 350/100f * vidaJugador;
+    }
+
+    private void moverVidas() {
+        for (PowerUp pUp: vidaConstante ) {
+            pUp.mover();
+        }
     }
 
     private void moveBackgound() {
