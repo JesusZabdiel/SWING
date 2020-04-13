@@ -5,17 +5,10 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -26,8 +19,10 @@ class PlayingScreen extends Pantalla {
     //jugability
     public static float speed = 4;
     public int vidaPorSegundo = 10;
+    private int aumentoVida = 4;
     private float vidaJugador;
     float barraVidaDimentions;
+    private float score;
 
 
     //Textures
@@ -51,6 +46,8 @@ class PlayingScreen extends Pantalla {
     private Personaje personaje;
     private Color color;
     private Array<PowerUp> vidaConstante;
+    private Marcador marcador;
+
 
     //Pausa
     private EscenaPausa escenaPausa;
@@ -71,9 +68,16 @@ class PlayingScreen extends Pantalla {
         createBackground();
         iniciarPersonaje();
         crearPowerUps();
+        crearMarcador();
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         //crearMenu();
+
+    }
+
+    private void crearMarcador() {
+        this.marcador = new Marcador(Pantalla.ANCHO/2,Pantalla.ALTO-50);
+        this.score = 0;
 
     }
 
@@ -84,7 +88,7 @@ class PlayingScreen extends Pantalla {
             Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
             if (rectPlayer.overlaps(rectpUp)) {
                 pUp.generarPosicionPowerUp();
-                if (vidaJugador <=95){
+                if (vidaJugador <=100 -aumentoVida ){
                     aumentarVida();
                 }
             }
@@ -92,7 +96,7 @@ class PlayingScreen extends Pantalla {
     }
 
     private void aumentarVida() {
-        vidaJugador += 5;
+        vidaJugador += aumentoVida;
     }
 
 
@@ -160,6 +164,7 @@ class PlayingScreen extends Pantalla {
         moverVidas();
         restarVida(delta);
         verificarColisiones();
+        aumentarPuntos(delta);
 
         tempEstado +=1;
         estado = personaje.mover(estado, tempEstado);
@@ -183,6 +188,7 @@ class PlayingScreen extends Pantalla {
             pUp.render(batch);
         }
 
+        marcador.render(batch);
         batch.end();
         //escenaMenu.draw();
 
@@ -191,6 +197,10 @@ class PlayingScreen extends Pantalla {
             escenaPausa.draw();
         }
 
+    }
+
+    private void aumentarPuntos(float delta) {
+        marcador.marcar(delta);
     }
 
     private void restarVida(float delta) {
