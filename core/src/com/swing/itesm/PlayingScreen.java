@@ -41,7 +41,8 @@ class PlayingScreen extends Pantalla {
     private Background background;
     private Background backgroundD;
     //private  Player player;
-    public Estado estado;
+    public Estado estadoPersonaje;
+    public  EstadoJuego  estadoJuego;
     private static int tempEstado;
     private Personaje personaje;
     private Color color;
@@ -51,7 +52,6 @@ class PlayingScreen extends Pantalla {
 
     //Pausa
     private EscenaPausa escenaPausa;
-    private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;  //Jugando, Pausado, Gano, Perdio
 
 
     public PlayingScreen(Juego juego) {
@@ -64,15 +64,33 @@ class PlayingScreen extends Pantalla {
 
     @Override
     public void show() {
+        estadoJuego = EstadoJuego.JUGANDO;
         cargarTexturas();
         createBackground();
         iniciarPersonaje();
         crearPowerUps();
         crearMarcador();
 
+
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         //crearMenu();
 
+    }
+
+    public void update(float delta) {
+        moveBackgound();
+        moverVidas();
+        restarVida(delta);
+        verificarColisiones();
+        aumentarPuntos(delta);
+        verificarFinDeJuego();
+
+    }
+
+    private void verificarFinDeJuego() {
+        if(vidaJugador <= 0){
+            estadoJuego = EstadoJuego.PERDIO;
+        }
     }
 
     private void crearMarcador() {
@@ -137,7 +155,7 @@ class PlayingScreen extends Pantalla {
         color = azul;
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
         resetTempEstado();
-        estado = Estado.CORRIENDO_ABAJO;
+        estadoPersonaje = Estado.CORRIENDO_ABAJO;
         vidaJugador = 100;
     }
 
@@ -160,14 +178,14 @@ class PlayingScreen extends Pantalla {
     @Override
     public void render(float delta) {
         //Update
-        moveBackgound();
-        moverVidas();
-        restarVida(delta);
-        verificarColisiones();
-        aumentarPuntos(delta);
+        if (estadoJuego == EstadoJuego.JUGANDO){
+            update(delta);
+
+        }
+
 
         tempEstado +=1;
-        estado = personaje.mover(estado, tempEstado);
+        estadoPersonaje = personaje.mover(estadoPersonaje, tempEstado);
 
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
@@ -258,8 +276,8 @@ class PlayingScreen extends Pantalla {
         @Override
         public boolean keyDown(int keycode) {
             if (estadoJuego == EstadoJuego.JUGANDO) {
-                if (estado == Estado.CORRIENDO_ABAJO) {
-                    estado = Estado.SALTANDO;
+                if (estadoPersonaje == Estado.CORRIENDO_ABAJO) {
+                    estadoPersonaje = Estado.SALTANDO;
                     resetTempEstado();
                     return true;
                 }
@@ -279,13 +297,13 @@ class PlayingScreen extends Pantalla {
 
             if (estadoJuego == EstadoJuego.JUGANDO) {
 
-                if (estado == Estado.CORRIENDO_ABAJO || estado == Estado.GANCHO_ABAJO || estado == Estado.SALTANDO || estado == Estado.BAJANDO) {
-                    estado = Estado.GANCHO_ARRIBA;
+                if (estadoPersonaje == Estado.CORRIENDO_ABAJO || estadoPersonaje == Estado.GANCHO_ABAJO || estadoPersonaje == Estado.SALTANDO || estadoPersonaje == Estado.BAJANDO) {
+                    estadoPersonaje = Estado.GANCHO_ARRIBA;
                     resetTempEstado();
                     return true;
                 }
-                if (estado == Estado.GANCHO_ARRIBA) {
-                    estado = Estado.GANCHO_ABAJO;
+                if (estadoPersonaje == Estado.GANCHO_ARRIBA) {
+                    estadoPersonaje = Estado.GANCHO_ABAJO;
                     resetTempEstado();
                     return true;
                 }
