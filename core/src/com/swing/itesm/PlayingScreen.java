@@ -6,13 +6,19 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 class PlayingScreen extends Pantalla {
+
 
     private final Juego juego;
 
@@ -32,6 +38,7 @@ class PlayingScreen extends Pantalla {
     private Texture texturePowerUp;
     private Texture barraVidaBack;
     private Texture barraVida;
+
 
     // Colores
     private Color amarillo = new Color(0.9764f,0.7647f,0.2078f,1);
@@ -74,6 +81,7 @@ class PlayingScreen extends Pantalla {
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         //crearMenu();
+
 
     }
 
@@ -321,20 +329,20 @@ class PlayingScreen extends Pantalla {
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             estadoJuego = EstadoJuego.PAUSADO;
-            if (escenaPausa == null) {
-                escenaPausa = new EscenaPausa(vista, batch);
-                tempEstado=0;
-            }
+            escenaPausa = new EscenaPausa(vista, batch);
+            Gdx.input.setInputProcessor(escenaPausa);
+            tempEstado=0;
+
             return true;
         }
 
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            estadoJuego = EstadoJuego.JUGANDO;
 
 
-            return true;
+
+            return false;
         }
 
         @Override
@@ -357,19 +365,45 @@ class PlayingScreen extends Pantalla {
 
     class EscenaPausa extends Stage{
 
+
         public EscenaPausa (Viewport vista, SpriteBatch batch){
+
             super(vista, batch);
 
-            Pixmap pixmap = new Pixmap((int)(ANCHO*0.7f), (int)(ALTO*0.8f), Pixmap.Format.RGBA8888);
-
+            //Pixmap pixmap = new Pixmap((int)(ANCHO*0.7f), (int)(ALTO*0.8f), Pixmap.Format.RGBA8888);
             //pixmap.setColor(255,255,255,0.5f);
             //pixmap.fillCircle(300,300,300);
-            //Texture texturaCirculo = new Texture(pixmap);
+            //Texture texturaFondoPausa = new Texture("escenaPausa.png");
+            //Image imgPausa = new Image(texturaFondoPausa);
+            //imgPausa.setPosition(0,0);
 
-            //Image imgCirculo = new Image(texturaCirculo);
-            //imgCirculo.setPosition(ANCHO/2-pixmap.getWidth()/2,ALTO/2-pixmap.getHeight()/2);
+            // Boton Jugar
+            Texture texturaBtnJugar = new Texture("button_play.png");
+            TextureRegionDrawable trdJugar = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
 
-            //this.addActor(imgCirculo);
+            ImageButton btnJugar = new ImageButton(trdJugar);
+
+            btnJugar.setPosition(ANCHO/2-btnJugar.getWidth()/2,2*ALTO/3);
+
+            //this.addActor(imgPausa);
+            this.addActor(btnJugar);
+
+            //Listener
+            btnJugar.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    estadoJuego = EstadoJuego.JUGANDO;
+                    Gdx.input.setInputProcessor(new ProcesadorEntrada());
+
+                }
+            });
+
+
+
+
+
+
         }
     }
 
