@@ -183,9 +183,10 @@ class PlayingScreen extends Pantalla {
 
         }
 
-
-        tempEstado +=1;
-        estadoPersonaje = personaje.mover(estadoPersonaje, tempEstado);
+        if (estadoJuego == EstadoJuego.JUGANDO) {
+            tempEstado += 1;
+            estadoPersonaje = personaje.mover(estadoPersonaje, tempEstado);
+        }
 
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
@@ -322,6 +323,7 @@ class PlayingScreen extends Pantalla {
             estadoJuego = EstadoJuego.PAUSADO;
             if (escenaPausa == null) {
                 escenaPausa = new EscenaPausa(vista, batch);
+                tempEstado=0;
             }
             return true;
         }
@@ -360,14 +362,14 @@ class PlayingScreen extends Pantalla {
 
             Pixmap pixmap = new Pixmap((int)(ANCHO*0.7f), (int)(ALTO*0.8f), Pixmap.Format.RGBA8888);
 
-            pixmap.setColor(255,255,255,0.5f);
-            pixmap.fillCircle(300,300,300);
-            Texture texturaCirculo = new Texture(pixmap);
+            //pixmap.setColor(255,255,255,0.5f);
+            //pixmap.fillCircle(300,300,300);
+            //Texture texturaCirculo = new Texture(pixmap);
 
-            Image imgCirculo = new Image(texturaCirculo);
-            imgCirculo.setPosition(ANCHO/2-pixmap.getWidth()/2,ALTO/2-pixmap.getHeight()/2);
+            //Image imgCirculo = new Image(texturaCirculo);
+            //imgCirculo.setPosition(ANCHO/2-pixmap.getWidth()/2,ALTO/2-pixmap.getHeight()/2);
 
-            this.addActor(imgCirculo);
+            //this.addActor(imgCirculo);
         }
     }
 
