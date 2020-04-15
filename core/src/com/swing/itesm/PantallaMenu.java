@@ -29,6 +29,7 @@ class PantallaMenu extends Pantalla {
 
         texturaFondo = new Texture("fondoCueva.jpg");
         crearMenu();
+        Gdx.input.setInputProcessor(escenaMenu);
 
     }
 

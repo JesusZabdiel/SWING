@@ -60,6 +60,9 @@ class PlayingScreen extends Pantalla {
     //Pausa
     private EscenaPausa escenaPausa;
 
+    //Game Over
+    private EscenaGameOver escenaGameOver;
+
 
     public PlayingScreen(Juego juego) {
         this.juego = juego;
@@ -98,6 +101,9 @@ class PlayingScreen extends Pantalla {
     private void verificarFinDeJuego() {
         if(vidaJugador <= 0){
             estadoJuego = EstadoJuego.PERDIO;
+            escenaGameOver = new EscenaGameOver(vista, batch);
+            Gdx.input.setInputProcessor(escenaGameOver);
+            tempEstado=0;
         }
     }
 
@@ -222,6 +228,10 @@ class PlayingScreen extends Pantalla {
 
         if(estadoJuego == EstadoJuego.PAUSADO){
             escenaPausa.draw();
+        }
+
+        if(estadoJuego == EstadoJuego.PERDIO){
+            escenaGameOver.draw();
         }
 
     }
@@ -395,6 +405,67 @@ class PlayingScreen extends Pantalla {
                     super.clicked(event, x, y);
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
+
+                }
+            });
+
+
+
+
+
+
+        }
+    }
+
+    class EscenaGameOver extends Stage{
+
+
+        public EscenaGameOver (Viewport vista, SpriteBatch batch){
+
+            super(vista, batch);
+
+            Pixmap pixmap = new Pixmap((int)(ANCHO*0.7f), (int)(ALTO*0.8f), Pixmap.Format.RGBA8888);
+            pixmap.setColor(1,1,1,0.75f);
+            Texture texturaFondoGameOver = new Texture("gameOver.jpg");
+            Image imgGameOver = new Image(texturaFondoGameOver);
+            imgGameOver.setPosition(0,0);
+
+            // Boton Jugar
+            Texture texturaBtnJugar = new Texture("button_play.png");
+            TextureRegionDrawable trdPlay = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
+
+            ImageButton btnPlay = new ImageButton(trdPlay);
+
+            btnPlay.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3);
+
+            // Boton Menu
+            Texture texturaBtnMenu = new Texture("button_menu.png");
+            TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
+
+            ImageButton btnMenu = new ImageButton(trdMenu);
+
+            btnMenu.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3-34);
+
+            this.addActor(imgGameOver);
+            this.addActor(btnPlay);
+            this.addActor(btnMenu);
+
+            //Listener  Play
+            btnPlay.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    juego.setScreen(new PlayingScreen(juego));
+
+                }
+            });
+
+            //Listener Menu
+            btnMenu.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    juego.setScreen(new PantallaMenu(juego));
 
                 }
             });
