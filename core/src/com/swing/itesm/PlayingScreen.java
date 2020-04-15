@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -38,6 +39,7 @@ class PlayingScreen extends Pantalla {
     private Texture texturePowerUp;
     private Texture barraVidaBack;
     private Texture barraVida;
+    private Texture texturaBtnPause;
 
 
     // Colores
@@ -64,13 +66,12 @@ class PlayingScreen extends Pantalla {
     private EscenaGameOver escenaGameOver;
 
 
+
     public PlayingScreen(Juego juego) {
         this.juego = juego;
     }
 
-    /*// Menu
-    private Stage escenaMenu;  // botones,....
-    */
+
 
     @Override
     public void show() {
@@ -81,12 +82,10 @@ class PlayingScreen extends Pantalla {
         crearPowerUps();
         crearMarcador();
 
-
-        Gdx.input.setInputProcessor(new ProcesadorEntrada());
-        //crearMenu();
-
+       Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
     }
+
 
     public void update(float delta) {
         moveBackgound();
@@ -114,7 +113,7 @@ class PlayingScreen extends Pantalla {
     }
 
     private void verificarColisiones() {
-        for (int i = vidaConstante.size-1; i > 0; i--) {
+        for (int i = vidaConstante.size-1; i >= 0; i--) {
             PowerUp pUp = vidaConstante.get(i);
             Rectangle rectpUp = pUp.sprite.getBoundingRectangle();
             Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
@@ -132,32 +131,7 @@ class PlayingScreen extends Pantalla {
     }
 
 
-    /*private void crearMenu() {
 
-        escenaMenu = new Stage(vista);
-
-        // Boton Play
-        Texture texturaBtnMenu = new Texture("button_menu.png");
-        TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
-
-        ImageButton btnMenu = new ImageButton(trdMenu);
-
-        btnMenu.setPosition(0,0);
-
-        //Listener1
-        btnMenu.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                juego.setScreen(new PantallaMenu(juego));
-            }
-        });
-
-        escenaMenu.addActor(btnMenu);
-
-        Gdx.input.setInputProcessor(escenaMenu);
-    }
-     */
     private void crearPowerUps() {
         vidaConstante = new Array<>();
         for (int i = 0; i<vidaPorSegundo; i++){
@@ -187,6 +161,7 @@ class PlayingScreen extends Pantalla {
         texturePowerUp = new Texture("Life.png");
         barraVida = new Texture("lifeBar.png");
         barraVidaBack = new Texture("lifeBarBack.png");
+        texturaBtnPause = new Texture("pause.png");
     }
 
     @Override
@@ -209,11 +184,11 @@ class PlayingScreen extends Pantalla {
         backgroundD.render(batch);
         personaje.render(batch);
         batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
+
         if(vidaJugador >=0){
             batch.draw(barraVida,Pantalla.ANCHO-barraVida.getWidth()-15,
                     Pantalla.ALTO - barraVida.getHeight()-15,barraVidaDimentions,barraVida.getHeight());
         }
-
 
 
 
@@ -222,8 +197,8 @@ class PlayingScreen extends Pantalla {
         }
 
         marcador.render(batch);
+        batch.draw(texturaBtnPause, 0,ALTO-texturaBtnPause.getHeight());
         batch.end();
-        //escenaMenu.draw();
 
 
         if(estadoJuego == EstadoJuego.PAUSADO){
@@ -338,19 +313,22 @@ class PlayingScreen extends Pantalla {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            estadoJuego = EstadoJuego.PAUSADO;
-            escenaPausa = new EscenaPausa(vista, batch);
-            Gdx.input.setInputProcessor(escenaPausa);
-            tempEstado=0;
+            Vector3 v = new Vector3(screenX,screenY,0);
+            camara.unproject(v);
+            if(v.x >=0 && v.x <= texturaBtnPause.getWidth()
+                    && v.y <= ALTO && v.y >= ALTO-texturaBtnPause.getHeight()){
+                estadoJuego = EstadoJuego.PAUSADO;
+                escenaPausa = new EscenaPausa(vista, batch);
+                Gdx.input.setInputProcessor(escenaPausa);
+                tempEstado=0;
 
+            }
             return true;
         }
 
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
-
 
             return false;
         }
@@ -383,9 +361,9 @@ class PlayingScreen extends Pantalla {
             //Pixmap pixmap = new Pixmap((int)(ANCHO*0.7f), (int)(ALTO*0.8f), Pixmap.Format.RGBA8888);
             //pixmap.setColor(255,255,255,0.5f);
             //pixmap.fillCircle(300,300,300);
-            //Texture texturaFondoPausa = new Texture("escenaPausa.png");
-            //Image imgPausa = new Image(texturaFondoPausa);
-            //imgPausa.setPosition(0,0);
+            Texture texturaFondoPausa = new Texture("escenaPausa.png");
+            Image imgPausa = new Image(texturaFondoPausa);
+            imgPausa.setPosition(0,0);
 
             // Boton Jugar
             Texture texturaBtnJugar = new Texture("button_play.png");
@@ -411,9 +389,6 @@ class PlayingScreen extends Pantalla {
 
 
 
-
-
-
         }
     }
 
@@ -424,8 +399,6 @@ class PlayingScreen extends Pantalla {
 
             super(vista, batch);
 
-            Pixmap pixmap = new Pixmap((int)(ANCHO*0.7f), (int)(ALTO*0.8f), Pixmap.Format.RGBA8888);
-            pixmap.setColor(1,1,1,0.75f);
             Texture texturaFondoGameOver = new Texture("gameOver.jpg");
             Image imgGameOver = new Image(texturaFondoGameOver);
             imgGameOver.setPosition(0,0);
@@ -471,10 +444,6 @@ class PlayingScreen extends Pantalla {
             });
 
 
-
-
-
-
         }
     }
 
@@ -485,4 +454,7 @@ class PlayingScreen extends Pantalla {
         GANO,
         PERDIO,
     }
+
+
+
 }
