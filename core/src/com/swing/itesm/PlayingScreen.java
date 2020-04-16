@@ -451,7 +451,6 @@ class PlayingScreen extends Pantalla {
 
         JUGANDO,
         PAUSADO,
-        GANO,
         PERDIO,
     }
 

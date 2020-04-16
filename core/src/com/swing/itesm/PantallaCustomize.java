@@ -72,7 +72,7 @@ class PantallaCustomize extends Pantalla {
 
     private void cargarTexturas() {
 
-        texturaFondoCustomize = new Texture("customize.png");
+        texturaFondoCustomize = new Texture("about.png");
 
     }
 
