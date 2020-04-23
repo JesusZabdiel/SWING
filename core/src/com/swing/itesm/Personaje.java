@@ -14,7 +14,7 @@ public class Personaje {
     public Sprite sprite;
     private int velocidad = 30;
     private int aceleracion = 2;
-    private float fakeRoof = Juego.ALTO-60;
+    private float fakeRoof = Juego.ALTO-15;
 
     public Personaje(Texture textura, Texture relleno, Color chroma){
         temp = 0;

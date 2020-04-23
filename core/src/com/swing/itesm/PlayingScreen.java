@@ -45,6 +45,7 @@ class PlayingScreen extends Pantalla {
     private Texture barraVidaBack;
     private Texture barraVida;
     private Texture texturaBtnPause;
+    private Texture texturaOjo;
 
 
     // Colores
@@ -54,13 +55,17 @@ class PlayingScreen extends Pantalla {
     //Objects
     private Background background;
     private Background backgroundD;
+    private Ojo ojo;
+
     //private  Player player;
-    public Estado estadoPersonaje;
+    private Estado estadoPersonaje;
     public  EstadoJuego  estadoJuego;
     private static int tempEstado;
     private Personaje personaje;
     private Color color;
     private Array<PowerUp> vidaConstante;
+
+    // HUD
     private Marcador marcador;
 
 
@@ -84,6 +89,7 @@ class PlayingScreen extends Pantalla {
         cargarTexturas();
         createBackground();
         iniciarPersonaje();
+        iniciarOjo();
         crearPowerUps();
         crearMarcador();
 
@@ -157,6 +163,12 @@ class PlayingScreen extends Pantalla {
         vidaJugador = 100;
     }
 
+    private void iniciarOjo(){
+        float x = personaje.sprite.getX();
+        float y = personaje.sprite.getY();
+        ojo = new Ojo(texturaOjo, x+120, y);
+    }
+
     private void createBackground() {
         background = new Background(backTexture,0,0);
         backgroundD = new Background(backTexture,background.sprite.getX()+background.sprite.getWidth(),0);
@@ -172,19 +184,17 @@ class PlayingScreen extends Pantalla {
         barraVida = new Texture("lifeBar.png");
         barraVidaBack = new Texture("lifeBarBack.png");
         texturaBtnPause = new Texture("pause.png");
+        texturaOjo = new Texture("ojo.png");
     }
 
     @Override
     public void render(float delta) {
         //Update
-        if (estadoJuego == EstadoJuego.JUGANDO){
-            update(delta);
-
-        }
-
         if (estadoJuego == EstadoJuego.JUGANDO) {
+            update(delta);
             tempEstado += 1;
             estadoPersonaje = personaje.mover(estadoPersonaje, tempEstado);
+            ojo.moverOjo(personaje.sprite.getY());
         }
 
         borrarPantalla();
@@ -193,6 +203,7 @@ class PlayingScreen extends Pantalla {
         background.render(batch);
         backgroundD.render(batch);
         personaje.render(batch);
+        ojo.render(batch);
         batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
 
         if(vidaJugador >=0){
