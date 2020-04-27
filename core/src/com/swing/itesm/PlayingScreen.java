@@ -417,7 +417,7 @@ class PlayingScreen extends Pantalla {
         public EscenaGameOver (Viewport vista, SpriteBatch batch){
 
             super(vista, batch);
-
+            efectoCorrer.stop();
             Texture texturaFondoGameOver = new Texture("gameOver.jpg");
             Image imgGameOver = new Image(texturaFondoGameOver);
             imgGameOver.setPosition(0,0);
