@@ -71,7 +71,7 @@ class PantallaOptions extends Pantalla {
 
     private void cargarTexturas() {
 
-        texturaFondoOptions = new Texture("options.png");
+        texturaFondoOptions = new Texture("instrucciones.jpg");
 
     }
 

@@ -2,6 +2,8 @@ package com.swing.itesm;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,6 +33,9 @@ class PlayingScreen extends Pantalla {
     float barraVidaDimentions;
     private float score;
 
+    //efectos sonido
+    private Sound efectoGancho;
+    private Sound efectoCorrer;
 
     //Textures
     private Texture backTexture;
@@ -142,8 +147,13 @@ class PlayingScreen extends Pantalla {
     private void iniciarPersonaje() {
         color = azul;
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
+        AssetManager manager2=new AssetManager();
+        manager2.load("correr.mp3",Sound.class);
+        manager2.finishLoading();
+        efectoCorrer=manager2.get("correr.mp3");
         resetTempEstado();
         estadoPersonaje = Estado.CORRIENDO_ABAJO;
+        efectoCorrer.loop();
         vidaJugador = 100;
     }
 
@@ -292,8 +302,15 @@ class PlayingScreen extends Pantalla {
             if (estadoJuego == EstadoJuego.JUGANDO) {
 
                 if (estadoPersonaje == Estado.CORRIENDO_ABAJO || estadoPersonaje == Estado.GANCHO_ABAJO || estadoPersonaje == Estado.SALTANDO || estadoPersonaje == Estado.BAJANDO) {
+                    AssetManager manager=new AssetManager();
+                    manager.load("gancho.wav",Sound.class);
+                    manager.finishLoading();
+                    efectoGancho=manager.get("gancho.wav");
                     estadoPersonaje = Estado.GANCHO_ARRIBA;
+                    efectoCorrer.pause();
+                    efectoGancho.play();
                     resetTempEstado();
+                    efectoCorrer.loop();
                     return true;
                 }
                 if (estadoPersonaje == Estado.GANCHO_ARRIBA) {
@@ -361,6 +378,7 @@ class PlayingScreen extends Pantalla {
             //Pixmap pixmap = new Pixmap((int)(ANCHO*0.7f), (int)(ALTO*0.8f), Pixmap.Format.RGBA8888);
             //pixmap.setColor(255,255,255,0.5f);
             //pixmap.fillCircle(300,300,300);
+            efectoCorrer.pause();
             Texture texturaFondoPausa = new Texture("escenaPausa.png");
             Image imgPausa = new Image(texturaFondoPausa);
             imgPausa.setPosition(0,0);
@@ -368,6 +386,7 @@ class PlayingScreen extends Pantalla {
             // Boton Jugar
             Texture texturaBtnJugar = new Texture("button_play.png");
             TextureRegionDrawable trdJugar = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
+
 
             ImageButton btnJugar = new ImageButton(trdJugar);
 
@@ -383,7 +402,7 @@ class PlayingScreen extends Pantalla {
                     super.clicked(event, x, y);
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
-
+                    efectoCorrer.loop();
                 }
             });
 
@@ -417,7 +436,7 @@ class PlayingScreen extends Pantalla {
 
             ImageButton btnMenu = new ImageButton(trdMenu);
 
-            btnMenu.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3-34);
+            btnMenu.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3-234);
 
             this.addActor(imgGameOver);
             this.addActor(btnPlay);
@@ -451,7 +470,6 @@ class PlayingScreen extends Pantalla {
 
         JUGANDO,
         PAUSADO,
-        GANO,
         PERDIO,
     }
 
