@@ -32,6 +32,7 @@ class PlayingScreen extends Pantalla {
     private float vidaJugador;
     float barraVidaDimentions;
     private float score;
+    private final float AUMENTO_VELOCIDAD = .01f;
 
     //efectos sonido
     private Sound efectoGancho;
@@ -45,7 +46,6 @@ class PlayingScreen extends Pantalla {
     private Texture barraVidaBack;
     private Texture barraVida;
     private Texture texturaBtnPause;
-    private Texture texturaOjo;
 
 
     // Colores
@@ -55,17 +55,13 @@ class PlayingScreen extends Pantalla {
     //Objects
     private Background background;
     private Background backgroundD;
-    private Ojo ojo;
-
     //private  Player player;
-    private Estado estadoPersonaje;
+    public Estado estadoPersonaje;
     public  EstadoJuego  estadoJuego;
     private static int tempEstado;
     private Personaje personaje;
     private Color color;
     private Array<PowerUp> vidaConstante;
-
-    // HUD
     private Marcador marcador;
 
 
@@ -89,7 +85,6 @@ class PlayingScreen extends Pantalla {
         cargarTexturas();
         createBackground();
         iniciarPersonaje();
-        iniciarOjo();
         crearPowerUps();
         crearMarcador();
 
@@ -104,7 +99,16 @@ class PlayingScreen extends Pantalla {
         restarVida(delta);
         verificarColisiones();
         aumentarPuntos(delta);
+        aumentarVelocidad();
         verificarFinDeJuego();
+
+    }
+
+
+    private void aumentarVelocidad() {
+        if (score>0 && score % 5 == 0){
+            speed += AUMENTO_VELOCIDAD;
+        }
 
     }
 
@@ -163,12 +167,6 @@ class PlayingScreen extends Pantalla {
         vidaJugador = 100;
     }
 
-    private void iniciarOjo(){
-        float x = personaje.sprite.getX();
-        float y = personaje.sprite.getY();
-        ojo = new Ojo(texturaOjo, x+120, y);
-    }
-
     private void createBackground() {
         background = new Background(backTexture,0,0);
         backgroundD = new Background(backTexture,background.sprite.getX()+background.sprite.getWidth(),0);
@@ -184,17 +182,18 @@ class PlayingScreen extends Pantalla {
         barraVida = new Texture("lifeBar.png");
         barraVidaBack = new Texture("lifeBarBack.png");
         texturaBtnPause = new Texture("pause.png");
-        texturaOjo = new Texture("ojo.png");
     }
 
     @Override
     public void render(float delta) {
         //Update
-        if (estadoJuego == EstadoJuego.JUGANDO) {
+        if (estadoJuego == EstadoJuego.JUGANDO){
             update(delta);
+        }
+
+        if (estadoJuego == EstadoJuego.JUGANDO) {
             tempEstado += 1;
             estadoPersonaje = personaje.mover(estadoPersonaje, tempEstado);
-            ojo.moverOjo(personaje.sprite.getY());
         }
 
         borrarPantalla();
@@ -203,7 +202,6 @@ class PlayingScreen extends Pantalla {
         background.render(batch);
         backgroundD.render(batch);
         personaje.render(batch);
-        ojo.render(batch);
         batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
 
         if(vidaJugador >=0){
@@ -234,6 +232,7 @@ class PlayingScreen extends Pantalla {
 
     private void aumentarPuntos(float delta) {
         marcador.marcar(delta);
+        this.score = marcador.getScore();
     }
 
     private void restarVida(float delta) {
@@ -249,7 +248,7 @@ class PlayingScreen extends Pantalla {
 
     private void moveBackgound() {
 
-        if(background.sprite.getX()+background.sprite.getWidth() == 0){
+        if(background.sprite.getX()+background.sprite.getWidth() <= 0){
             background.sprite.setX(0);
         }
         background.sprite.setX(background.sprite.getX()-speed);
@@ -428,7 +427,7 @@ class PlayingScreen extends Pantalla {
         public EscenaGameOver (Viewport vista, SpriteBatch batch){
 
             super(vista, batch);
-
+            efectoCorrer.stop();
             Texture texturaFondoGameOver = new Texture("gameOver.jpg");
             Image imgGameOver = new Image(texturaFondoGameOver);
             imgGameOver.setPosition(0,0);
