@@ -30,4 +30,8 @@ class Marcador {
         String mesaje = (int)puntos + "";
         texto.render(bacth, mesaje,x,y);
     }
+
+    public int getScore() {
+        return (int)puntos;
+    }
 }

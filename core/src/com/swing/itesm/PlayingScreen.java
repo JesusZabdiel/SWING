@@ -32,6 +32,7 @@ class PlayingScreen extends Pantalla {
     private float vidaJugador;
     float barraVidaDimentions;
     private float score;
+    private final float AUMENTO_VELOCIDAD = .01f;
 
     //efectos sonido
     private Sound efectoGancho;
@@ -98,7 +99,16 @@ class PlayingScreen extends Pantalla {
         restarVida(delta);
         verificarColisiones();
         aumentarPuntos(delta);
+        aumentarVelocidad();
         verificarFinDeJuego();
+
+    }
+
+
+    private void aumentarVelocidad() {
+        if (score>0 && score % 5 == 0){
+            speed += AUMENTO_VELOCIDAD;
+        }
 
     }
 
@@ -179,7 +189,6 @@ class PlayingScreen extends Pantalla {
         //Update
         if (estadoJuego == EstadoJuego.JUGANDO){
             update(delta);
-
         }
 
         if (estadoJuego == EstadoJuego.JUGANDO) {
@@ -223,6 +232,7 @@ class PlayingScreen extends Pantalla {
 
     private void aumentarPuntos(float delta) {
         marcador.marcar(delta);
+        this.score = marcador.getScore();
     }
 
     private void restarVida(float delta) {
@@ -238,7 +248,7 @@ class PlayingScreen extends Pantalla {
 
     private void moveBackgound() {
 
-        if(background.sprite.getX()+background.sprite.getWidth() == 0){
+        if(background.sprite.getX()+background.sprite.getWidth() <= 0){
             background.sprite.setX(0);
         }
         background.sprite.setX(background.sprite.getX()-speed);
