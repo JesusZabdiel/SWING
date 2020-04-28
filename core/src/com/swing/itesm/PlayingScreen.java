@@ -27,6 +27,7 @@ class PlayingScreen extends Pantalla {
 
     //jugability
     public static float speed = 4;
+    public final float CONSTANT_VIDA = 4;
     public int vidaPorSegundo = 10;
     private int aumentoVida = 4;
     private float vidaJugador;
@@ -236,7 +237,7 @@ class PlayingScreen extends Pantalla {
     }
 
     private void restarVida(float delta) {
-        vidaJugador -= speed*delta;
+        vidaJugador -= CONSTANT_VIDA*delta;
         barraVidaDimentions = 350/100f * vidaJugador;
     }
 
