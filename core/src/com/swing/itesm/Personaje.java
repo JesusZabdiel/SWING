@@ -132,4 +132,8 @@ public class Personaje {
         color.draw(batch);
         sprite.draw(batch);
     }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
 }

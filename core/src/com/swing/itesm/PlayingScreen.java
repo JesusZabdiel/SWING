@@ -10,7 +10,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -31,6 +39,7 @@ class PlayingScreen extends Pantalla {
     public int vidaPorSegundo = 10;
     private int aumentoVida = 4;
     private float vidaJugador;
+    private final int N_OBSTACULOS = 6;
     float barraVidaDimentions;
     private float score;
     private final float AUMENTO_VELOCIDAD = .01f;
@@ -47,6 +56,7 @@ class PlayingScreen extends Pantalla {
     private Texture barraVida;
     private Texture texturaBtnPause;
     private Texture texturaOjo;
+    private Texture texturaObstaculo;
 
     //Background
     private Escenario escenario;
@@ -64,6 +74,7 @@ class PlayingScreen extends Pantalla {
     private Personaje personaje;
     private Color color;
     private Array<PowerUp> vidaConstante;
+    private Array<Obstaculo> obstaculos;
     private Marcador marcador;
     private Ojo ojo;
 
@@ -89,12 +100,21 @@ class PlayingScreen extends Pantalla {
         crearEscenario();
         iniciarPersonaje();
         crearOjo();
+        crearObstaculos();
         crearPowerUps();
         crearMarcador();
 
        Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
     }
+
+    private void crearObstaculos() {
+        obstaculos = new Array<>();
+        for (int i = 0; i<N_OBSTACULOS; i++){
+            obstaculos.add(new Obstaculo(texturaObstaculo));
+        }
+    }
+
 
     private void crearEscenario() {
         escenario = new Escenario(backGround1,backGround2,backGround3,backGround4,backGround5,backGround6);
@@ -104,12 +124,19 @@ class PlayingScreen extends Pantalla {
     public void update(float delta) {
         escenario.mover(speed);
         moverVidas();
+        moverObstaculos();
         restarVida(delta);
         verificarColisiones();
         aumentarPuntos(delta);
         aumentarVelocidad();
         verificarFinDeJuego();
 
+    }
+
+    private void moverObstaculos() {
+        for (Obstaculo obs: obstaculos) {
+            obs.mover();
+        }
     }
 
 
@@ -161,6 +188,7 @@ class PlayingScreen extends Pantalla {
         }
     }
 
+
     private void iniciarPersonaje() {
         color = azul;
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
@@ -193,6 +221,7 @@ class PlayingScreen extends Pantalla {
         barraVida = new Texture("lifeBar.png");
         barraVidaBack = new Texture("lifeBarBack.png");
         texturaBtnPause = new Texture("pause.png");
+        texturaObstaculo = new Texture("Obstaculo.png");
     }
 
     @Override
@@ -222,9 +251,11 @@ class PlayingScreen extends Pantalla {
         }
 
 
-
         for (PowerUp pUp: vidaConstante ) {
             pUp.render(batch);
+        }
+        for (Obstaculo obs: obstaculos ) {
+            obs.render(batch);
         }
 
         marcador.render(batch);
