@@ -40,14 +40,16 @@ class PlayingScreen extends Pantalla {
     private Sound efectoCorrer;
 
     //Textures
-    private Texture backTexture;
     private Texture texturaPersonaje;
     private Texture rellenoPersonaje;
     private Texture texturePowerUp;
     private Texture barraVidaBack;
     private Texture barraVida;
     private Texture texturaBtnPause;
+    private Texture texturaOjo;
 
+    //Background
+    private Texture backGround6, backGround5, backGround4, backGround3, backGround2, backGround1;
 
     // Colores
     private Color amarillo = new Color(0.9764f,0.7647f,0.2078f,1);
@@ -64,6 +66,7 @@ class PlayingScreen extends Pantalla {
     private Color color;
     private Array<PowerUp> vidaConstante;
     private Marcador marcador;
+    private Ojo ojo;
 
 
     //Pausa
@@ -86,6 +89,7 @@ class PlayingScreen extends Pantalla {
         cargarTexturas();
         createBackground();
         iniciarPersonaje();
+        crearOjo();
         crearPowerUps();
         crearMarcador();
 
@@ -125,7 +129,6 @@ class PlayingScreen extends Pantalla {
     private void crearMarcador() {
         this.marcador = new Marcador(Pantalla.ANCHO/2,Pantalla.ALTO-50);
         this.score = 0;
-
     }
 
     private void verificarColisiones() {
@@ -168,15 +171,25 @@ class PlayingScreen extends Pantalla {
         vidaJugador = 100;
     }
 
+    private void crearOjo(){
+        ojo = new Ojo(texturaOjo, 0 ,0);
+    }
+
     private void createBackground() {
-        background = new Background(backTexture,0,0);
-        backgroundD = new Background(backTexture,background.sprite.getX()+background.sprite.getWidth(),0);
+        background = new Background(backGround2,0,0);
+        backgroundD = new Background(backGround2,background.sprite.getX()+background.sprite.getWidth(),0);
 
     }
     
     private void cargarTexturas() {
+        backGround1 = new Texture("layers/1.png");
+        backGround2 = new Texture("layers/2.png");
+        backGround3 = new Texture("layers/3.png");
+        backGround4 = new Texture("layers/4.png");
+        backGround5 = new Texture("layers/5.png");
+        backGround6 = new Texture("layers/6.png");
 
-        backTexture = new Texture("PantallaJuego.jpg");
+        texturaOjo = new Texture("ojo.png");
         texturaPersonaje = new Texture("ninjaTempCont.png");
         rellenoPersonaje = new Texture("ninjaTempFill.png");
         texturePowerUp = new Texture("Life.png");
@@ -195,6 +208,7 @@ class PlayingScreen extends Pantalla {
         if (estadoJuego == EstadoJuego.JUGANDO) {
             tempEstado += 1;
             estadoPersonaje = personaje.mover(estadoPersonaje, tempEstado);
+            ojo.moverOjo(personaje.sprite.getY());
         }
 
         borrarPantalla();
@@ -203,6 +217,7 @@ class PlayingScreen extends Pantalla {
         background.render(batch);
         backgroundD.render(batch);
         personaje.render(batch);
+        ojo.render(batch);
         batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
 
         if(vidaJugador >=0){
