@@ -49,6 +49,7 @@ class PlayingScreen extends Pantalla {
     private Texture texturaOjo;
 
     //Background
+    private Escenario escenario;
     private Texture backGround6, backGround5, backGround4, backGround3, backGround2, backGround1;
 
     // Colores
@@ -56,8 +57,6 @@ class PlayingScreen extends Pantalla {
     private Color azul = new Color(0.1529f,0.3647f,1,1);
 
     //Objects
-    private Background background;
-    private Background backgroundD;
     //private  Player player;
     public Estado estadoPersonaje;
     public  EstadoJuego  estadoJuego;
@@ -87,7 +86,7 @@ class PlayingScreen extends Pantalla {
     public void show() {
         estadoJuego = EstadoJuego.JUGANDO;
         cargarTexturas();
-        createBackground();
+        crearEscenario();
         iniciarPersonaje();
         crearOjo();
         crearPowerUps();
@@ -97,9 +96,13 @@ class PlayingScreen extends Pantalla {
 
     }
 
+    private void crearEscenario() {
+        escenario = new Escenario(backGround1,backGround2,backGround3,backGround4,backGround5,backGround6);
+    }
+
 
     public void update(float delta) {
-        moveBackgound();
+        escenario.mover(speed);
         moverVidas();
         restarVida(delta);
         verificarColisiones();
@@ -174,12 +177,6 @@ class PlayingScreen extends Pantalla {
     private void crearOjo(){
         ojo = new Ojo(texturaOjo, 0 ,0);
     }
-
-    private void createBackground() {
-        background = new Background(backGround2,0,0);
-        backgroundD = new Background(backGround2,background.sprite.getX()+background.sprite.getWidth(),0);
-
-    }
     
     private void cargarTexturas() {
         backGround1 = new Texture("layers/1.png");
@@ -214,8 +211,7 @@ class PlayingScreen extends Pantalla {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        background.render(batch);
-        backgroundD.render(batch);
+        escenario.render(batch);
         personaje.render(batch);
         ojo.render(batch);
         batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
@@ -260,16 +256,6 @@ class PlayingScreen extends Pantalla {
         for (PowerUp pUp: vidaConstante ) {
             pUp.mover();
         }
-    }
-
-    private void moveBackgound() {
-
-        if(background.sprite.getX()+background.sprite.getWidth() <= 0){
-            background.sprite.setX(0);
-        }
-        background.sprite.setX(background.sprite.getX()-speed);
-        backgroundD.sprite.setX(background.sprite.getX()+background.sprite.getWidth());
-
     }
 
 
