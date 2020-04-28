@@ -23,7 +23,6 @@ public class Escenario {
         backgrounds[2] = background4;
         backgrounds[1] = background5;
         backgrounds[0] = background6;
-
     }
 
     public void mover(float velocidad) {
