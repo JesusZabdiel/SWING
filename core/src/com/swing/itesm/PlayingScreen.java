@@ -118,6 +118,7 @@ class PlayingScreen extends Pantalla {
 
     private void crearEscenario() {
         escenario = new Escenario(backGround1,backGround2,backGround3,backGround4,backGround5,backGround6);
+        speed = 4;
     }
 
 
@@ -143,6 +144,10 @@ class PlayingScreen extends Pantalla {
     private void aumentarVelocidad() {
         if (score>0 && score % 5 == 0){
             speed += AUMENTO_VELOCIDAD;
+        }
+
+        if ((score > 0 && score % 10 == 0) && vidaConstante.size >= 5){
+            vidaConstante.pop();
         }
 
     }
