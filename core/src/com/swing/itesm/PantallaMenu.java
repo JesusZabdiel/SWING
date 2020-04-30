@@ -15,7 +15,9 @@ class PantallaMenu extends Pantalla {
 
     private final Juego juego;
 
-    private Texture texturaFondo;
+    //private Texture texturaFondo;
+
+    private Texture backGround6, backGround5, backGround4, backGround3, backGround2, backGround1;
 
     // Menu
     private Stage escenaMenu;  // botones,....
@@ -27,10 +29,19 @@ class PantallaMenu extends Pantalla {
     @Override
     public void show() {
 
-        texturaFondo = new Texture("fondoCueva.jpg");
+        cargarTexturas();
         crearMenu();
         Gdx.input.setInputProcessor(escenaMenu);
 
+    }
+
+    private void cargarTexturas() {
+        backGround1 = new Texture("layers/1.png");
+        backGround2 = new Texture("layers/2.png");
+        backGround3 = new Texture("layers/3.png");
+        backGround4 = new Texture("layers/4.png");
+        backGround5 = new Texture("layers/5.png");
+        backGround6 = new Texture("layers/6.png");
     }
 
     private void crearMenu() {
@@ -125,7 +136,12 @@ class PantallaMenu extends Pantalla {
         batch.setProjectionMatrix(camara.combined);
 
         batch.begin();
-        batch.draw(texturaFondo,0,0);
+        batch.draw(backGround6,0,0);
+        batch.draw(backGround5,0,0);
+        batch.draw(backGround4,0,0);
+        batch.draw(backGround3,0,0);
+        batch.draw(backGround2,0,0);
+        batch.draw(backGround1,0,0);
         batch.end();
 
         escenaMenu.draw();
@@ -155,7 +171,13 @@ class PantallaMenu extends Pantalla {
     @Override
     public void dispose() {
 
-        texturaFondo.dispose();
+      backGround6.dispose();
+        backGround5.dispose();
+        backGround4.dispose();
+        backGround3.dispose();
+        backGround2.dispose();
+        backGround1.dispose();
+
 
     }
 
