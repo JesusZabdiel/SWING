@@ -5,20 +5,11 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -201,7 +192,7 @@ class PlayingScreen extends Pantalla {
         manager2.load("correr.mp3",Sound.class);
         manager2.finishLoading();
         efectoCorrer=manager2.get("correr.mp3");
-        estadoPersonaje = Estado.CORRIENDO_ABAJO;
+        estadoPersonaje = Estado.CORRIENDO;
         efectoCorrer.loop();
         vidaJugador = 100;
     }
@@ -237,6 +228,7 @@ class PlayingScreen extends Pantalla {
 
         if (estadoJuego == EstadoJuego.JUGANDO) {
             ojo.moverOjo(personaje.sprite.getY());
+            personaje.moverPersonaje();
         }
 
         borrarPantalla();
@@ -309,11 +301,11 @@ class PlayingScreen extends Pantalla {
 
     public enum Estado{
         IDLE,
-        CORRIENDO_ABAJO,
+        CORRIENDO,
         SALTANDO,
+        CAYENDO,
+        SUBIENDO,
         BAJANDO,
-        GANCHO_ARRIBA,
-        GANCHO_ABAJO,
 
     }
 
@@ -323,7 +315,7 @@ class PlayingScreen extends Pantalla {
         @Override
         public boolean keyDown(int keycode) {
             if (estadoJuego == EstadoJuego.JUGANDO) {
-                if (estadoPersonaje == Estado.CORRIENDO_ABAJO) {
+                if (estadoPersonaje == Estado.CORRIENDO) {
                     estadoPersonaje = Estado.SALTANDO;
                     return true;
                 }
@@ -343,19 +335,19 @@ class PlayingScreen extends Pantalla {
 
             if (estadoJuego == EstadoJuego.JUGANDO) {
 
-                if (estadoPersonaje == Estado.CORRIENDO_ABAJO || estadoPersonaje == Estado.GANCHO_ABAJO || estadoPersonaje == Estado.SALTANDO || estadoPersonaje == Estado.BAJANDO) {
+                if (estadoPersonaje == Estado.CORRIENDO || estadoPersonaje == Estado.BAJANDO || estadoPersonaje == Estado.SALTANDO || estadoPersonaje == Estado.CAYENDO) {
                     AssetManager manager=new AssetManager();
                     manager.load("gancho.wav",Sound.class);
                     manager.finishLoading();
                     efectoGancho=manager.get("gancho.wav");
-                    estadoPersonaje = Estado.GANCHO_ARRIBA;
+                    estadoPersonaje = Estado.SUBIENDO;
                     efectoCorrer.pause();
                     efectoGancho.play();
                     efectoCorrer.loop();
                     return true;
                 }
-                if (estadoPersonaje == Estado.GANCHO_ARRIBA) {
-                    estadoPersonaje = Estado.GANCHO_ABAJO;
+                if (estadoPersonaje == Estado.SUBIENDO) {
+                    estadoPersonaje = Estado.BAJANDO;
                     return true;
                 }
             }
@@ -377,7 +369,6 @@ class PlayingScreen extends Pantalla {
                 estadoJuego = EstadoJuego.PAUSADO;
                 escenaPausa = new EscenaPausa(vista, batch);
                 Gdx.input.setInputProcessor(escenaPausa);
-                tempEstado=0;
 
             }
             return true;

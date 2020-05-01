@@ -159,8 +159,7 @@ public class Personaje {
         if (estado == Estado.IDLE){
             color.draw(batch);
             sprite.draw(batch);
-        }else if (estado == Estado.CORRIENDO_ABAJO){
-            timerAnimacion+= Gdx.graphics.getDeltaTime();
+        }else if (estado == Estado.CORRIENDO){
             TextureRegion regionColor = (TextureRegion)animacionColor.getKeyFrame(timerAnimacion);
             TextureRegion regionTrazo = (TextureRegion)animacionTrazo.getKeyFrame(timerAnimacion);
             batch.draw(regionColor,x,y);
@@ -172,19 +171,19 @@ public class Personaje {
             color.draw(batch);
             sprite.draw(batch);
 
-        }else if (estado==Estado.BAJANDO){
+        }else if (estado==Estado.CAYENDO){
             color.setRegion(colorPersonaje[1][1]);
             sprite.setRegion(texturaPersonaje[1][1]);
 
             color.draw(batch);
             sprite.draw(batch);
-        }else if(estado==Estado.GANCHO_ARRIBA){
+        }else if(estado==Estado.SUBIENDO){
             color.setRegion(colorPersonaje[1][2]);
             sprite.setRegion(texturaPersonaje[1][2]);
 
             color.draw(batch);
             sprite.draw(batch);
-        }else if (estado==Estado.GANCHO_ABAJO){
+        }else if (estado==Estado.BAJANDO){
             color.setRegion(colorPersonaje[1][3]);
             sprite.setRegion(texturaPersonaje[1][3]);
 
@@ -195,5 +194,9 @@ public class Personaje {
 
     public Sprite getSprite() {
         return sprite;
+    }
+
+    public void moverPersonaje() {
+        timerAnimacion+= Gdx.graphics.getDeltaTime();
     }
 }
