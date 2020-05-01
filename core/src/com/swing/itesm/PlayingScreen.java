@@ -70,7 +70,7 @@ class PlayingScreen extends Pantalla {
     //private  Player player;
     public Estado estadoPersonaje;
     public  EstadoJuego  estadoJuego;
-    private static int tempEstado;
+    private int tempEstado;
     private Personaje personaje;
     private Color color;
     private Array<PowerUp> vidaConstante;
@@ -201,7 +201,6 @@ class PlayingScreen extends Pantalla {
         manager2.load("correr.mp3",Sound.class);
         manager2.finishLoading();
         efectoCorrer=manager2.get("correr.mp3");
-        resetTempEstado();
         estadoPersonaje = Estado.CORRIENDO_ABAJO;
         efectoCorrer.loop();
         vidaJugador = 100;
@@ -220,8 +219,8 @@ class PlayingScreen extends Pantalla {
         backGround6 = new Texture("layers/6.png");
 
         texturaOjo = new Texture("ojo.png");
-        texturaPersonaje = new Texture("ninjaTempCont.png");
-        rellenoPersonaje = new Texture("ninjaTempFill.png");
+        texturaPersonaje = new Texture("ninjaTrazo.png");
+        rellenoPersonaje = new Texture("ninjaRelleno.png");
         texturePowerUp = new Texture("Life.png");
         barraVida = new Texture("lifeBar.png");
         barraVidaBack = new Texture("lifeBarBack.png");
@@ -237,8 +236,6 @@ class PlayingScreen extends Pantalla {
         }
 
         if (estadoJuego == EstadoJuego.JUGANDO) {
-            tempEstado += 1;
-            estadoPersonaje = personaje.mover(estadoPersonaje, tempEstado);
             ojo.moverOjo(personaje.sprite.getY());
         }
 
@@ -246,7 +243,7 @@ class PlayingScreen extends Pantalla {
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         escenario.render(batch);
-        personaje.render(batch);
+        personaje.render(batch,estadoPersonaje);
         ojo.render(batch);
         batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
 
@@ -310,10 +307,8 @@ class PlayingScreen extends Pantalla {
 
     }
 
-    public static void resetTempEstado() {
-        tempEstado = 0;
-    }
     public enum Estado{
+        IDLE,
         CORRIENDO_ABAJO,
         SALTANDO,
         BAJANDO,
@@ -330,7 +325,6 @@ class PlayingScreen extends Pantalla {
             if (estadoJuego == EstadoJuego.JUGANDO) {
                 if (estadoPersonaje == Estado.CORRIENDO_ABAJO) {
                     estadoPersonaje = Estado.SALTANDO;
-                    resetTempEstado();
                     return true;
                 }
             }else {
@@ -357,13 +351,11 @@ class PlayingScreen extends Pantalla {
                     estadoPersonaje = Estado.GANCHO_ARRIBA;
                     efectoCorrer.pause();
                     efectoGancho.play();
-                    resetTempEstado();
                     efectoCorrer.loop();
                     return true;
                 }
                 if (estadoPersonaje == Estado.GANCHO_ARRIBA) {
                     estadoPersonaje = Estado.GANCHO_ABAJO;
-                    resetTempEstado();
                     return true;
                 }
             }

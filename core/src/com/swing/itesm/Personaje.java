@@ -1,39 +1,64 @@
 package com.swing.itesm;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.swing.itesm.PlayingScreen.Estado;
 
 
 public class Personaje {
+    private Animation animacionTrazo;
+    private Animation animacionColor;
     private Sprite color;
-    private int temp;
     public Sprite sprite;
+    private TextureRegion[][] texturaPersonaje;
+    private TextureRegion[][] colorPersonaje;
+    private float timerAnimacion;
     private int velocidad = 30;
     private int aceleracion = 2;
     private final float fakeRoof = Juego.ALTO-15;
     private final float floor = 70;
+    private Estado estado = Estado.IDLE;
+    private float x, y;
+
 
     public Personaje(Texture textura, Texture relleno, Color chroma){
-        temp = 0;
-        sprite = new Sprite(textura,31,23,118,157);
-        color = new Sprite(relleno, 31,23,118,157);
-        sprite.setBounds(60,50, 150, 150);
-        color.setBounds(60,50, 150, 150);
+        TextureRegion regionTrazo = new TextureRegion(textura);
+        TextureRegion regionColor = new TextureRegion(relleno);
 
+        texturaPersonaje = regionTrazo.split(150,190);
+        colorPersonaje = regionColor.split(150,190);
 
+        animacionTrazo = new Animation(0.08f, texturaPersonaje[0][1],texturaPersonaje[0][2],texturaPersonaje[0][3],
+                texturaPersonaje[0][4],texturaPersonaje[0][5],texturaPersonaje[0][6],texturaPersonaje[0][7],texturaPersonaje[0][8]);
+        animacionColor = new Animation(0.08f, colorPersonaje[0][1],colorPersonaje[0][2],colorPersonaje[0][3],
+                colorPersonaje[0][4],colorPersonaje[0][5],colorPersonaje[0][6],colorPersonaje[0][7],colorPersonaje[0][8]);
+        animacionTrazo.setPlayMode(Animation.PlayMode.LOOP);
+        animacionColor.setPlayMode(Animation.PlayMode.LOOP);
+        timerAnimacion = 0;
+
+        sprite = new Sprite(texturaPersonaje[0][0]);
+        color = new Sprite(colorPersonaje[0][0]);
         color.setColor(chroma);
+
+        this.x=50;
+        this.y=floor;
+        sprite.setPosition(x,y);
+        color.setPosition(x,y);
+
     }
 
-    public Estado mover(Estado estado, int tempEstado){
-        temp = tempEstado/3;
+    /*public Estado mover(Estado estado, int tempEstado){
+        timerAnimacion = tempEstado/3;
 
-        switch (estado){
+        /*switch (estado){
             case CORRIENDO_ABAJO:
-                int runTemp = temp%8;
+                int runTemp = timerAnimacion %8;
                 if (runTemp==0) {
                     color.setRegion(226, 23, 140, 157);
                     sprite.setRegion(226, 23, 140, 157);
@@ -74,10 +99,10 @@ public class Personaje {
                 color.setRegion(31, 218, 122, 162);
                 sprite.setRegion(31, 218, 122, 162);
 
-                sprite.setY((velocidad*temp-(aceleracion*(float)(Math.pow(temp,2)))/2)+floor);
-                color.setY((velocidad*temp-(aceleracion*(float)(Math.pow(temp,2)))/2)+floor);
+                sprite.setY((velocidad* timerAnimacion -(aceleracion*(float)(Math.pow(timerAnimacion,2)))/2)+floor);
+                color.setY((velocidad* timerAnimacion -(aceleracion*(float)(Math.pow(timerAnimacion,2)))/2)+floor);
 
-                if(velocidad*temp<(aceleracion*(float)(Math.pow(temp,2)))) {
+                if(velocidad* timerAnimacion <(aceleracion*(float)(Math.pow(timerAnimacion,2)))) {
                     color.setRegion(226, 218, 127, 162);
                     sprite.setRegion(226, 218, 127, 162);
                 } if (sprite.getY()<floor) {
@@ -89,8 +114,8 @@ public class Personaje {
                 color.setRegion(226, 218, 127, 162);
                 sprite.setRegion(226, 218, 127, 162);
 
-                sprite.setY(sprite.getY()-(aceleracion*(float)(Math.pow(temp,2)))/20);
-                color.setY(color.getY()-(aceleracion*(float)(Math.pow(temp,2)))/20);
+                sprite.setY(sprite.getY()-(aceleracion*(float)(Math.pow(timerAnimacion,2)))/20);
+                color.setY(color.getY()-(aceleracion*(float)(Math.pow(timerAnimacion,2)))/20);
 
                 if(sprite.getY()<=floor) {
                     PlayingScreen.resetTempEstado();
@@ -101,8 +126,8 @@ public class Personaje {
                 color.setRegion(626, 218, 122, 162);
                 sprite.setRegion(626, 218, 122, 162);
 
-                color.setY(sprite.getY()-velocidad*temp/10);
-                sprite.setY(sprite.getY()-velocidad*temp/10);
+                color.setY(sprite.getY()-velocidad* timerAnimacion /10);
+                sprite.setY(sprite.getY()-velocidad* timerAnimacion /10);
 
                 if (sprite.getY()<=floor) {
                     PlayingScreen.resetTempEstado();
@@ -113,8 +138,8 @@ public class Personaje {
                 color.setRegion(429, 218, 127, 162);
                 sprite.setRegion(429, 218, 127, 162);
 
-                color.setY(color.getY()+velocidad*temp/10);
-                sprite.setY(sprite.getY()+velocidad*temp/10);
+                color.setY(color.getY()+velocidad* timerAnimacion /10);
+                sprite.setY(sprite.getY()+velocidad* timerAnimacion /10);
 
                 if (sprite.getY()+sprite.getHeight()>fakeRoof){
                     PlayingScreen.resetTempEstado();
@@ -128,10 +153,44 @@ public class Personaje {
                 return Estado.CORRIENDO_ABAJO;
 
         }
-    }
-    public void render(SpriteBatch batch){
-        color.draw(batch);
-        sprite.draw(batch);
+    }*/
+
+    public void render(SpriteBatch batch, Estado estado){
+        if (estado == Estado.IDLE){
+            color.draw(batch);
+            sprite.draw(batch);
+        }else if (estado == Estado.CORRIENDO_ABAJO){
+            timerAnimacion+= Gdx.graphics.getDeltaTime();
+            TextureRegion regionColor = (TextureRegion)animacionColor.getKeyFrame(timerAnimacion);
+            TextureRegion regionTrazo = (TextureRegion)animacionTrazo.getKeyFrame(timerAnimacion);
+            batch.draw(regionColor,x,y);
+            batch.draw(regionTrazo,x,y);
+        }else if (estado==Estado.SALTANDO) {
+            color.setRegion(colorPersonaje[1][0]);
+            sprite.setRegion(texturaPersonaje[1][0]);
+
+            color.draw(batch);
+            sprite.draw(batch);
+
+        }else if (estado==Estado.BAJANDO){
+            color.setRegion(colorPersonaje[1][1]);
+            sprite.setRegion(texturaPersonaje[1][1]);
+
+            color.draw(batch);
+            sprite.draw(batch);
+        }else if(estado==Estado.GANCHO_ARRIBA){
+            color.setRegion(colorPersonaje[1][2]);
+            sprite.setRegion(texturaPersonaje[1][2]);
+
+            color.draw(batch);
+            sprite.draw(batch);
+        }else if (estado==Estado.GANCHO_ABAJO){
+            color.setRegion(colorPersonaje[1][3]);
+            sprite.setRegion(texturaPersonaje[1][3]);
+
+            color.draw(batch);
+            sprite.draw(batch);
+        }
     }
 
     public Sprite getSprite() {
