@@ -162,8 +162,10 @@ public class Personaje {
         }else if (estado == Estado.CORRIENDO){
             TextureRegion regionColor = (TextureRegion)animacionColor.getKeyFrame(timerAnimacion);
             TextureRegion regionTrazo = (TextureRegion)animacionTrazo.getKeyFrame(timerAnimacion);
-            batch.draw(regionColor,x,y);
-            batch.draw(regionTrazo,x,y);
+            color.setRegion(regionColor);
+            sprite.setRegion(regionTrazo);
+            color.draw(batch);
+            sprite.draw(batch);
         }else if (estado==Estado.SALTANDO) {
             color.setRegion(colorPersonaje[1][0]);
             sprite.setRegion(texturaPersonaje[1][0]);
