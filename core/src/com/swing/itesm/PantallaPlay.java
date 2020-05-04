@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-class PlayingScreen extends Pantalla {
+class PantallaPlay extends Pantalla {
 
 
     private final Juego juego;
@@ -78,7 +78,7 @@ class PlayingScreen extends Pantalla {
 
 
 
-    public PlayingScreen(Juego juego) {
+    public PantallaPlay(Juego juego) {
         this.juego = juego;
     }
 
@@ -481,7 +481,7 @@ class PlayingScreen extends Pantalla {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
-                    juego.setScreen(new PlayingScreen(juego));
+                    juego.setScreen(new PantallaPlay(juego));
 
                 }
             });

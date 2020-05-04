@@ -21,7 +21,7 @@ public class PowerUp {
 
     public void mover(){
         if(this.sprite.getX() > 0 - this.sprite.getWidth()){
-            this.sprite.setX(sprite.getX() - PlayingScreen.speed);
+            this.sprite.setX(sprite.getX() - PantallaPlay.speed);
         }else{
             this.generarPosicionPowerUp();
         }

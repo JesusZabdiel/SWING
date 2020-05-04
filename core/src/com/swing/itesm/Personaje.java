@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.swing.itesm.PlayingScreen.Estado;
+import com.swing.itesm.PantallaPlay.Estado;
 
 
 public class Personaje {

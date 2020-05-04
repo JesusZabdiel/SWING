@@ -87,7 +87,7 @@ public class PantallaCargando implements Screen {
 
     private void actualizarCarga() {
         if (assetManager.update()){
-            juego.setScreen(new PlayingScreen(juego));
+            juego.setScreen(new PantallaPlay(juego));
         }else {
             float avance = assetManager.getProgress();
         }
