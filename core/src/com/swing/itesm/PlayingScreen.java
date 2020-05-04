@@ -204,8 +204,6 @@ class PlayingScreen extends Pantalla {
     private void cargarTexturas() {
         AssetManager manager = juego.getAssetManager();
         //El asset manager no carga la textura ojo en pantalla cargando
-        manager.load("ojo.png", Texture.class);
-        manager.finishLoading();
 
         backGround1 = manager.get("layers/1.png");
         backGround2 = manager.get("layers/2.png");

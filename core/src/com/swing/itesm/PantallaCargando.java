@@ -45,8 +45,8 @@ public class PantallaCargando implements Screen {
         assetManager.finishLoading();
         texturaCargando=assetManager.get("cargando.png");
         spriteCargando = new Sprite(texturaCargando);
-        spriteCargando.setPosition(1280/2-spriteCargando.getWidth()/2,
-                720/2-spriteCargando.getHeight()/2);
+        spriteCargando.setPosition(1280/4*3-spriteCargando.getWidth()/2,
+                720/3-spriteCargando.getHeight()/2);
         //Ahora inicia la carga de los recursos de la siguiente pantalla
         cargarRecursos();
     }
@@ -67,7 +67,6 @@ public class PantallaCargando implements Screen {
         assetManager.load("lifeBarBack.png", Texture.class);
         assetManager.load("pause.png", Texture.class);
         assetManager.load("Obstaculo.png", Texture.class);
-
         assetManager.finishLoading();
 
     }
@@ -75,10 +74,10 @@ public class PantallaCargando implements Screen {
     @Override
     public void render(float delta) {
         actualizarCarga();
-        Gdx.gl.glClearColor(1,1,1,1);
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        spriteCargando.setRotation(spriteCargando.getRotation()-30);//Animación
+        spriteCargando.setRotation(spriteCargando.getRotation()-10);//Animación
         batch.setProjectionMatrix(camara.combined);
 
         batch.begin();
@@ -116,8 +115,8 @@ public class PantallaCargando implements Screen {
 
     @Override
     public void dispose() {
-        texturaCargando.dispose();
-        assetManager.unload("ojo.png");
         assetManager.unload("cargando.png");
+        texturaCargando.dispose();
+
     }
 }
