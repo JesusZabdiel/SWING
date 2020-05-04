@@ -69,6 +69,9 @@ class PantallaPlay extends Pantalla {
     private Marcador marcador;
     private Ojo ojo;
 
+    //AssetManager
+    private AssetManager manager;
+
 
     //Pausa
     private EscenaPausa escenaPausa;
@@ -87,6 +90,7 @@ class PantallaPlay extends Pantalla {
     @Override
     public void show() {
         estadoJuego = EstadoJuego.JUGANDO;
+        manager = juego.getAssetManager();
         cargarTexturas();
         crearEscenario();
         iniciarPersonaje();
@@ -198,7 +202,6 @@ class PantallaPlay extends Pantalla {
     }
     
     private void cargarTexturas() {
-        AssetManager manager = juego.getAssetManager();
         //El asset manager no carga la textura ojo en pantalla cargando
 
         //Sonido
@@ -300,6 +303,22 @@ class PantallaPlay extends Pantalla {
 
     @Override
     public void dispose() {
+        manager.unload("correr.mp3");
+        manager.unload("gancho.wav");
+        manager.unload("layers/1.png");
+        manager.unload("layers/2.png");
+        manager.unload("layers/3.png");
+        manager.unload("layers/4.png");
+        manager.unload("layers/5.png");
+        manager.unload("layers/6.png");
+        manager.unload("ninjaTrazo.png");
+        manager.unload("ninjaRelleno.png");
+        manager.unload("Life.png");
+        manager.unload("lifeBar.png");
+        manager.unload("lifeBarBack.png");
+        manager.unload("pause.png");
+        manager.unload("Obstaculo.png");
+        manager.unload("ojo.png");
 
     }
 
