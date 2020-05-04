@@ -442,8 +442,18 @@ class PantallaPlay extends Pantalla {
 
             btnJugar.setPosition(ANCHO/2-btnJugar.getWidth()/2,2*ALTO/3);
 
+            // Boton Menu
+            Texture texturaBtnMenu = new Texture("button_menu.png");
+            TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
+
+            ImageButton btnMenu = new ImageButton(trdMenu);
+
+            btnMenu.setPosition(ANCHO/2-btnJugar.getWidth()/2,2*ALTO/3-234);
+
+
             //this.addActor(imgPausa);
             this.addActor(btnJugar);
+            this.addActor(btnMenu);
 
             //Listener
             btnJugar.addListener(new ClickListener(){
@@ -453,6 +463,15 @@ class PantallaPlay extends Pantalla {
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
                     efectoCorrer.loop();
+                }
+            });
+            //Listener Menu
+            btnMenu.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    juego.setScreen(new PantallaMenu(juego));
+
                 }
             });
 
