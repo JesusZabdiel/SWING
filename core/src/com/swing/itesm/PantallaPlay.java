@@ -64,7 +64,7 @@ class PantallaPlay extends Pantalla {
     private int tempEstado;
     private Personaje personaje;
     private Color color;
-    private Array<PowerUp> vidaConstante;
+    private Array<Vida> vidaConstante;
     private Array<Obstaculo> obstaculos;
     private Marcador marcador;
     private Ojo ojo;
@@ -163,11 +163,11 @@ class PantallaPlay extends Pantalla {
 
     private void verificarColisiones() {
         for (int i = vidaConstante.size-1; i >= 0; i--) {
-            PowerUp pUp = vidaConstante.get(i);
-            Rectangle rectpUp = pUp.sprite.getBoundingRectangle();
+            Vida vida = vidaConstante.get(i);
+            Rectangle rectpUp = vida.sprite.getBoundingRectangle();
             Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
             if (rectPlayer.overlaps(rectpUp)) {
-                pUp.generarPosicionPowerUp();
+                vida.generarPosicionItem();
                 if (vidaJugador <=100 -aumentoVida ){
                     aumentarVida();
                 }
@@ -184,7 +184,7 @@ class PantallaPlay extends Pantalla {
     private void crearPowerUps() {
         vidaConstante = new Array<>();
         for (int i = 0; i<vidaPorSegundo; i++){
-            vidaConstante.add(new PowerUp(texturePowerUp));
+            vidaConstante.add(new Vida(texturePowerUp));
         }
     }
 
@@ -252,8 +252,8 @@ class PantallaPlay extends Pantalla {
         }
 
 
-        for (PowerUp pUp: vidaConstante ) {
-            pUp.render(batch);
+        for (Vida vida: vidaConstante ) {
+            vida.render(batch);
         }
         for (Obstaculo obs: obstaculos ) {
             obs.render(batch);
@@ -285,7 +285,7 @@ class PantallaPlay extends Pantalla {
     }
 
     private void moverVidas() {
-        for (PowerUp pUp: vidaConstante ) {
+        for (Vida pUp: vidaConstante ) {
             pUp.mover();
         }
     }

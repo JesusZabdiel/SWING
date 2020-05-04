@@ -4,14 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class PowerUp {
+public abstract class Item {
+    protected int probabilidadItem;
+    public Sprite sprite;
 
-    private static final int PROBABILIDAD_POWER_UP = 60;
-    Sprite sprite;
-
-    public PowerUp(Texture textura) {
+    public Item(Texture textura) {
         sprite = new Sprite(textura);
-        generarPosicionPowerUp();
+        generarPosicionItem();
     }
 
 
@@ -23,15 +22,14 @@ public class PowerUp {
         if(this.sprite.getX() > 0 - this.sprite.getWidth()){
             this.sprite.setX(sprite.getX() - PantallaPlay.speed);
         }else{
-            this.generarPosicionPowerUp();
+            this.generarPosicionItem();
         }
 
     }
 
-    public void generarPosicionPowerUp() {
+    public void generarPosicionItem() {
         float xPos = (int)(((Math.random()* Pantalla.ANCHO-sprite.getWidth())+sprite.getWidth())+Pantalla.ANCHO);
         float yPos = (int)(Math.random()* (Pantalla.ALTO-200))+70;
         this.sprite.setPosition(xPos,yPos);
     }
-
 }
