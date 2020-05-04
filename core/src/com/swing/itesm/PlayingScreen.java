@@ -202,21 +202,26 @@ class PlayingScreen extends Pantalla {
     }
     
     private void cargarTexturas() {
-        backGround1 = new Texture("layers/1.png");
-        backGround2 = new Texture("layers/2.png");
-        backGround3 = new Texture("layers/3.png");
-        backGround4 = new Texture("layers/4.png");
-        backGround5 = new Texture("layers/5.png");
-        backGround6 = new Texture("layers/6.png");
+        AssetManager manager = juego.getAssetManager();
+        //El asset manager no carga la textura ojo en pantalla cargando
+        manager.load("ojo.png", Texture.class);
+        manager.finishLoading();
 
-        texturaOjo = new Texture("ojo.png");
-        texturaPersonaje = new Texture("ninjaTrazo.png");
-        rellenoPersonaje = new Texture("ninjaRelleno.png");
-        texturePowerUp = new Texture("Life.png");
-        barraVida = new Texture("lifeBar.png");
-        barraVidaBack = new Texture("lifeBarBack.png");
-        texturaBtnPause = new Texture("pause.png");
-        texturaObstaculo = new Texture("Obstaculo.png");
+        backGround1 = manager.get("layers/1.png");
+        backGround2 = manager.get("layers/2.png");
+        backGround3 = manager.get("layers/3.png");
+        backGround4 = manager.get("layers/4.png");
+        backGround5 = manager.get("layers/5.png");
+        backGround6 = manager.get("layers/6.png");
+        texturaPersonaje = manager.get("ninjaTrazo.png");
+        rellenoPersonaje = manager.get("ninjaRelleno.png");
+        texturePowerUp = manager.get("Life.png");
+        barraVida = manager.get("lifeBar.png");
+        barraVidaBack = manager.get("lifeBarBack.png");
+        texturaBtnPause = manager.get("pause.png");
+        texturaObstaculo = manager.get("Obstaculo.png");
+        texturaOjo = manager.get("ojo.png");
+
     }
 
     @Override

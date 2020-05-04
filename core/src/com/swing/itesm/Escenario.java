@@ -2,7 +2,6 @@ package com.swing.itesm;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
 
 public class Escenario {
     private Background background1, background2, background3, background4, background5, background6;

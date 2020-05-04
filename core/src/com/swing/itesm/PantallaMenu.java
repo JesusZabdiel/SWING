@@ -3,6 +3,7 @@ package com.swing.itesm;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,18 +18,21 @@ class PantallaMenu extends Pantalla {
 
     //private Texture texturaFondo;
 
-    private Texture backGround6, backGround5, backGround4, backGround3, backGround2, backGround1;
+    private Texture backGround6, backGround5, backGround4, backGround3, backGround2, backGround1,
+            texturaBtnPlay, texturaBtnOptions, texturaBtnShop, texturaBtnCustomize;
 
     // Menu
     private Stage escenaMenu;  // botones,....
+    //Administra la carga de assets
+    private  final AssetManager assetManager;
 
     public PantallaMenu(Juego juego) {
+        assetManager = new AssetManager();
         this.juego = juego;
     }
 
     @Override
     public void show() {
-
         cargarTexturas();
         crearMenu();
         Gdx.input.setInputProcessor(escenaMenu);
@@ -36,20 +40,37 @@ class PantallaMenu extends Pantalla {
     }
 
     private void cargarTexturas() {
-        backGround1 = new Texture("layers/1.png");
-        backGround2 = new Texture("layers/2.png");
-        backGround3 = new Texture("layers/3.png");
-        backGround4 = new Texture("layers/4.png");
-        backGround5 = new Texture("layers/5.png");
-        backGround6 = new Texture("layers/6.png");
+        assetManager.load("layers/1.png", Texture.class);
+        assetManager.load("layers/2.png", Texture.class);
+        assetManager.load("layers/3.png", Texture.class);
+        assetManager.load("layers/4.png", Texture.class);
+        assetManager.load("layers/5.png", Texture.class);
+        assetManager.load("layers/6.png", Texture.class);
+        assetManager.load("button_play.png", Texture.class);
+        assetManager.load("button_options.png", Texture.class);
+        assetManager.load("button_shop.png", Texture.class);
+        assetManager.load("button_customize.png", Texture.class);
+
+        assetManager.finishLoading();
+        backGround1 = assetManager.get("layers/1.png");
+        backGround2 = assetManager.get("layers/2.png");
+        backGround3 = assetManager.get("layers/3.png");
+        backGround4 = assetManager.get("layers/4.png");
+        backGround5 = assetManager.get("layers/5.png");
+        backGround6 = assetManager.get("layers/6.png");
+        texturaBtnPlay = assetManager.get("button_play.png");
+        texturaBtnOptions = assetManager.get("button_options.png");
+        texturaBtnShop = assetManager.get("button_shop.png");
+        texturaBtnCustomize = assetManager.get("button_customize.png");
+
     }
 
     private void crearMenu() {
 
         escenaMenu = new Stage(vista);
 
+
         // Boton Play
-        Texture texturaBtnPlay = new Texture("button_play.png");
         TextureRegionDrawable trdPlay = new TextureRegionDrawable(new TextureRegion(texturaBtnPlay));
 
         // Boton JugarP
@@ -57,15 +78,12 @@ class PantallaMenu extends Pantalla {
         //TextureRegionDrawable trdJugarP = new TextureRegionDrawable(new TextureRegion(texturaBtnJugarP));
 
         //Boton Options
-        Texture texturaBtnOptions = new Texture("button_options.png");
         TextureRegionDrawable trdOptions = new TextureRegionDrawable(new TextureRegion(texturaBtnOptions));
 
         // Boton shop
-        Texture texturaBtnShop = new Texture("button_shop.png");
         TextureRegionDrawable trdShop = new TextureRegionDrawable(new TextureRegion(texturaBtnShop));
 
         // Boton customize
-        Texture texturaBtnCustomize = new Texture("button_customize.png");
         TextureRegionDrawable trdCustomize = new TextureRegionDrawable(new TextureRegion(texturaBtnCustomize));
 
 
@@ -89,7 +107,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                juego.setScreen(new PlayingScreen(juego));
+                juego.setScreen(new PantallaCargando(juego));
             }
         });
 
@@ -172,12 +190,25 @@ class PantallaMenu extends Pantalla {
     public void dispose() {
 
       backGround6.dispose();
-        backGround5.dispose();
-        backGround4.dispose();
-        backGround3.dispose();
-        backGround2.dispose();
-        backGround1.dispose();
-
+      backGround5.dispose();
+      backGround4.dispose();
+      backGround3.dispose();
+      backGround2.dispose();
+      backGround1.dispose();
+      texturaBtnCustomize.dispose();
+      texturaBtnOptions.dispose();
+      texturaBtnPlay.dispose();
+      texturaBtnShop.dispose();
+      assetManager.unload("layers/1.png");
+      assetManager.unload("layers/2.png");
+      assetManager.unload("layers/3.png");
+      assetManager.unload("layers/4.png");
+      assetManager.unload("layers/5.png");
+      assetManager.unload("layers/6.png");
+      assetManager.unload("button_play.png");
+      assetManager.unload("button_options.png");
+      assetManager.unload("button_shop.png");
+      assetManager.unload("button_customize.png");
 
     }
 
