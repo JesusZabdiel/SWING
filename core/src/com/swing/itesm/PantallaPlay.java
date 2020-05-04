@@ -188,10 +188,6 @@ class PantallaPlay extends Pantalla {
     private void iniciarPersonaje() {
         color = azul;
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
-        AssetManager manager2=new AssetManager();
-        manager2.load("correr.mp3",Sound.class);
-        manager2.finishLoading();
-        efectoCorrer=manager2.get("correr.mp3");
         estadoPersonaje = Estado.CORRIENDO;
         efectoCorrer.loop();
         vidaJugador = 100;
@@ -205,6 +201,11 @@ class PantallaPlay extends Pantalla {
         AssetManager manager = juego.getAssetManager();
         //El asset manager no carga la textura ojo en pantalla cargando
 
+        //Sonido
+        efectoCorrer=manager.get("correr.mp3");
+        efectoGancho=manager.get("gancho.wav");
+
+        //Texturas
         backGround1 = manager.get("layers/1.png");
         backGround2 = manager.get("layers/2.png");
         backGround3 = manager.get("layers/3.png");
@@ -339,10 +340,6 @@ class PantallaPlay extends Pantalla {
             if (estadoJuego == EstadoJuego.JUGANDO) {
 
                 if (estadoPersonaje == Estado.CORRIENDO || estadoPersonaje == Estado.BAJANDO || estadoPersonaje == Estado.SALTANDO || estadoPersonaje == Estado.CAYENDO) {
-                    AssetManager manager=new AssetManager();
-                    manager.load("gancho.wav",Sound.class);
-                    manager.finishLoading();
-                    efectoGancho=manager.get("gancho.wav");
                     estadoPersonaje = Estado.SUBIENDO;
                     efectoCorrer.pause();
                     efectoGancho.play();

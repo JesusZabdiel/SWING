@@ -3,6 +3,7 @@ package com.swing.itesm;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -53,6 +54,7 @@ public class PantallaCargando implements Screen {
 
     //Recursos de la pantallaJuego
     private void cargarRecursos() {
+        //Texturas
         assetManager.load("ojo.png", Texture.class);
         assetManager.load("layers/1.png", Texture.class);
         assetManager.load("layers/2.png", Texture.class);
@@ -67,6 +69,11 @@ public class PantallaCargando implements Screen {
         assetManager.load("lifeBarBack.png", Texture.class);
         assetManager.load("pause.png", Texture.class);
         assetManager.load("Obstaculo.png", Texture.class);
+
+        //Sonido
+        assetManager.load("correr.mp3", Sound.class);
+        assetManager.load("gancho.wav",Sound.class);
+
         assetManager.finishLoading();
 
     }
