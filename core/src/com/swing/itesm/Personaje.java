@@ -25,6 +25,8 @@ public class Personaje {
     private final float floor = 70;
     private Estado estado = Estado.IDLE;
     private float x, y;
+    private boolean giro = false;
+    private int gravedad = 90;
 
 
     public Personaje(Texture textura, Texture relleno, Color chroma){
@@ -50,6 +52,7 @@ public class Personaje {
         this.y=floor;
         sprite.setPosition(x,y);
         color.setPosition(x,y);
+
 
     }
 
@@ -164,6 +167,7 @@ public class Personaje {
             TextureRegion regionTrazo = (TextureRegion)animacionTrazo.getKeyFrame(timerAnimacion);
             color.setRegion(regionColor);
             sprite.setRegion(regionTrazo);
+
             color.draw(batch);
             sprite.draw(batch);
         }else if (estado==Estado.SALTANDO) {
@@ -200,5 +204,30 @@ public class Personaje {
 
     public void moverPersonaje() {
         timerAnimacion+= Gdx.graphics.getDeltaTime();
+
+        if(estado==Estado.CORRIENDO && giro==false){
+            color.setY(floor);
+            sprite.setY(floor);
+        }else if (estado==Estado.CAYENDO){
+        sprite.setY(sprite.getY()-(aceleracion*(float)(Math.pow(timerAnimacion,2)))/20);
+        color.setY(color.getY()-(aceleracion*(float)(Math.pow(timerAnimacion,2)))/20);
+            if(sprite.getY()<=floor) {
+                estado = Estado.CORRIENDO;
+            }
+        }else if (estado==Estado.SUBIENDO){
+            color.setY(color.getY()+velocidad* timerAnimacion /10);
+            sprite.setY(sprite.getY()+velocidad* timerAnimacion /10);
+
+            if (sprite.getY()+sprite.getHeight()>fakeRoof){
+                estado=Estado.BAJANDO;
+            }
+        }
+    }
+
+    public void giro() {
+        System.out.println("giro!");
+        gravedad = gravedad * -1;
+        giro = true;
+        sprite.setFlip(false,true);
     }
 }
