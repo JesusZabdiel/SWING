@@ -19,17 +19,16 @@ public class Personaje {
     private TextureRegion[][] texturaPersonaje;
     private TextureRegion[][] colorPersonaje;
     private float timerAnimacion;
-    private int velocidad = 30;
-    private int aceleracion = 2;
-    private final float fakeRoof = Juego.ALTO-15;
+    private final float fakeRoof = Juego.ALTO-30;
     private final float floor = 70;
     private Estado estado = Estado.IDLE;
     private float x, y;
-    private boolean giro = false;
+    private boolean giro = false, enElAire=false;
     private int gravedad = 90;
+    private float timerMovimiento;
 
 
-    public Personaje(Texture textura, Texture relleno, Color chroma){
+    public Personaje(Texture textura, Texture relleno, Color chroma, Estado estado){
         TextureRegion regionTrazo = new TextureRegion(textura);
         TextureRegion regionColor = new TextureRegion(relleno);
 
@@ -52,182 +51,98 @@ public class Personaje {
         this.y=floor;
         sprite.setPosition(x,y);
         color.setPosition(x,y);
-
+        this.estado = estado;
 
     }
 
-    /*public Estado mover(Estado estado, int tempEstado){
-        timerAnimacion = tempEstado/3;
-
-        /*switch (estado){
-            case CORRIENDO_ABAJO:
-                int runTemp = timerAnimacion %8;
-                if (runTemp==0) {
-                    color.setRegion(226, 23, 140, 157);
-                    sprite.setRegion(226, 23, 140, 157);
-                }
-                if (runTemp==1) {
-                    color.setRegion(429, 23, 140, 157);
-                    sprite.setRegion(429, 23, 140, 157);
-                }
-                if (runTemp==2) {
-                    color.setRegion(626, 23, 140, 157);
-                    sprite.setRegion(626, 23, 140, 157);
-                }
-                if (runTemp==3){
-                    color.setRegion(831,23,140,157);
-                    sprite.setRegion(831,23,140,157);
-                }
-                if (runTemp==4){
-                    color.setRegion(1023,23,140,157);
-                    sprite.setRegion(1023,23,140,157);
-                }
-                if (runTemp==5) {
-                    color.setRegion(1224, 23, 140, 157);
-                    sprite.setRegion(1224, 23, 140, 157);
-                }
-                if (runTemp==6) {
-                    color.setRegion(1422, 23, 140, 157);
-                    sprite.setRegion(1422, 23, 140, 157);
-                }
-                if (runTemp==7) {
-                    color.setRegion(1628, 23, 140, 157);
-                    sprite.setRegion(1628, 23, 140, 157);
-                }
-
-                sprite.setY(floor);
-                color.setY(floor);
-                return Estado.CORRIENDO_ABAJO;
-            case SALTANDO:
-                color.setRegion(31, 218, 122, 162);
-                sprite.setRegion(31, 218, 122, 162);
-
-                sprite.setY((velocidad* timerAnimacion -(aceleracion*(float)(Math.pow(timerAnimacion,2)))/2)+floor);
-                color.setY((velocidad* timerAnimacion -(aceleracion*(float)(Math.pow(timerAnimacion,2)))/2)+floor);
-
-                if(velocidad* timerAnimacion <(aceleracion*(float)(Math.pow(timerAnimacion,2)))) {
-                    color.setRegion(226, 218, 127, 162);
-                    sprite.setRegion(226, 218, 127, 162);
-                } if (sprite.getY()<floor) {
-                    PlayingScreen.resetTempEstado();
-                    return Estado.CORRIENDO_ABAJO;
-                }
-                return Estado.SALTANDO;
-            case BAJANDO:
-                color.setRegion(226, 218, 127, 162);
-                sprite.setRegion(226, 218, 127, 162);
-
-                sprite.setY(sprite.getY()-(aceleracion*(float)(Math.pow(timerAnimacion,2)))/20);
-                color.setY(color.getY()-(aceleracion*(float)(Math.pow(timerAnimacion,2)))/20);
-
-                if(sprite.getY()<=floor) {
-                    PlayingScreen.resetTempEstado();
-                    return Estado.CORRIENDO_ABAJO;
-                }
-                return Estado.BAJANDO;
-            case GANCHO_ABAJO:
-                color.setRegion(626, 218, 122, 162);
-                sprite.setRegion(626, 218, 122, 162);
-
-                color.setY(sprite.getY()-velocidad* timerAnimacion /10);
-                sprite.setY(sprite.getY()-velocidad* timerAnimacion /10);
-
-                if (sprite.getY()<=floor) {
-                    PlayingScreen.resetTempEstado();
-                    return Estado.CORRIENDO_ABAJO;
-                }
-                return Estado.GANCHO_ABAJO;
-            case GANCHO_ARRIBA:
-                color.setRegion(429, 218, 127, 162);
-                sprite.setRegion(429, 218, 127, 162);
-
-                color.setY(color.getY()+velocidad* timerAnimacion /10);
-                sprite.setY(sprite.getY()+velocidad* timerAnimacion /10);
-
-                if (sprite.getY()+sprite.getHeight()>fakeRoof){
-                    PlayingScreen.resetTempEstado();
-                    return Estado.BAJANDO;
-                }
-                return Estado.GANCHO_ARRIBA;
-
-            default:
-                System.out.println("We have a problem");
-                sprite.setY(0);
-                return Estado.CORRIENDO_ABAJO;
-
-        }
-    }*/
-
-    public void render(SpriteBatch batch, Estado estado){
+    public void render(SpriteBatch batch){
         if (estado == Estado.IDLE){
-            color.draw(batch);
-            sprite.draw(batch);
+            color.setRegion(colorPersonaje[0][0]);
+            sprite.setRegion(texturaPersonaje[0][0]);
+
         }else if (estado == Estado.CORRIENDO){
             TextureRegion regionColor = (TextureRegion)animacionColor.getKeyFrame(timerAnimacion);
             TextureRegion regionTrazo = (TextureRegion)animacionTrazo.getKeyFrame(timerAnimacion);
             color.setRegion(regionColor);
             sprite.setRegion(regionTrazo);
 
-            color.draw(batch);
-            sprite.draw(batch);
+
         }else if (estado==Estado.SALTANDO) {
+            color.setRotation(color.getRotation()+5);
+            sprite.setRotation(sprite.getRotation()+5);
+            if (sprite.getRotation()>170){
+                estado=Estado.CAYENDO;
+            }
             color.setRegion(colorPersonaje[1][0]);
             sprite.setRegion(texturaPersonaje[1][0]);
 
-            color.draw(batch);
-            sprite.draw(batch);
-
         }else if (estado==Estado.CAYENDO){
+            color.setRotation(0);
+            sprite.setRotation(0);
+
             color.setRegion(colorPersonaje[1][1]);
             sprite.setRegion(texturaPersonaje[1][1]);
 
-            color.draw(batch);
-            sprite.draw(batch);
         }else if(estado==Estado.SUBIENDO){
             color.setRegion(colorPersonaje[1][2]);
             sprite.setRegion(texturaPersonaje[1][2]);
+            color.setRotation(color.getRotation()+5);
+            sprite.setRotation(sprite.getRotation()+5);
+            if (sprite.getRotation()>80){
+                estado = Estado.SALTANDO;
+            }
 
-            color.draw(batch);
-            sprite.draw(batch);
         }else if (estado==Estado.BAJANDO){
             color.setRegion(colorPersonaje[1][3]);
             sprite.setRegion(texturaPersonaje[1][3]);
-
-            color.draw(batch);
-            sprite.draw(batch);
         }
+
+        color.draw(batch);
+        sprite.draw(batch);
     }
 
-    public Sprite getSprite() {
-        return sprite;
-    }
 
-    public void moverPersonaje() {
+    public void moverPersonaje(float delta) {
         timerAnimacion+= Gdx.graphics.getDeltaTime();
+        timerMovimiento+= delta;
 
-        if(estado==Estado.CORRIENDO && giro==false){
+        if(enElAire==false && giro==false) {
+            estado = Estado.CORRIENDO;
             color.setY(floor);
             sprite.setY(floor);
-        }else if (estado==Estado.CAYENDO){
-        sprite.setY(sprite.getY()-(aceleracion*(float)(Math.pow(timerAnimacion,2)))/20);
-        color.setY(color.getY()-(aceleracion*(float)(Math.pow(timerAnimacion,2)))/20);
-            if(sprite.getY()<=floor) {
-                estado = Estado.CORRIENDO;
-            }
-        }else if (estado==Estado.SUBIENDO){
-            color.setY(color.getY()+velocidad* timerAnimacion /10);
-            sprite.setY(sprite.getY()+velocidad* timerAnimacion /10);
-
+        }else if (enElAire==false && giro==true) {
+            estado = Estado.CORRIENDO;
+            color.setY(fakeRoof-color.getHeight());
+            sprite.setY(fakeRoof-sprite.getHeight());
+        }else if (enElAire==true && giro == false){
+            color.setPosition(color.getX(), -gravedad * (float)Math.pow(timerMovimiento,2) + color.getY());
+            sprite.setPosition(sprite.getX(), -gravedad * (float)Math.pow(timerMovimiento,2) + sprite.getY());
             if (sprite.getY()+sprite.getHeight()>fakeRoof){
-                estado=Estado.BAJANDO;
+                giro = true;
+                enElAire=false;
+            }else if (sprite.getY()<floor){
+                giro = false;
+                enElAire=false;
+            }
+        }else if (enElAire==true && giro == true){
+            color.setPosition(color.getX(), -gravedad * (float)Math.pow(timerMovimiento,2) + color.getY());
+            sprite.setPosition(sprite.getX(), -gravedad * (float)Math.pow(timerMovimiento,2) + sprite.getY());
+            if (sprite.getY()<floor){
+                giro = false;
+                enElAire=false;
+            }else if (sprite.getY()+sprite.getHeight()>fakeRoof){
+                giro = true;
+                enElAire=false;
             }
         }
     }
 
     public void giro() {
-        System.out.println("giro!");
+        timerMovimiento = 0;
         gravedad = gravedad * -1;
-        giro = true;
-        sprite.setFlip(false,true);
+        enElAire = true;
+        estado=Estado.SUBIENDO;
+
     }
+
 }

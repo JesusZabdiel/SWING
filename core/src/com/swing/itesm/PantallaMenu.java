@@ -19,14 +19,14 @@ class PantallaMenu extends Pantalla {
 
     //private Texture texturaFondo;
 
-    private Texture menu_1, menu_2, texturaOjo, texturaPupila,
+    private Texture menu_1, texturaMenu_2, texturaOjo, texturaPupila,
             texturaBtnPlay, texturaBtnOptions, texturaBtnShop, texturaBtnCustomize;
 
     // Menu
     private Stage escenaMenu;  // botones,....
     //Administra la carga de assets
     private  final AssetManager assetManager;
-    private Sprite pupila;
+    private Sprite pupila, menu_2;
     private float time = 0;
 
     public PantallaMenu(Juego juego) {
@@ -40,7 +40,9 @@ class PantallaMenu extends Pantalla {
         crearMenu();
         Gdx.input.setInputProcessor(escenaMenu);
         pupila = new Sprite(texturaPupila);
+        menu_2 = new Sprite(texturaMenu_2);
         pupila.setPosition(840,300);
+        menu_2.setPosition(0,0);
 
     }
 
@@ -57,7 +59,7 @@ class PantallaMenu extends Pantalla {
 
         assetManager.finishLoading();
         menu_1 = assetManager.get("menu_1.png");
-        menu_2 = assetManager.get("menu_2.png");
+        texturaMenu_2 = assetManager.get("menu_2.png");
         texturaOjo = assetManager.get("menu_ojo.png");
         texturaPupila = assetManager.get("menu_pupila.png");
 
@@ -154,21 +156,22 @@ class PantallaMenu extends Pantalla {
     public void render(float delta) {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
+        menu_2.setColor(1,1,1,1-(float)Math.random()*0.3f);
         pupila.setScale(-(float)Math.random()*0.2f+1);
         time = time+delta;
         if ((int)time%10==3){
-            System.out.println('1');
             pupila.setPosition(855,320);
         }else if ((int)time%10==4){
-            System.out.println('2');
-            pupila.setPosition(830,280);
+            pupila.setPosition(800,280);
+            pupila.setRotation(20);
         }else if ((int)time%10==7){
-            System.out.println('3');
             pupila.setPosition(880,330);
+            pupila.setRotation(-10);
         }else if ((int)time%10==8) {
             pupila.setPosition(860, 320);
         }else {
             pupila.setPosition(840,300);
+            pupila.setRotation(0);
         }
 
 
@@ -176,7 +179,7 @@ class PantallaMenu extends Pantalla {
         batch.draw(menu_1,0,0);
         batch.draw(texturaOjo,660,190);
         pupila.draw(batch);
-        batch.draw(menu_2,0,0);
+        menu_2.draw(batch);
 
         batch.end();
 

@@ -191,8 +191,7 @@ class PantallaPlay extends Pantalla {
 
     private void iniciarPersonaje() {
         color = azul;
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
-        estadoPersonaje = Estado.CORRIENDO;
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color, Estado.CORRIENDO);
         efectoCorrer.loop();
         vidaJugador = 100;
     }
@@ -235,14 +234,14 @@ class PantallaPlay extends Pantalla {
 
         if (estadoJuego == EstadoJuego.JUGANDO) {
             ojo.moverOjo(personaje.sprite.getY());
-            personaje.moverPersonaje();
+            personaje.moverPersonaje(delta);
         }
 
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         escenario.render(batch);
-        personaje.render(batch,estadoPersonaje);
+        personaje.render(batch);
         ojo.render(batch);
         batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
 
