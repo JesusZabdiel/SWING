@@ -29,7 +29,7 @@ class PantallaMenu extends Pantalla {
     private Sprite pupila, menu_2;
     private float time = 0;
 
-    public PantallaMenu(Juego juego) {
+    PantallaMenu(Juego juego) {
         assetManager = new AssetManager();
         this.juego = juego;
     }

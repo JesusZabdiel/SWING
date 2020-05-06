@@ -336,16 +336,6 @@ class PantallaPlay extends Pantalla {
         //Si el personaje esta en el techo, se deja caer y prepara el gancho
         @Override
         public boolean keyDown(int keycode) {
-            /*if (estadoJuego == EstadoJuego.JUGANDO) {
-                if (estadoPersonaje == Estado.CORRIENDO) {
-                    estadoPersonaje = Estado.SALTANDO;
-                    return true;
-                }
-            }else {
-
-                return false;
-
-            }*/
             return false;
         }
 
@@ -353,21 +343,6 @@ class PantallaPlay extends Pantalla {
         //El personaje lanza el gancho ya sea ariba o abajo dependiendo de las condiciones
         @Override
         public boolean keyUp(int keycode) {
-
-            /*if (estadoJuego == EstadoJuego.JUGANDO) {
-
-                if (estadoPersonaje == Estado.CORRIENDO || estadoPersonaje == Estado.BAJANDO || estadoPersonaje == Estado.SALTANDO || estadoPersonaje == Estado.CAYENDO) {
-                    estadoPersonaje = Estado.SUBIENDO;
-                    efectoCorrer.pause();
-                    efectoGancho.play();
-                    efectoCorrer.loop();
-                    return true;
-                }
-                if (estadoPersonaje == Estado.SUBIENDO) {
-                    estadoPersonaje = Estado.BAJANDO;
-                    return true;
-                }
-            }*/
                 return false;
 
         }
@@ -540,7 +515,6 @@ class PantallaPlay extends Pantalla {
     }
 
     private enum EstadoJuego {
-
         JUGANDO,
         PAUSADO,
         PERDIO,
