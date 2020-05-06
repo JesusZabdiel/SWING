@@ -25,7 +25,7 @@ class PantallaMenu extends Pantalla {
     //Administra la carga de assets
     private  final AssetManager assetManager;
 
-    public PantallaMenu(Juego juego) {
+    PantallaMenu(Juego juego) {
         assetManager = new AssetManager();
         this.juego = juego;
     }
