@@ -14,7 +14,7 @@ import com.swing.itesm.PantallaPlay.Estado;
 public class Personaje {
     private Animation animacionTrazo;
     private Animation animacionColor;
-    private Sprite color;
+    public Sprite color;
     public Sprite sprite;
     private TextureRegion[][] texturaPersonaje;
     private TextureRegion[][] colorPersonaje;
