@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class Item {
-    protected int probabilidadItem;
     public Sprite sprite;
 
     public Item(Texture textura) {
@@ -15,7 +14,7 @@ public abstract class Item {
 
 
     public void render(SpriteBatch batch){
-        sprite.draw(batch);
+            sprite.draw(batch);
     }
 
     public void mover(){

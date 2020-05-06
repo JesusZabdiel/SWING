@@ -27,12 +27,11 @@ class PantallaPlay extends Pantalla {
     //jugability
     public static float speed = 4;
     public final float CONSTANT_VIDA = 4;
-    public int vidaPorSegundo = 10;
     private int aumentoVida = 4;
+    private int totalItems = 10;
     private float vidaJugador;
-    private final int N_OBSTACULOS = 6;
     float barraVidaDimentions;
-    private float score;
+    private int score;
     private final float AUMENTO_VELOCIDAD = .01f;
 
     //efectos sonido
@@ -42,12 +41,13 @@ class PantallaPlay extends Pantalla {
     //Textures
     private Texture texturaPersonaje;
     private Texture rellenoPersonaje;
-    private Texture texturePowerUp;
+    private Texture textureVida;
     private Texture barraVidaBack;
     private Texture barraVida;
     private Texture texturaBtnPause;
     private Texture texturaOjo;
-    private Texture texturaObstaculo;
+    private Texture texturaItemDaño;
+    private Texture texturaItemInvulnerabilidad;
 
     //Background
     private Escenario escenario;
@@ -64,7 +64,7 @@ class PantallaPlay extends Pantalla {
     private int tempEstado;
     private Personaje personaje;
     private Color color;
-    private Array<Vida> vidaConstante;
+    private Array<Item> items;
     private Array<Obstaculo> obstaculos;
     private Marcador marcador;
     private Ojo ojo;
@@ -95,20 +95,12 @@ class PantallaPlay extends Pantalla {
         crearEscenario();
         iniciarPersonaje();
         crearOjo();
-        crearObstaculos();
-        crearPowerUps();
         crearMarcador();
 
        Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
     }
 
-    private void crearObstaculos() {
-        obstaculos = new Array<>();
-        for (int i = 0; i<N_OBSTACULOS; i++){
-            obstaculos.add(new Obstaculo(texturaObstaculo));
-        }
-    }
 
 
     private void crearEscenario() {
@@ -119,31 +111,24 @@ class PantallaPlay extends Pantalla {
 
     public void update(float delta) {
         escenario.mover(speed);
-        moverVidas();
-        moverObstaculos();
-        restarVida(delta);
-        verificarColisiones();
+        //crearItems();
+        //moverItems();
+        restarVidaConstante(delta);
+        //verificarColisiones();
         aumentarPuntos(delta);
         aumentarVelocidad();
         verificarFinDeJuego();
 
     }
 
-    private void moverObstaculos() {
-        for (Obstaculo obs: obstaculos) {
-            obs.mover();
-        }
-    }
-
-
     private void aumentarVelocidad() {
         if (score>0 && score % 5 == 0){
             speed += AUMENTO_VELOCIDAD;
         }
 
-        if ((score > 0 && score % 10 == 0) && vidaConstante.size >= 5){
-            vidaConstante.pop();
-        }
+        /*if ((score > 0 && score % 10 == 0) && items.size >= 5){
+            items.pop();
+        }*/
 
     }
 
@@ -162,16 +147,30 @@ class PantallaPlay extends Pantalla {
     }
 
     private void verificarColisiones() {
-        for (int i = vidaConstante.size-1; i >= 0; i--) {
-            Vida vida = vidaConstante.get(i);
-            Rectangle rectpUp = vida.sprite.getBoundingRectangle();
+        for (int i = items.size-1; i >= 0; i--) {
+            Item item = items.get(i);
+            Rectangle rectItem = item.sprite.getBoundingRectangle();
             Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
-            if (rectPlayer.overlaps(rectpUp)) {
-                vida.generarPosicionItem();
-                if (vidaJugador <=100 -aumentoVida ){
-                    aumentarVida();
+            if (item != null) {
+                if (rectPlayer.overlaps(rectItem)) {
+                    if (item instanceof Vida) {
+                        if (vidaJugador <= 100 - aumentoVida) {
+                            aumentarVida();
+                        }
+                    } else if (item instanceof Daño) {
+                        vidaJugador -= 7;
+                    } else if (item instanceof Invulnerbilidad) {
+                        personaje.invulnerable = true;
+                        controlarInvulnerabilidad(score);
+                    }
                 }
             }
+        }
+    }
+
+    private void controlarInvulnerabilidad(int score) {
+        if (this.score - score >= 15){
+            personaje.invulnerable = false;
         }
     }
 
@@ -181,10 +180,21 @@ class PantallaPlay extends Pantalla {
 
 
 
-    private void crearPowerUps() {
-        vidaConstante = new Array<>();
-        for (int i = 0; i<vidaPorSegundo; i++){
-            vidaConstante.add(new Vida(texturePowerUp));
+    private void crearItems() {
+        items = new Array<>();
+        int randTiempo = (int)(Math.random() * 9) +5; //generar items cada cierto tiempo
+        if(score != 0 && score % randTiempo == 0) {    //cada de 5 a 10 segundos
+            int randItem = (int) (Math.random()*99 +1);
+            for (int i = 0; i < totalItems; i++) {
+                if (randItem <= Invulnerbilidad.probabilidadItem){
+                    items.add(new Invulnerbilidad(texturaItemInvulnerabilidad));
+                }else if (randItem <= Daño.probabilidadItem){
+                    items.add(new Daño(texturaItemDaño));
+                }else{
+                    items.add(new Vida(textureVida));
+                }
+
+            }
         }
     }
 
@@ -195,6 +205,7 @@ class PantallaPlay extends Pantalla {
         estadoPersonaje = Estado.CORRIENDO;
         efectoCorrer.loop();
         vidaJugador = 100;
+        personaje.invulnerable = false;
     }
 
     private void crearOjo(){
@@ -203,6 +214,7 @@ class PantallaPlay extends Pantalla {
     
     private void cargarTexturas() {
         //El asset manager no carga la textura ojo en pantalla cargando
+
 
         //Sonido
         efectoCorrer=manager.get("correr.mp3");
@@ -217,11 +229,12 @@ class PantallaPlay extends Pantalla {
         backGround6 = manager.get("layers/6.png");
         texturaPersonaje = manager.get("ninjaTrazo.png");
         rellenoPersonaje = manager.get("ninjaRelleno.png");
-        texturePowerUp = manager.get("Life.png");
+        textureVida = manager.get("Life.png");
         barraVida = manager.get("lifeBar.png");
         barraVidaBack = manager.get("lifeBarBack.png");
         texturaBtnPause = manager.get("pause.png");
-        texturaObstaculo = manager.get("Obstaculo.png");
+        texturaItemDaño = manager.get("Obstaculo.png");
+        texturaItemInvulnerabilidad = manager.get("ojo.png");
         texturaOjo = manager.get("ojo.png");
 
     }
@@ -252,12 +265,9 @@ class PantallaPlay extends Pantalla {
         }
 
 
-        for (Vida vida: vidaConstante ) {
-            vida.render(batch);
-        }
-        for (Obstaculo obs: obstaculos ) {
-            obs.render(batch);
-        }
+        /*for (Item item: items) {
+            item.render(batch);
+        }*/
 
         marcador.render(batch);
         batch.draw(texturaBtnPause, 0,ALTO-texturaBtnPause.getHeight());
@@ -279,14 +289,16 @@ class PantallaPlay extends Pantalla {
         this.score = marcador.getScore();
     }
 
-    private void restarVida(float delta) {
+    private void restarVidaConstante(float delta) {
         vidaJugador -= CONSTANT_VIDA*delta;
         barraVidaDimentions = 350/100f * vidaJugador;
     }
 
-    private void moverVidas() {
-        for (Vida pUp: vidaConstante ) {
-            pUp.mover();
+    private void moverItems() {
+        if (!items.isEmpty()) {
+            for (Item item : items) {
+                item.mover();
+            }
         }
     }
 

@@ -25,6 +25,7 @@ public class Personaje {
     private final float floor = 70;
     private Estado estado = Estado.IDLE;
     private float x, y;
+    public boolean invulnerable;
 
 
     public Personaje(Texture textura, Texture relleno, Color chroma){
