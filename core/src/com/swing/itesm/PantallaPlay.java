@@ -28,7 +28,8 @@ class PantallaPlay extends Pantalla {
     public static float speed = 4;
     public final float CONSTANT_VIDA = 4;
     private int aumentoVida = 4;
-    private int totalItems = 10;
+    private int totalVida = 10;
+    private int totalItems = 4;
     private float vidaJugador;
     float barraVidaDimentions;
     private int score;
@@ -47,7 +48,7 @@ class PantallaPlay extends Pantalla {
     private Texture texturaBtnPause;
     private Texture texturaOjo;
     private Texture texturaItemDaño;
-    private Texture texturaItemInvulnerabilidad;
+    private Texture texturaInvulnerabilidad;
 
     //Background
     private Escenario escenario;
@@ -64,8 +65,8 @@ class PantallaPlay extends Pantalla {
     private int tempEstado;
     private Personaje personaje;
     private Color color;
+    private Array<Vida> vida;
     private Array<Item> items;
-    private Array<Obstaculo> obstaculos;
     private Marcador marcador;
     private Ojo ojo;
 
@@ -85,8 +86,6 @@ class PantallaPlay extends Pantalla {
         this.juego = juego;
     }
 
-
-
     @Override
     public void show() {
         estadoJuego = EstadoJuego.JUGANDO;
@@ -96,6 +95,8 @@ class PantallaPlay extends Pantalla {
         iniciarPersonaje();
         crearOjo();
         crearMarcador();
+        crearVida();
+        crearItemsAleatorios();
 
        Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
@@ -111,14 +112,20 @@ class PantallaPlay extends Pantalla {
 
     public void update(float delta) {
         escenario.mover(speed);
-        //crearItems();
-        //moverItems();
         restarVidaConstante(delta);
-        //verificarColisiones();
         aumentarPuntos(delta);
+        moverVida();
+        moverItems();
+        verificarColisiones();
         aumentarVelocidad();
         verificarFinDeJuego();
 
+    }
+
+    private void moverItems() {
+        for (Item item: items ) {
+            item.mover();
+        }
     }
 
     private void aumentarVelocidad() {
@@ -146,9 +153,9 @@ class PantallaPlay extends Pantalla {
         this.score = 0;
     }
 
-    private void verificarColisiones() {
-        for (int i = items.size-1; i >= 0; i--) {
-            Item item = items.get(i);
+   private void verificarColisiones() {
+        for (int i = vida.size-1; i >= 0; i--) {
+            Item item = vida.get(i);
             Rectangle rectItem = item.sprite.getBoundingRectangle();
             Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
             if (item != null) {
@@ -179,29 +186,27 @@ class PantallaPlay extends Pantalla {
     }
 
 
-
-    private void crearItems() {
-        items = new Array<>();
-        int randTiempo = (int)(Math.random() * 9) +5; //generar items cada cierto tiempo
-        if(score != 0 && score % randTiempo == 0) {    //cada de 5 a 10 segundos
-            int randItem = (int) (Math.random()*99 +1);
-            for (int i = 0; i < totalItems; i++) {
-                if (randItem <= Invulnerbilidad.probabilidadItem){
-                    items.add(new Invulnerbilidad(texturaItemInvulnerabilidad));
-                }else if (randItem <= Daño.probabilidadItem){
-                    items.add(new Daño(texturaItemDaño));
-                }else{
-                    items.add(new Vida(textureVida));
-                }
-
-            }
+    private void crearVida() {
+        vida = new Array<>();
+        for (int i = 0; i < totalVida; i++) {
+            vida.add(new Vida(textureVida));
         }
     }
+
+    private void crearItemsAleatorios() {
+        items = new Array<>();
+        items.add(new Daño(texturaItemDaño));
+        items.add(new Invulnerbilidad(texturaInvulnerabilidad));
+        items.add(new Ralentizar(texturaBtnPause));
+
+    }
+
 
 
     private void iniciarPersonaje() {
         color = azul;
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color, Estado.CORRIENDO);
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
+        estadoPersonaje = Estado.CORRIENDO;
         efectoCorrer.loop();
         vidaJugador = 100;
         personaje.invulnerable = false;
@@ -233,7 +238,7 @@ class PantallaPlay extends Pantalla {
         barraVidaBack = manager.get("lifeBarBack.png");
         texturaBtnPause = manager.get("pause.png");
         texturaItemDaño = manager.get("Obstaculo.png");
-        texturaItemInvulnerabilidad = manager.get("ojo.png");
+        texturaInvulnerabilidad = manager.get("invulnerable.png");
         texturaOjo = manager.get("ojo.png");
 
     }
@@ -247,14 +252,14 @@ class PantallaPlay extends Pantalla {
 
         if (estadoJuego == EstadoJuego.JUGANDO) {
             ojo.moverOjo(personaje.sprite.getY());
-            personaje.moverPersonaje(delta);
+            personaje.moverPersonaje();
         }
 
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         escenario.render(batch);
-        personaje.render(batch);
+        personaje.render(batch,estadoPersonaje);
         ojo.render(batch);
         batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
 
@@ -264,10 +269,11 @@ class PantallaPlay extends Pantalla {
         }
 
 
-        /*for (Item item: items) {
-            item.render(batch);
-        }*/
+        for (Vida vida: vida) {
+            vida.render(batch);
+        }
 
+        dibujarItems();
         marcador.render(batch);
         batch.draw(texturaBtnPause, 0,ALTO-texturaBtnPause.getHeight());
         batch.end();
@@ -283,6 +289,28 @@ class PantallaPlay extends Pantalla {
 
     }
 
+    private void dibujarItems() {
+        int randProbabilidad = (int)(Math.random() * 99) +1;
+        for (Item item: items) {
+            if (item instanceof  Invulnerbilidad){
+                Invulnerbilidad itemIn = (Invulnerbilidad) item;
+                if (itemIn.probabilidadItem <= randProbabilidad){
+                    itemIn.render(batch);
+                }
+            }else if (item instanceof Ralentizacion){
+                Ralentizacion itemRa = (Ralentizacion)item;
+                if (itemRa.probabilidadItem <= randProbabilidad){
+                    itemRa.render(batch);
+                }
+            }else if (item instanceof Daño){
+                Daño itemDa = (Daño)item;
+                if (itemDa.probabilidadItem <= randProbabilidad){
+                    itemDa.render(batch);
+                }
+            }
+        }
+    }
+
     private void aumentarPuntos(float delta) {
         marcador.marcar(delta);
         this.score = marcador.getScore();
@@ -293,12 +321,11 @@ class PantallaPlay extends Pantalla {
         barraVidaDimentions = 350/100f * vidaJugador;
     }
 
-    private void moverItems() {
-        if (!items.isEmpty()) {
-            for (Item item : items) {
-                item.mover();
-            }
+    private void moverVida() {
+        for (Vida vida : vida) {
+            vida.mover();
         }
+
     }
 
 
@@ -330,6 +357,7 @@ class PantallaPlay extends Pantalla {
         manager.unload("pause.png");
         manager.unload("Obstaculo.png");
         manager.unload("ojo.png");
+        manager.unload("invulnerable.png");
 
     }
 
@@ -348,7 +376,7 @@ class PantallaPlay extends Pantalla {
         //Si el personaje esta en el techo, se deja caer y prepara el gancho
         @Override
         public boolean keyDown(int keycode) {
-            /*if (estadoJuego == EstadoJuego.JUGANDO) {
+            if (estadoJuego == EstadoJuego.JUGANDO) {
                 if (estadoPersonaje == Estado.CORRIENDO) {
                     estadoPersonaje = Estado.SALTANDO;
                     return true;
@@ -357,7 +385,8 @@ class PantallaPlay extends Pantalla {
 
                 return false;
 
-            }*/
+            }
+
             return false;
         }
 
@@ -366,7 +395,7 @@ class PantallaPlay extends Pantalla {
         @Override
         public boolean keyUp(int keycode) {
 
-            /*if (estadoJuego == EstadoJuego.JUGANDO) {
+            if (estadoJuego == EstadoJuego.JUGANDO) {
 
                 if (estadoPersonaje == Estado.CORRIENDO || estadoPersonaje == Estado.BAJANDO || estadoPersonaje == Estado.SALTANDO || estadoPersonaje == Estado.CAYENDO) {
                     estadoPersonaje = Estado.SUBIENDO;
@@ -379,7 +408,7 @@ class PantallaPlay extends Pantalla {
                     estadoPersonaje = Estado.BAJANDO;
                     return true;
                 }
-            }*/
+            }
                 return false;
 
         }
@@ -406,13 +435,7 @@ class PantallaPlay extends Pantalla {
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            if (estadoJuego == EstadoJuego.JUGANDO) {
-                personaje.giro();
-                efectoCorrer.pause();
-                efectoGancho.play();
-                efectoCorrer.loop();
-                return true;
-            }
+
             return false;
         }
 
@@ -458,18 +481,8 @@ class PantallaPlay extends Pantalla {
 
             btnJugar.setPosition(ANCHO/2-btnJugar.getWidth()/2,2*ALTO/3);
 
-            // Boton Menu
-            Texture texturaBtnMenu = new Texture("button_menu.png");
-            TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
-
-            ImageButton btnMenu = new ImageButton(trdMenu);
-
-            btnMenu.setPosition(ANCHO/2-btnJugar.getWidth()/2,2*ALTO/3-234);
-
-
             //this.addActor(imgPausa);
             this.addActor(btnJugar);
-            this.addActor(btnMenu);
 
             //Listener
             btnJugar.addListener(new ClickListener(){
@@ -479,15 +492,6 @@ class PantallaPlay extends Pantalla {
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
                     efectoCorrer.loop();
-                }
-            });
-            //Listener Menu
-            btnMenu.addListener(new ClickListener(){
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    super.clicked(event, x, y);
-                    juego.setScreen(new PantallaMenu(juego));
-
                 }
             });
 
