@@ -27,7 +27,7 @@ public class Escenario {
     public void mover(float velocidad) {
         backgrounds[5].moverBackgound(velocidad*1.5f);
         backgrounds[4].moverBackgound(velocidad);
-        backgrounds[3].moverBackgound(velocidad*0.8f);
+        backgrounds[3].moverBackgound(velocidad*0.6f);
         backgrounds[2].moverBackgound(velocidad*0.35f);
         backgrounds[1].moverBackgound(velocidad*0.2f);
         backgrounds[0].moverBackgound(velocidad*0.08f);

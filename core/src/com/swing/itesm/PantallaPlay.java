@@ -201,8 +201,7 @@ class PantallaPlay extends Pantalla {
 
     private void iniciarPersonaje() {
         color = azul;
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
-        estadoPersonaje = Estado.CORRIENDO;
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color, Estado.CORRIENDO);
         efectoCorrer.loop();
         vidaJugador = 100;
         personaje.invulnerable = false;
@@ -248,14 +247,14 @@ class PantallaPlay extends Pantalla {
 
         if (estadoJuego == EstadoJuego.JUGANDO) {
             ojo.moverOjo(personaje.sprite.getY());
-            personaje.moverPersonaje();
+            personaje.moverPersonaje(delta);
         }
 
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         escenario.render(batch);
-        personaje.render(batch,estadoPersonaje);
+        personaje.render(batch);
         ojo.render(batch);
         batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
 
@@ -349,7 +348,7 @@ class PantallaPlay extends Pantalla {
         //Si el personaje esta en el techo, se deja caer y prepara el gancho
         @Override
         public boolean keyDown(int keycode) {
-            if (estadoJuego == EstadoJuego.JUGANDO) {
+            /*if (estadoJuego == EstadoJuego.JUGANDO) {
                 if (estadoPersonaje == Estado.CORRIENDO) {
                     estadoPersonaje = Estado.SALTANDO;
                     return true;
@@ -358,8 +357,7 @@ class PantallaPlay extends Pantalla {
 
                 return false;
 
-            }
-
+            }*/
             return false;
         }
 
@@ -368,7 +366,7 @@ class PantallaPlay extends Pantalla {
         @Override
         public boolean keyUp(int keycode) {
 
-            if (estadoJuego == EstadoJuego.JUGANDO) {
+            /*if (estadoJuego == EstadoJuego.JUGANDO) {
 
                 if (estadoPersonaje == Estado.CORRIENDO || estadoPersonaje == Estado.BAJANDO || estadoPersonaje == Estado.SALTANDO || estadoPersonaje == Estado.CAYENDO) {
                     estadoPersonaje = Estado.SUBIENDO;
@@ -381,7 +379,7 @@ class PantallaPlay extends Pantalla {
                     estadoPersonaje = Estado.BAJANDO;
                     return true;
                 }
-            }
+            }*/
                 return false;
 
         }
@@ -408,7 +406,13 @@ class PantallaPlay extends Pantalla {
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
+            if (estadoJuego == EstadoJuego.JUGANDO) {
+                personaje.giro();
+                efectoCorrer.pause();
+                efectoGancho.play();
+                efectoCorrer.loop();
+                return true;
+            }
             return false;
         }
 
@@ -454,8 +458,18 @@ class PantallaPlay extends Pantalla {
 
             btnJugar.setPosition(ANCHO/2-btnJugar.getWidth()/2,2*ALTO/3);
 
+            // Boton Menu
+            Texture texturaBtnMenu = new Texture("button_menu.png");
+            TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
+
+            ImageButton btnMenu = new ImageButton(trdMenu);
+
+            btnMenu.setPosition(ANCHO/2-btnJugar.getWidth()/2,2*ALTO/3-234);
+
+
             //this.addActor(imgPausa);
             this.addActor(btnJugar);
+            this.addActor(btnMenu);
 
             //Listener
             btnJugar.addListener(new ClickListener(){
@@ -465,6 +479,15 @@ class PantallaPlay extends Pantalla {
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
                     efectoCorrer.loop();
+                }
+            });
+            //Listener Menu
+            btnMenu.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    juego.setScreen(new PantallaMenu(juego));
+
                 }
             });
 
