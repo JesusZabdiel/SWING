@@ -13,9 +13,9 @@ class Texto {
         this.font = new BitmapFont(Gdx.files.internal(archivo));//Este archivo es .fnt
     }
 
-    public void render(SpriteBatch bacth, String mesaje, float x, float y) {
+    public void render(SpriteBatch bacth, String mensaje, float x, float y) {
         GlyphLayout glyph = new GlyphLayout();
-        glyph.setText(font, mesaje);
+        glyph.setText(font, mensaje);
         float anchoTexto = glyph.width;
         font.setColor(1,1,1,1);
         font.draw(bacth,glyph,x-anchoTexto/2,y);

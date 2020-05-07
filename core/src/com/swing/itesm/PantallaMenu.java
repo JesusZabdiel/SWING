@@ -129,7 +129,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                juego.setScreen(new PantallaShop(juego));
+                juego.setScreen(new PantallaInstrucciones(juego));
             }
         });
 
@@ -138,7 +138,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                juego.setScreen(new PantallaOptions(juego));
+                juego.setScreen(new PantallaAcerca(juego));
             }
         });
 
