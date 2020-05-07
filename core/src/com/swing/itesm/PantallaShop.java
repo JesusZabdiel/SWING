@@ -19,6 +19,7 @@ class PantallaShop extends Pantalla {
 
 
     private Texture texturaFondoShop;
+    private Texture texturaInstrucciones;
 
     // Menu
     private Stage escenaMenu;  // botones,....
@@ -73,6 +74,7 @@ class PantallaShop extends Pantalla {
     private void cargarTexturas() {
 
         texturaFondoShop = new Texture("fondo.png");
+        texturaInstrucciones = new Texture ("Instrucciones.png");
 
     }
 
@@ -86,6 +88,7 @@ class PantallaShop extends Pantalla {
         batch.begin();
 
         batch.draw(texturaFondoShop,0,0);
+        batch.draw(texturaInstrucciones,ANCHO/2-texturaInstrucciones.getWidth()/2,ALTO/2-texturaInstrucciones.getHeight()/2);
 
         batch.end();
         escenaMenu.draw();
@@ -117,6 +120,7 @@ class PantallaShop extends Pantalla {
     public void dispose() {
 
         texturaFondoShop.dispose();
+        texturaInstrucciones.dispose();
 
     }
 
