@@ -38,6 +38,8 @@ class PantallaPlay extends Pantalla {
     //efectos sonido
     private Sound efectoGancho;
     private Sound efectoCorrer;
+    private Sound efectoMuerte;
+    private Sound efectoSalud;
 
     //Textures
     private Texture texturaPersonaje;
@@ -177,6 +179,7 @@ class PantallaPlay extends Pantalla {
 
     private void aumentarVida() {
         vidaJugador += aumentoVida;
+        efectoSalud.play();
     }
 
 
@@ -204,8 +207,10 @@ class PantallaPlay extends Pantalla {
         //El asset manager no carga la textura ojo en pantalla cargando
 
         //Sonido
-        efectoCorrer=manager.get("correr.mp3");
+        efectoCorrer=manager.get("correr5.mp3");
         efectoGancho=manager.get("gancho.wav");
+        efectoMuerte=manager.get("muerte.mp3");
+        efectoSalud=manager.get("salud.mp3");
 
         //Texturas
         backGround1 = manager.get("layers/1.png");
@@ -302,8 +307,10 @@ class PantallaPlay extends Pantalla {
 
     @Override
     public void dispose() {
-        manager.unload("correr.mp3");
+        manager.unload("correr5.mp3");
         manager.unload("gancho.wav");
+        manager.unload("muerte.mp3");
+        manager.unload("salud.mp3");
         manager.unload("layers/1.png");
         manager.unload("layers/2.png");
         manager.unload("layers/3.png");
@@ -466,6 +473,7 @@ class PantallaPlay extends Pantalla {
 
             super(vista, batch);
             efectoCorrer.stop();
+            efectoMuerte.play();
             Texture texturaFondoGameOver = new Texture("gameOver.jpg");
             Image imgGameOver = new Image(texturaFondoGameOver);
             imgGameOver.setPosition(0,0);

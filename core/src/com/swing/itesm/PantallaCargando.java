@@ -72,8 +72,10 @@ public class PantallaCargando implements Screen {
         assetManager.load("invulnerable.png", Texture.class);
 
         //Sonido
-        assetManager.load("correr.mp3", Sound.class);
+        assetManager.load("correr5.mp3", Sound.class);
         assetManager.load("gancho.wav",Sound.class);
+        assetManager.load("muerte.mp3",Sound.class);
+        assetManager.load("salud.mp3",Sound.class);
 
         assetManager.finishLoading();
 
