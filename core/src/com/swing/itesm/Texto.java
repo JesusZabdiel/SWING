@@ -17,7 +17,7 @@ class Texto {
         GlyphLayout glyph = new GlyphLayout();
         glyph.setText(font, mesaje);
         float anchoTexto = glyph.width;
-        font.setColor(1/255f*46,1/255f*109,1/255f*14,1);
+        font.setColor(1,1,1,1);
         font.draw(bacth,glyph,x-anchoTexto/2,y);
     }
 }
