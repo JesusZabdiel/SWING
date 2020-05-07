@@ -453,9 +453,11 @@ class PantallaPlay extends Pantalla {
             //pixmap.setColor(255,255,255,0.5f);
             //pixmap.fillCircle(300,300,300);
             efectoCorrer.pause();
-            Texture texturaFondoPausa = new Texture("escenaPausa.png");
-            Image imgPausa = new Image(texturaFondoPausa);
-            imgPausa.setPosition(0,0);
+            Texture texturaFondoGameOver = new Texture("negro.png");
+            Image imgGameOver = new Image(texturaFondoGameOver);
+            imgGameOver.setColor(0,0,0,0.7f);
+            imgGameOver.setPosition(0,0);
+
 
             // Boton Jugar
             Texture texturaBtnJugar = new Texture("Reanudar.png");
@@ -464,7 +466,7 @@ class PantallaPlay extends Pantalla {
 
             ImageButton btnJugar = new ImageButton(trdJugar);
 
-            btnJugar.setPosition(ANCHO/2-btnJugar.getWidth()/2,2*ALTO/3);
+            btnJugar.setPosition(ANCHO/2-(btnJugar.getWidth())/2,2*ALTO/3);
 
             // Boton Menu
             Texture texturaBtnMenu = new Texture("Salir.png");
@@ -472,10 +474,10 @@ class PantallaPlay extends Pantalla {
 
             ImageButton btnMenu = new ImageButton(trdMenu);
 
-            btnMenu.setPosition(ANCHO/2-btnJugar.getWidth()/2,2*ALTO/3-234);
+            btnMenu.setPosition(ANCHO/2-btnMenu.getWidth()/2,2*ALTO/3-234);
 
 
-            //this.addActor(imgPausa);
+            this.addActor(imgGameOver);
             this.addActor(btnJugar);
             this.addActor(btnMenu);
 
@@ -512,7 +514,7 @@ class PantallaPlay extends Pantalla {
             super(vista, batch);
             efectoCorrer.stop();
             efectoMuerte.play();
-            Texture texturaFondoGameOver = new Texture("gameOver.jpg");
+            Texture texturaFondoGameOver = new Texture("negro.png");
             Image imgGameOver = new Image(texturaFondoGameOver);
             imgGameOver.setPosition(0,0);
 
@@ -530,7 +532,7 @@ class PantallaPlay extends Pantalla {
 
             ImageButton btnMenu = new ImageButton(trdMenu);
 
-            btnMenu.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3-234);
+            btnMenu.setPosition(ANCHO/2-btnMenu.getWidth()/2,2*ALTO/3-234);
 
             this.addActor(imgGameOver);
             this.addActor(btnPlay);
