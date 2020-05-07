@@ -197,7 +197,7 @@ class PantallaPlay extends Pantalla {
         items = new Array<>();
         items.add(new Daño(texturaItemDaño));
         items.add(new Invulnerbilidad(texturaInvulnerabilidad));
-        items.add(new Ralentizar(texturaBtnPause));
+        items.add(new Ralentizacion(texturaBtnPause));
 
     }
 

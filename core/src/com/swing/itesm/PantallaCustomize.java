@@ -3,6 +3,8 @@ package com.swing.itesm;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -17,16 +19,30 @@ class PantallaCustomize extends Pantalla {
 
     private final Juego juego;
 
-
-    private Texture texturaFondoCustomize;
+    //Textures
+    private Texture texturaPersonaje;
+    private Texture rellenoPersonaje;
 
     // Menu
     private Stage escenaMenu;  // botones,....
 
+    // Colores
+    private Color amarillo = new Color(0.9764f,0.7647f,0.2078f,1);
+    private Color azul = new Color(0.1529f,0.3647f,1,1);
+
+    public PantallaPlay.Estado estadoPersonaje;
+    private Personaje personaje;
+    private Color color;
+    private Texture backGround6, backGround5, backGround4, backGround3, backGround2, backGround1;
+
+    //AssetManager
+    private AssetManager assetManager;
 
 
 
-    public PantallaCustomize(Juego juego) {
+    public PantallaCustomize(Juego juego)
+    {
+        assetManager = new AssetManager();
         this.juego = juego;
     }
 
@@ -34,11 +50,24 @@ class PantallaCustomize extends Pantalla {
     public void show() {
 
         cargarTexturas();
-
+        iniciarPersonaje();
 
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         crearMenu();
+
+    }
+
+    private void iniciarPersonaje() {
+        color = azul;
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
+        estadoPersonaje = PantallaPlay.Estado.IDLE;
+
+        personaje.sprite.setScale(2);
+        personaje.color.setScale(2);
+
+        personaje.sprite.setPosition(ANCHO/2-personaje.sprite.getWidth(),ALTO/4+personaje.sprite.getHeight());
+        personaje.color.setPosition(ANCHO/2-personaje.sprite.getWidth(),ALTO/4+personaje.sprite.getHeight());
 
     }
 
@@ -52,7 +81,7 @@ class PantallaCustomize extends Pantalla {
 
         ImageButton btnMenu = new ImageButton(trdMenu);
 
-        btnMenu.setPosition(0,0);
+        btnMenu.setPosition(ANCHO/2-trdMenu.getLeftWidth(),ALTO/4+trdMenu.getBottomHeight());
 
         //Listener1
         btnMenu.addListener(new ClickListener(){
@@ -71,8 +100,27 @@ class PantallaCustomize extends Pantalla {
 
 
     private void cargarTexturas() {
+        assetManager.load("layers/1.png", Texture.class);
+        assetManager.load("layers/2.png", Texture.class);
+        assetManager.load("layers/3.png", Texture.class);
+        assetManager.load("layers/4.png", Texture.class);
+        assetManager.load("layers/5.png", Texture.class);
+        assetManager.load("layers/6.png", Texture.class);
+         assetManager.load("ninjaTrazo.png", Texture.class);
+        assetManager.load("ninjaRelleno.png", Texture.class);
 
-        texturaFondoCustomize = new Texture("about.png");
+
+        assetManager.finishLoading();
+        backGround1 = assetManager.get("layers/1.png");
+        backGround2 = assetManager.get("layers/2.png");
+        backGround3 = assetManager.get("layers/3.png");
+        backGround4 = assetManager.get("layers/4.png");
+        backGround5 = assetManager.get("layers/5.png");
+        backGround6 = assetManager.get("layers/6.png");
+        texturaPersonaje = assetManager.get("ninjaTrazo.png");
+        rellenoPersonaje = assetManager.get("ninjaRelleno.png");
+
+
 
     }
 
@@ -85,7 +133,13 @@ class PantallaCustomize extends Pantalla {
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
 
-        batch.draw(texturaFondoCustomize,0,0);
+        batch.draw(backGround6,0,0);
+        batch.draw(backGround5,0,0);
+        batch.draw(backGround4,0,0);
+        batch.draw(backGround3,0,0);
+        batch.draw(backGround2,0,0);
+        batch.draw(backGround1,0,0);
+        personaje.render(batch,estadoPersonaje);
 
         batch.end();
 
@@ -116,8 +170,26 @@ class PantallaCustomize extends Pantalla {
 
     @Override
     public void dispose() {
+        backGround6.dispose();
+        backGround5.dispose();
+        backGround4.dispose();
+        backGround3.dispose();
+        backGround2.dispose();
+        backGround1.dispose();
+        assetManager.unload("ninjaTrazo.png");
+        assetManager.unload("ninjaRelleno.png");
 
-        texturaFondoCustomize.dispose();
+        assetManager.finishLoading();
+
+        backGround1 = assetManager.get("layers/1.png");
+        backGround2 = assetManager.get("layers/2.png");
+        backGround3 = assetManager.get("layers/3.png");
+        backGround4 = assetManager.get("layers/4.png");
+        backGround5 = assetManager.get("layers/5.png");
+        backGround6 = assetManager.get("layers/6.png");
+
+
+
 
     }
 
