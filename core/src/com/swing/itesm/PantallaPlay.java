@@ -34,6 +34,7 @@ class PantallaPlay extends Pantalla {
     float barraVidaDimentions;
     private float score;
     private final float AUMENTO_VELOCIDAD = .01f;
+    private float tiempo;
 
     //efectos sonido
     private Sound efectoGancho;
@@ -44,7 +45,7 @@ class PantallaPlay extends Pantalla {
     //Textures
     private Texture texturaPersonaje;
     private Texture rellenoPersonaje;
-    private Texture texturePowerUp;
+    private Texture texturaVida;
     private Texture barraVidaBack;
     private Texture barraVida;
     private Texture texturaBtnPause;
@@ -67,7 +68,7 @@ class PantallaPlay extends Pantalla {
     private Personaje personaje;
     private Color color;
     private Array<Vida> vidaConstante;
-    private Array<Obstaculo> obstaculos;
+    private Array<Item> items;
     private Marcador marcador;
     private Ojo ojo;
 
@@ -97,19 +98,19 @@ class PantallaPlay extends Pantalla {
         crearEscenario();
         iniciarPersonaje();
         crearOjo();
-        crearObstaculos();
-        crearPowerUps();
+        crearItems();
+        crearVidaConstante();
         crearMarcador();
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
     }
 
-    private void crearObstaculos() {
-        obstaculos = new Array<>();
-        for (int i = 0; i<N_OBSTACULOS; i++){
-            obstaculos.add(new Obstaculo(texturaObstaculo));
-        }
+    private void crearItems() {
+        items = new Array<>();
+        items.add(new Daño(texturaVida));
+        items.add(new Ralentizacion(texturaVida));
+        items.add(new Invulnerbilidad(texturaVida));
     }
 
 
@@ -122,18 +123,47 @@ class PantallaPlay extends Pantalla {
     public void update(float delta) {
         escenario.mover(speed);
         moverVidas();
-        moverObstaculos();
+        moverItems();
+        generarItemsAleatorios(delta);
+        verificarColisionesVida();
+        verficarColsionesItems();
         restarVida(delta);
-        verificarColisiones();
         aumentarPuntos(delta);
         aumentarVelocidad();
         verificarFinDeJuego();
 
     }
 
-    private void moverObstaculos() {
-        for (Obstaculo obs: obstaculos) {
-            obs.mover();
+    private void verficarColsionesItems() {
+        for (Item item:items) {
+            Rectangle rectItem = item.sprite.getBoundingRectangle();
+            Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
+            if (rectPlayer.overlaps(rectItem)) {
+                item.generarPosicionItem();
+                item.setVisible(false);
+            }
+        }
+    }
+
+    private void generarItemsAleatorios(float delta) {
+        //que se generen cada cierto tiempo aleatorio
+        //generarTiempoAleatorio(delta);
+        int randomTime = (int)(Math.random()*30)+10;
+        if (score != 0 && score % randomTime == 0){
+            int randProbabilidad = (int)(Math.random()*99) +1;
+            for (Item item: items){
+                if (item.getProbabilidad() >= randProbabilidad){
+                    item.setVisible(true);
+                }
+            }
+        }
+    }
+
+    private void moverItems() {
+        for (Item item: items) {
+            if (item.visible) {
+                item.mover();
+            }
         }
     }
 
@@ -163,12 +193,12 @@ class PantallaPlay extends Pantalla {
         this.score = 0;
     }
 
-    private void verificarColisiones() {
+    private void verificarColisionesVida() {
         for (int i = vidaConstante.size-1; i >= 0; i--) {
             Vida vida = vidaConstante.get(i);
-            Rectangle rectpUp = vida.sprite.getBoundingRectangle();
+            Rectangle rectVida = vida.sprite.getBoundingRectangle();
             Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
-            if (rectPlayer.overlaps(rectpUp)) {
+            if (rectPlayer.overlaps(rectVida)) {
                 vida.generarPosicionItem();
                 if (vidaJugador <=100 -aumentoVida ){
                     aumentarVida();
@@ -184,10 +214,10 @@ class PantallaPlay extends Pantalla {
 
 
 
-    private void crearPowerUps() {
+    private void crearVidaConstante() {
         vidaConstante = new Array<>();
         for (int i = 0; i<vidaPorSegundo; i++){
-            vidaConstante.add(new Vida(texturePowerUp));
+            vidaConstante.add(new Vida(texturaVida));
         }
     }
 
@@ -221,7 +251,7 @@ class PantallaPlay extends Pantalla {
         backGround6 = manager.get("layers/6.png");
         texturaPersonaje = manager.get("ninjaTrazo.png");
         rellenoPersonaje = manager.get("ninjaRelleno.png");
-        texturePowerUp = manager.get("Life.png");
+        texturaVida = manager.get("Life.png");
         barraVida = manager.get("lifeBar.png");
         barraVidaBack = manager.get("lifeBarBack.png");
         texturaBtnPause = manager.get("pause.png");
@@ -259,8 +289,12 @@ class PantallaPlay extends Pantalla {
         for (Vida vida: vidaConstante ) {
             vida.render(batch);
         }
-        for (Obstaculo obs: obstaculos ) {
-            obs.render(batch);
+
+        for(Item item: items){
+
+            if (item.isVisible()){
+                item.render(batch);
+            }
         }
 
         marcador.render(batch);
@@ -289,8 +323,8 @@ class PantallaPlay extends Pantalla {
     }
 
     private void moverVidas() {
-        for (Vida pUp: vidaConstante ) {
-            pUp.mover();
+        for (Vida vida: vidaConstante ) {
+            vida.mover();
         }
     }
 
