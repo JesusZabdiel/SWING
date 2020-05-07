@@ -52,10 +52,10 @@ class PantallaMenu extends Pantalla {
         assetManager.load("menu_ojo.png", Texture.class);
         assetManager.load("menu_pupila.png", Texture.class);
 
-        assetManager.load("button_play.png", Texture.class);
-        assetManager.load("button_options.png", Texture.class);
-        assetManager.load("button_shop.png", Texture.class);
-        assetManager.load("button_customize.png", Texture.class);
+        assetManager.load("Jugar.png", Texture.class);
+        assetManager.load("Acerca.png", Texture.class);
+        assetManager.load("Como_jugar.png", Texture.class);
+        assetManager.load("Personalización.png", Texture.class);
 
         assetManager.finishLoading();
         menu_1 = assetManager.get("menu_1.png");
@@ -63,10 +63,10 @@ class PantallaMenu extends Pantalla {
         texturaOjo = assetManager.get("menu_ojo.png");
         texturaPupila = assetManager.get("menu_pupila.png");
 
-        texturaBtnPlay = assetManager.get("button_play.png");
-        texturaBtnOptions = assetManager.get("button_options.png");
-        texturaBtnShop = assetManager.get("button_shop.png");
-        texturaBtnCustomize = assetManager.get("button_customize.png");
+        texturaBtnPlay = assetManager.get("Jugar.png");
+        texturaBtnOptions = assetManager.get("Acerca.png");
+        texturaBtnShop = assetManager.get("Como_jugar.png");
+        texturaBtnCustomize = assetManager.get("Personalización.png");
 
     }
 
@@ -98,13 +98,13 @@ class PantallaMenu extends Pantalla {
         ImageButton btnShop = new ImageButton(trdShop);
         ImageButton btnCustomize = new ImageButton(trdCustomize);
 
-        btnPlay.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3);
+        btnPlay.setPosition(80,370);
 
-        btnCustomize.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3-100);
+        btnCustomize.setPosition(80,280);
 
-        btnShop.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3-200);
+        btnShop.setPosition(80,180);
 
-        btnOptions.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3-300);
+        btnOptions.setPosition(80,100);
 
         //Listener1
         btnPlay.addListener(new ClickListener(){
@@ -218,10 +218,10 @@ class PantallaMenu extends Pantalla {
         assetManager.unload("menu_2.png");
         assetManager.unload("menu_ojo.png");
         assetManager.unload("menu_pupila.png");
-        assetManager.unload("button_play.png");
-        assetManager.unload("button_options.png");
-        assetManager.unload("button_shop.png");
-        assetManager.unload("button_customize.png");
+        assetManager.unload("Jugar.png");
+        assetManager.unload("Acerca.png");
+        assetManager.unload("Como_jugar.png");
+        assetManager.unload("Personalización.png");
 
     }
 

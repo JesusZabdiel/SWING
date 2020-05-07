@@ -33,7 +33,7 @@ class PantallaCustomize extends Pantalla {
     public PantallaPlay.Estado estadoPersonaje;
     private Personaje personaje;
     private Color color;
-    private Texture backGround6, backGround5, backGround4, backGround3, backGround2, backGround1;
+    private Texture texturaPantalla;
 
     //AssetManager
     private AssetManager assetManager;
@@ -59,14 +59,14 @@ class PantallaCustomize extends Pantalla {
     }
 
     private void iniciarPersonaje() {
-        color = azul;
+        color = amarillo;
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color, PantallaPlay.Estado.IDLE);
 
         personaje.sprite.setScale(2);
         personaje.color.setScale(2);
 
-        personaje.sprite.setPosition(ANCHO/2-personaje.sprite.getWidth(),ALTO/4+personaje.sprite.getHeight());
-        personaje.color.setPosition(ANCHO/2-personaje.sprite.getWidth(),ALTO/4+personaje.sprite.getHeight());
+        personaje.sprite.setPosition(ANCHO/2-personaje.sprite.getWidth(),ALTO/6+personaje.sprite.getHeight());
+        personaje.color.setPosition(ANCHO/2-personaje.sprite.getWidth(),ALTO/6+personaje.sprite.getHeight());
 
     }
 
@@ -75,12 +75,12 @@ class PantallaCustomize extends Pantalla {
         escenaMenu = new Stage(vista);
 
         // Boton Play
-        Texture texturaBtnMenu = new Texture("button_menu.png");
+        Texture texturaBtnMenu = new Texture("Salir.png");
         TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
 
         ImageButton btnMenu = new ImageButton(trdMenu);
 
-        btnMenu.setPosition(ANCHO/2-trdMenu.getLeftWidth(),ALTO/4+trdMenu.getBottomHeight());
+        btnMenu.setPosition(80,ALTO-40-btnMenu.getHeight());
 
         //Listener1
         btnMenu.addListener(new ClickListener(){
@@ -99,23 +99,14 @@ class PantallaCustomize extends Pantalla {
 
 
     private void cargarTexturas() {
-        assetManager.load("layers/1.png", Texture.class);
-        assetManager.load("layers/2.png", Texture.class);
-        assetManager.load("layers/3.png", Texture.class);
-        assetManager.load("layers/4.png", Texture.class);
-        assetManager.load("layers/5.png", Texture.class);
-        assetManager.load("layers/6.png", Texture.class);
+        assetManager.load("fondo.png", Texture.class);
         assetManager.load("ninjaTrazo.png", Texture.class);
         assetManager.load("ninjaRelleno.png", Texture.class);
 
 
         assetManager.finishLoading();
-        backGround1 = assetManager.get("layers/1.png");
-        backGround2 = assetManager.get("layers/2.png");
-        backGround3 = assetManager.get("layers/3.png");
-        backGround4 = assetManager.get("layers/4.png");
-        backGround5 = assetManager.get("layers/5.png");
-        backGround6 = assetManager.get("layers/6.png");
+        texturaPantalla = assetManager.get("fondo.png");
+
         texturaPersonaje = assetManager.get("ninjaTrazo.png");
         rellenoPersonaje = assetManager.get("ninjaRelleno.png");
 
@@ -132,12 +123,8 @@ class PantallaCustomize extends Pantalla {
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
 
-        batch.draw(backGround6,0,0);
-        batch.draw(backGround5,0,0);
-        batch.draw(backGround4,0,0);
-        batch.draw(backGround3,0,0);
-        batch.draw(backGround2,0,0);
-        batch.draw(backGround1,0,0);
+        batch.draw(texturaPantalla,0,0);
+
         personaje.render(batch);
 
         batch.end();
@@ -169,23 +156,15 @@ class PantallaCustomize extends Pantalla {
 
     @Override
     public void dispose() {
-        backGround6.dispose();
-        backGround5.dispose();
-        backGround4.dispose();
-        backGround3.dispose();
-        backGround2.dispose();
-        backGround1.dispose();
+        texturaPantalla.dispose();
+
         assetManager.unload("ninjaTrazo.png");
         assetManager.unload("ninjaRelleno.png");
 
         assetManager.finishLoading();
 
-        backGround1 = assetManager.get("layers/1.png");
-        backGround2 = assetManager.get("layers/2.png");
-        backGround3 = assetManager.get("layers/3.png");
-        backGround4 = assetManager.get("layers/4.png");
-        backGround5 = assetManager.get("layers/5.png");
-        backGround6 = assetManager.get("layers/6.png");
+        texturaPantalla = assetManager.get("fondo.png");
+
 
 
 

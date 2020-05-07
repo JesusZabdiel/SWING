@@ -420,7 +420,7 @@ class PantallaPlay extends Pantalla {
             imgPausa.setPosition(0,0);
 
             // Boton Jugar
-            Texture texturaBtnJugar = new Texture("button_play.png");
+            Texture texturaBtnJugar = new Texture("Reanudar.png");
             TextureRegionDrawable trdJugar = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
 
 
@@ -429,7 +429,7 @@ class PantallaPlay extends Pantalla {
             btnJugar.setPosition(ANCHO/2-btnJugar.getWidth()/2,2*ALTO/3);
 
             // Boton Menu
-            Texture texturaBtnMenu = new Texture("button_menu.png");
+            Texture texturaBtnMenu = new Texture("Salir.png");
             TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
 
             ImageButton btnMenu = new ImageButton(trdMenu);
@@ -479,7 +479,7 @@ class PantallaPlay extends Pantalla {
             imgGameOver.setPosition(0,0);
 
             // Boton Jugar
-            Texture texturaBtnJugar = new Texture("button_play.png");
+            Texture texturaBtnJugar = new Texture("Volver_Jugar.png");
             TextureRegionDrawable trdPlay = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
 
             ImageButton btnPlay = new ImageButton(trdPlay);
@@ -487,7 +487,7 @@ class PantallaPlay extends Pantalla {
             btnPlay.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3);
 
             // Boton Menu
-            Texture texturaBtnMenu = new Texture("button_menu.png");
+            Texture texturaBtnMenu = new Texture("Salir.png");
             TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
 
             ImageButton btnMenu = new ImageButton(trdMenu);

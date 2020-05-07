@@ -46,12 +46,12 @@ class PantallaOptions extends Pantalla {
         escenaMenu = new Stage(vista);
 
         // Boton Play
-        Texture texturaBtnMenu = new Texture("button_menu.png");
+        Texture texturaBtnMenu = new Texture("Salir.png");
         TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
 
         ImageButton btnMenu = new ImageButton(trdMenu);
 
-        btnMenu.setPosition(0,0);
+        btnMenu.setPosition(80,ALTO-40-btnMenu.getHeight());
 
         //Listener1
         btnMenu.addListener(new ClickListener(){
@@ -71,7 +71,7 @@ class PantallaOptions extends Pantalla {
 
     private void cargarTexturas() {
 
-        texturaFondoOptions = new Texture("instrucciones.jpg");
+        texturaFondoOptions = new Texture("fondo.png");
 
     }
 
