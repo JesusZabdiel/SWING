@@ -60,8 +60,7 @@ class PantallaCustomize extends Pantalla {
 
     private void iniciarPersonaje() {
         color = azul;
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color);
-        estadoPersonaje = PantallaPlay.Estado.IDLE;
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color, PantallaPlay.Estado.IDLE);
 
         personaje.sprite.setScale(2);
         personaje.color.setScale(2);
@@ -106,7 +105,7 @@ class PantallaCustomize extends Pantalla {
         assetManager.load("layers/4.png", Texture.class);
         assetManager.load("layers/5.png", Texture.class);
         assetManager.load("layers/6.png", Texture.class);
-         assetManager.load("ninjaTrazo.png", Texture.class);
+        assetManager.load("ninjaTrazo.png", Texture.class);
         assetManager.load("ninjaRelleno.png", Texture.class);
 
 
@@ -139,7 +138,7 @@ class PantallaCustomize extends Pantalla {
         batch.draw(backGround3,0,0);
         batch.draw(backGround2,0,0);
         batch.draw(backGround1,0,0);
-        personaje.render(batch,estadoPersonaje);
+        personaje.render(batch);
 
         batch.end();
 

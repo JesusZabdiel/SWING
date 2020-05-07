@@ -4,6 +4,7 @@ package com.swing.itesm;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,19 +12,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+
 class PantallaMenu extends Pantalla {
 
     private final Juego juego;
 
     //private Texture texturaFondo;
 
-    private Texture backGround6, backGround5, backGround4, backGround3, backGround2, backGround1,
+    private Texture menu_1, texturaMenu_2, texturaOjo, texturaPupila,
             texturaBtnPlay, texturaBtnOptions, texturaBtnShop, texturaBtnCustomize;
 
     // Menu
     private Stage escenaMenu;  // botones,....
     //Administra la carga de assets
     private  final AssetManager assetManager;
+    private Sprite pupila, menu_2;
+    private float time = 0;
 
     PantallaMenu(Juego juego) {
         assetManager = new AssetManager();
@@ -35,28 +39,30 @@ class PantallaMenu extends Pantalla {
         cargarTexturas();
         crearMenu();
         Gdx.input.setInputProcessor(escenaMenu);
+        pupila = new Sprite(texturaPupila);
+        menu_2 = new Sprite(texturaMenu_2);
+        pupila.setPosition(840,300);
+        menu_2.setPosition(0,0);
 
     }
 
     private void cargarTexturas() {
-        assetManager.load("layers/1.png", Texture.class);
-        assetManager.load("layers/2.png", Texture.class);
-        assetManager.load("layers/3.png", Texture.class);
-        assetManager.load("layers/4.png", Texture.class);
-        assetManager.load("layers/5.png", Texture.class);
-        assetManager.load("layers/6.png", Texture.class);
+        assetManager.load("menu_1.png", Texture.class);
+        assetManager.load("menu_2.png", Texture.class);
+        assetManager.load("menu_ojo.png", Texture.class);
+        assetManager.load("menu_pupila.png", Texture.class);
+
         assetManager.load("button_play.png", Texture.class);
         assetManager.load("button_options.png", Texture.class);
         assetManager.load("button_shop.png", Texture.class);
         assetManager.load("button_customize.png", Texture.class);
 
         assetManager.finishLoading();
-        backGround1 = assetManager.get("layers/1.png");
-        backGround2 = assetManager.get("layers/2.png");
-        backGround3 = assetManager.get("layers/3.png");
-        backGround4 = assetManager.get("layers/4.png");
-        backGround5 = assetManager.get("layers/5.png");
-        backGround6 = assetManager.get("layers/6.png");
+        menu_1 = assetManager.get("menu_1.png");
+        texturaMenu_2 = assetManager.get("menu_2.png");
+        texturaOjo = assetManager.get("menu_ojo.png");
+        texturaPupila = assetManager.get("menu_pupila.png");
+
         texturaBtnPlay = assetManager.get("button_play.png");
         texturaBtnOptions = assetManager.get("button_options.png");
         texturaBtnShop = assetManager.get("button_shop.png");
@@ -91,7 +97,6 @@ class PantallaMenu extends Pantalla {
         ImageButton btnOptions = new ImageButton(trdOptions);
         ImageButton btnShop = new ImageButton(trdShop);
         ImageButton btnCustomize = new ImageButton(trdCustomize);
-
 
         btnPlay.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3);
 
@@ -151,14 +156,31 @@ class PantallaMenu extends Pantalla {
     public void render(float delta) {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
+        menu_2.setColor(1,1,1,1-(float)Math.random()*0.3f);
+        pupila.setScale(-(float)Math.random()*0.2f+1);
+        time = time+delta;
+        if ((int)time%10==3){
+            pupila.setPosition(855,320);
+        }else if ((int)time%10==4){
+            pupila.setPosition(800,280);
+            pupila.setRotation(20);
+        }else if ((int)time%10==7){
+            pupila.setPosition(880,330);
+            pupila.setRotation(-10);
+        }else if ((int)time%10==8) {
+            pupila.setPosition(860, 320);
+        }else {
+            pupila.setPosition(840,300);
+            pupila.setRotation(0);
+        }
+
 
         batch.begin();
-        batch.draw(backGround6,0,0);
-        batch.draw(backGround5,0,0);
-        batch.draw(backGround4,0,0);
-        batch.draw(backGround3,0,0);
-        batch.draw(backGround2,0,0);
-        batch.draw(backGround1,0,0);
+        batch.draw(menu_1,0,0);
+        batch.draw(texturaOjo,660,190);
+        pupila.draw(batch);
+        menu_2.draw(batch);
+
         batch.end();
 
         escenaMenu.draw();
@@ -188,26 +210,18 @@ class PantallaMenu extends Pantalla {
     @Override
     public void dispose() {
 
-      backGround6.dispose();
-      backGround5.dispose();
-      backGround4.dispose();
-      backGround3.dispose();
-      backGround2.dispose();
-      backGround1.dispose();
-      texturaBtnCustomize.dispose();
-      texturaBtnOptions.dispose();
-      texturaBtnPlay.dispose();
-      texturaBtnShop.dispose();
-      assetManager.unload("layers/1.png");
-      assetManager.unload("layers/2.png");
-      assetManager.unload("layers/3.png");
-      assetManager.unload("layers/4.png");
-      assetManager.unload("layers/5.png");
-      assetManager.unload("layers/6.png");
-      assetManager.unload("button_play.png");
-      assetManager.unload("button_options.png");
-      assetManager.unload("button_shop.png");
-      assetManager.unload("button_customize.png");
+        texturaBtnCustomize.dispose();
+        texturaBtnOptions.dispose();
+        texturaBtnPlay.dispose();
+        texturaBtnShop.dispose();
+        assetManager.unload("menu_1.png");
+        assetManager.unload("menu_2.png");
+        assetManager.unload("menu_ojo.png");
+        assetManager.unload("menu_pupila.png");
+        assetManager.unload("button_play.png");
+        assetManager.unload("button_options.png");
+        assetManager.unload("button_shop.png");
+        assetManager.unload("button_customize.png");
 
     }
 
