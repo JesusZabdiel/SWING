@@ -109,7 +109,9 @@ class PantallaPlay extends Pantalla {
 
     private void crearItems() {
         items = new Array<>();
-        items.add(new Daño(texturaDaño));
+        for (int i = 0; i<4; i++) {
+            items.add(new Daño(texturaDaño));
+        }
         items.add(new Ralentizacion(texturaVida));
         items.add(new Invulnerbilidad(texturaInvulnerable));
     }
