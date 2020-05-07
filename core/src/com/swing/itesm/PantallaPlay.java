@@ -264,7 +264,7 @@ class PantallaPlay extends Pantalla {
         }
 
         marcador.render(batch);
-        batch.draw(texturaBtnPause, 0,ALTO-texturaBtnPause.getHeight());
+        batch.draw(texturaBtnPause, 20,ALTO-texturaBtnPause.getHeight()-20);
         batch.end();
 
 
@@ -363,8 +363,8 @@ class PantallaPlay extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX,screenY,0);
             camara.unproject(v);
-            if(v.x >=0 && v.x <= texturaBtnPause.getWidth()
-                    && v.y <= ALTO && v.y >= ALTO-texturaBtnPause.getHeight()){
+            if(v.x >=20 && v.x <= texturaBtnPause.getWidth()+20
+                    && v.y <= ALTO-20 && v.y >= ALTO-texturaBtnPause.getHeight()-20){
                 estadoJuego = EstadoJuego.PAUSADO;
                 escenaPausa = new EscenaPausa(vista, batch);
                 Gdx.input.setInputProcessor(escenaPausa);
