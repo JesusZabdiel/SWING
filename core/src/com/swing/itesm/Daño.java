@@ -10,7 +10,7 @@ public class Daño extends Item{
         super(textura);
         probabilidad = 40;
         visible = false;
-        sprite.setColor(Color.BLUE);
+        sprite.setColor(Color.RED);
     }
 
 }

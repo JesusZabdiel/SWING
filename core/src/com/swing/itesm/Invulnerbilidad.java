@@ -10,6 +10,5 @@ public class Invulnerbilidad extends Item{
         super(textura);
         probabilidad = 5;
         visible = false;
-        sprite.setColor(Color.RED);
     }
 }

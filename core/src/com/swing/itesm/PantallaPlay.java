@@ -50,7 +50,8 @@ class PantallaPlay extends Pantalla {
     private Texture barraVida;
     private Texture texturaBtnPause;
     private Texture texturaOjo;
-    private Texture texturaObstaculo;
+    private Texture texturaInvulnerable;
+    private Texture texturaDaño;
 
     //Background
     private Escenario escenario;
@@ -108,9 +109,9 @@ class PantallaPlay extends Pantalla {
 
     private void crearItems() {
         items = new Array<>();
-        items.add(new Daño(texturaVida));
+        items.add(new Daño(texturaDaño));
         items.add(new Ralentizacion(texturaVida));
-        items.add(new Invulnerbilidad(texturaVida));
+        items.add(new Invulnerbilidad(texturaInvulnerable));
     }
 
 
@@ -255,7 +256,8 @@ class PantallaPlay extends Pantalla {
         barraVida = manager.get("lifeBar.png");
         barraVidaBack = manager.get("lifeBarBack.png");
         texturaBtnPause = manager.get("pause.png");
-        texturaObstaculo = manager.get("Obstaculo.png");
+        texturaDaño = manager.get("Obstaculo.png");
+        texturaInvulnerable = manager.get("invulnerable.png");
         texturaOjo = manager.get("ojo.png");
 
     }
