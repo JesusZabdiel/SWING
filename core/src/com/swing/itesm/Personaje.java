@@ -26,6 +26,7 @@ public class Personaje {
     private boolean giro = false, enElAire=false;
     private int gravedad = 90;
     private float timerMovimiento;
+    private boolean invulnerabilidad;
 
 
     public Personaje(Texture textura, Texture relleno, Color chroma, Estado estado){
@@ -52,6 +53,7 @@ public class Personaje {
         sprite.setPosition(x,y);
         color.setPosition(x,y);
         this.estado = estado;
+        this.invulnerabilidad = false;
 
     }
 
@@ -145,4 +147,11 @@ public class Personaje {
 
     }
 
+    public void setInvulnerabilidad(boolean invulnerabilidad) {
+        this.invulnerabilidad = invulnerabilidad;
+    }
+
+    public boolean isInvulnerable() {
+        return invulnerabilidad;
+    }
 }

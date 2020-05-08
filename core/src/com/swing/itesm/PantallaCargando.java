@@ -69,7 +69,8 @@ public class PantallaCargando implements Screen {
         assetManager.load("lifeBarBack.png", Texture.class);
         assetManager.load("pause.png", Texture.class);
         assetManager.load("Obstaculo.png", Texture.class);
-        assetManager.load("invulnerable.png", Texture.class);
+        assetManager.load("invulnerable_Small.png", Texture.class);
+        assetManager.load("reloj.png", Texture.class);
 
         //Sonido
         assetManager.load("correr5.mp3", Sound.class);

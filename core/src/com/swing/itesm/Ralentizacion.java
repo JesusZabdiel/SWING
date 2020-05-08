@@ -10,6 +10,5 @@ public class Ralentizacion extends Item {
         super(textura);
         probabilidad = 20;
         visible = false;
-        sprite.setColor(Color.GREEN);
     }
 }

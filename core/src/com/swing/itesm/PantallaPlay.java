@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 class PantallaPlay extends Pantalla {
 
 
+
     private final Juego juego;
 
     //jugability
@@ -30,11 +31,12 @@ class PantallaPlay extends Pantalla {
     public int vidaPorSegundo = 10;
     private int aumentoVida = 4;
     private float vidaJugador;
-    private final int N_OBSTACULOS = 6;
     float barraVidaDimentions;
-    private float score;
+    private int score;
     private final float AUMENTO_VELOCIDAD = .01f;
-    private float tiempo;
+    private final float SPEED_LENTA = 2;
+    private float tiempoItem = 0;
+    private static final float DURACION_ITEM = 5;
 
     //efectos sonido
     private Sound efectoGancho;
@@ -52,6 +54,7 @@ class PantallaPlay extends Pantalla {
     private Texture texturaOjo;
     private Texture texturaInvulnerable;
     private Texture texturaDaño;
+    private Texture texturaReloj;
 
     //Background
     private Escenario escenario;
@@ -102,7 +105,6 @@ class PantallaPlay extends Pantalla {
         crearItems();
         crearVidaConstante();
         crearMarcador();
-
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
 
     }
@@ -112,14 +114,14 @@ class PantallaPlay extends Pantalla {
         for (int i = 0; i<4; i++) {
             items.add(new Daño(texturaDaño));
         }
-        items.add(new Ralentizacion(texturaVida));
+        items.add(new Ralentizacion(texturaReloj));
         items.add(new Invulnerbilidad(texturaInvulnerable));
     }
 
 
     private void crearEscenario() {
         escenario = new Escenario(backGround1,backGround2,backGround3,backGround4,backGround5,backGround6);
-        speed = 4;
+        speed = 7;
     }
 
 
@@ -127,9 +129,11 @@ class PantallaPlay extends Pantalla {
         escenario.mover(speed);
         moverVidas();
         moverItems();
-        generarItemsAleatorios(delta);
+        generarItemsAleatorios();
         verificarColisionesVida();
-        verficarColsionesItems();
+        verficarColsionesItems(delta);
+        controlarInvulnerabilidad(delta);
+        controlarRalentizacion(delta);
         restarVida(delta);
         aumentarPuntos(delta);
         aumentarVelocidad();
@@ -137,18 +141,45 @@ class PantallaPlay extends Pantalla {
 
     }
 
-    private void verficarColsionesItems() {
+    private void verficarColsionesItems(float delta) {
         for (Item item:items) {
             Rectangle rectItem = item.sprite.getBoundingRectangle();
             Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
             if (rectPlayer.overlaps(rectItem)) {
-                item.generarPosicionItem();
                 item.setVisible(false);
+                item.generarPosicionItem();
+                if (item instanceof Daño){
+                    restarVida(delta);
+                }else if (item instanceof Invulnerbilidad){
+                    personaje.setInvulnerabilidad(true);
+                    //controlarInvulnerabilidad(score);
+                }else{
+                    setLowSpeed();
+                }
             }
         }
     }
 
-    private void generarItemsAleatorios(float delta) {
+    private void setLowSpeed() {
+        speed = SPEED_LENTA;
+    }
+
+    private void controlarInvulnerabilidad(float delta) {
+        tiempoItem += delta;
+        if (tiempoItem >= DURACION_ITEM){
+            personaje.setInvulnerabilidad(false);
+        }
+    }
+
+    private void controlarRalentizacion(float delta){
+        tiempoItem += delta;
+        if (tiempoItem >= DURACION_ITEM){
+            speed = 7;
+        }
+
+    }
+
+    private void generarItemsAleatorios() {
         //que se generen cada cierto tiempo aleatorio
         //generarTiempoAleatorio(delta);
         int randomTime = (int)(Math.random()*30)+10;
@@ -259,7 +290,8 @@ class PantallaPlay extends Pantalla {
         barraVidaBack = manager.get("lifeBarBack.png");
         texturaBtnPause = manager.get("pause.png");
         texturaDaño = manager.get("Obstaculo.png");
-        texturaInvulnerable = manager.get("invulnerable.png");
+        texturaInvulnerable = manager.get("invulnerable_Small.png");
+        texturaReloj = manager.get("reloj.png");
         texturaOjo = manager.get("ojo.png");
 
     }
@@ -322,8 +354,10 @@ class PantallaPlay extends Pantalla {
     }
 
     private void restarVida(float delta) {
-        vidaJugador -= CONSTANT_VIDA*delta;
-        barraVidaDimentions = 350/100f * vidaJugador;
+        if (!personaje.isInvulnerable()) {
+            vidaJugador -= CONSTANT_VIDA * delta;
+            barraVidaDimentions = 350 / 100f * vidaJugador;
+        }
     }
 
     private void moverVidas() {
