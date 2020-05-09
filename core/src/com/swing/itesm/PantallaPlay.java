@@ -373,8 +373,8 @@ class PantallaPlay extends Pantalla {
     private void restarVida(float delta) {
         if (!personaje.isInvulnerable()) {
             vidaJugador -= CONSTANT_VIDA * delta;
-            barraVidaDimentions = 350 / 100f * vidaJugador;
         }
+        barraVidaDimentions = 350 / 100f * vidaJugador;
     }
 
     private void moverVidas() {
