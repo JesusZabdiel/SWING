@@ -277,6 +277,8 @@ class PantallaPlay extends Pantalla {
         color = azul;
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color, Estado.CORRIENDO);
         efectoCorrer.loop();
+        personaje.sprite.setScale(.7f);
+        personaje.color.setScale(.7f);
         vidaJugador = 100;
     }
 
