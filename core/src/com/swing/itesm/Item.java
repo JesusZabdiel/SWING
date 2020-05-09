@@ -24,7 +24,7 @@ public abstract class Item {
             this.sprite.setX(sprite.getX() - PantallaPlay.speed);
         }else{
             this.generarPosicionItem();
-            visible = false;
+            visible = false;//en los items de vida este atributo no es tomado en cuenta
         }
 
     }

@@ -27,16 +27,20 @@ class PantallaPlay extends Pantalla {
 
     //jugability
     public static float speed = 4;
+    private float speedAuxiliar;
     public final float CONSTANT_VIDA = 4;
     public int vidaPorSegundo = 10;
-    private int aumentoVida = 4;
+    private final int AUMENTO_VIDA = 4;
     private float vidaJugador;
+    private final float DAÑO_POR_ITEM = 7;
     float barraVidaDimentions;
     private int score;
     private final float AUMENTO_VELOCIDAD = .01f;
     private final float SPEED_LENTA = 2;
-    private float tiempoItem = 0;
-    private static final float DURACION_ITEM = 5;
+    private float tiempoItemRalentizacion = 0;
+    private float tiempoItemInvulnerable = 0;
+    private static final float DURACION_ITEM = 5;//valor en segundos
+    private boolean juegoRalentizado = false;
 
     //efectos sonido
     private Sound efectoGancho;
@@ -111,7 +115,7 @@ class PantallaPlay extends Pantalla {
 
     private void crearItems() {
         items = new Array<>();
-        for (int i = 0; i<4; i++) {
+        for (int i = 0; i<3; i++) {
             items.add(new Daño(texturaDaño));
         }
         items.add(new Ralentizacion(texturaReloj));
@@ -127,13 +131,14 @@ class PantallaPlay extends Pantalla {
 
     public void update(float delta) {
         escenario.mover(speed);
+
         moverVidas();
         moverItems();
         generarItemsAleatorios();
-        verificarColisionesVida();
-        verficarColsionesItems(delta);
         controlarInvulnerabilidad(delta);
         controlarRalentizacion(delta);
+        verificarColisionesVida();
+        verficarColsionesItems(delta);
         restarVida(delta);
         aumentarPuntos(delta);
         aumentarVelocidad();
@@ -149,34 +154,50 @@ class PantallaPlay extends Pantalla {
                 item.setVisible(false);
                 item.generarPosicionItem();
                 if (item instanceof Daño){
-                    restarVida(delta);
+                    restarVidaDano();
                 }else if (item instanceof Invulnerbilidad){
                     personaje.setInvulnerabilidad(true);
-                    //controlarInvulnerabilidad(score);
+                    //Si agarra otro item de invulnerabilidad antes que se acabe el tiempo, el tiempo se reincia
+                    tiempoItemInvulnerable = 0;
                 }else{
+                    tiempoItemRalentizacion = 0;
                     setLowSpeed();
                 }
             }
         }
     }
 
+    private void restarVidaDano() {
+        if (!personaje.isInvulnerable()){
+            vidaJugador -= DAÑO_POR_ITEM;
+        }
+    }
+
     private void setLowSpeed() {
+        juegoRalentizado = true;
+        speedAuxiliar = speed;
         speed = SPEED_LENTA;
     }
 
     private void controlarInvulnerabilidad(float delta) {
-        tiempoItem += delta;
-        if (tiempoItem >= DURACION_ITEM){
-            personaje.setInvulnerabilidad(false);
+        if (personaje.isInvulnerable()) {
+            tiempoItemInvulnerable += delta;
+            if (tiempoItemInvulnerable >= DURACION_ITEM) {
+                personaje.setInvulnerabilidad(false);
+                tiempoItemInvulnerable = 0;
+            }
         }
     }
 
     private void controlarRalentizacion(float delta){
-        tiempoItem += delta;
-        if (tiempoItem >= DURACION_ITEM){
-            speed = 7;
+        if (juegoRalentizado) {
+            tiempoItemRalentizacion += delta;
+            if (tiempoItemRalentizacion >= DURACION_ITEM) {
+                juegoRalentizado = false;
+                speed = speedAuxiliar;
+                tiempoItemRalentizacion = 0;
+            }
         }
-
     }
 
     private void generarItemsAleatorios() {
@@ -207,10 +228,6 @@ class PantallaPlay extends Pantalla {
             speed += AUMENTO_VELOCIDAD;
         }
 
-        if ((score > 0 && score % 10 == 0) && vidaConstante.size >= 5){
-            vidaConstante.pop();
-        }
-
     }
 
     private void verificarFinDeJuego() {
@@ -233,8 +250,9 @@ class PantallaPlay extends Pantalla {
             Rectangle rectVida = vida.sprite.getBoundingRectangle();
             Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
             if (rectPlayer.overlaps(rectVida)) {
+                efectoSalud.play();
                 vida.generarPosicionItem();
-                if (vidaJugador <=100 -aumentoVida ){
+                if (vidaJugador <= 100 - AUMENTO_VIDA){
                     aumentarVida();
                 }
             }
@@ -242,8 +260,7 @@ class PantallaPlay extends Pantalla {
     }
 
     private void aumentarVida() {
-        vidaJugador += aumentoVida;
-        efectoSalud.play();
+        vidaJugador += AUMENTO_VIDA;
     }
 
 
