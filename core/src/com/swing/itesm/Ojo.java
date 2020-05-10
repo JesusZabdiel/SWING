@@ -33,7 +33,7 @@ public class Ojo extends Objeto {
 
     public void moverOjo(float y){
         timerAnimacion+= Gdx.graphics.getDeltaTime();
-        this.x = 170+(float)Math.random()*10;
-        this.y = y+20+(float)Math.random()*5;
+        this.x = 160+(float)Math.random()*10;
+        this.y = y+110+(float)Math.random()*5;
     }
 }

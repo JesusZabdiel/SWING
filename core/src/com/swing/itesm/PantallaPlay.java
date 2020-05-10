@@ -354,6 +354,7 @@ class PantallaPlay extends Pantalla {
 
         marcador.render(batch);
         batch.draw(texturaBtnPause, 20,ALTO-texturaBtnPause.getHeight()-20);
+        escenario.renderFront(batch);
         batch.end();
 
 

@@ -34,9 +34,11 @@ public class Escenario {
     }
 
     public void render(SpriteBatch batch) {
-        for (Background b: backgrounds
-             ) {
-            b.render(batch);
+        for (int i=0; i<5; i++) {
+            backgrounds[i].render(batch);
         }
+    }
+    public void renderFront(SpriteBatch batch){
+        backgrounds[5].render(batch);
     }
 }
