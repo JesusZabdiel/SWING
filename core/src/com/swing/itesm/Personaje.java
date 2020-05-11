@@ -20,7 +20,7 @@ public class Personaje {
     private TextureRegion[][] colorPersonaje;
     private float timerAnimacion;
     private final float fakeRoof = Juego.ALTO-30;
-    private final float floor = 70;
+    private final float floor = 30;
     private Estado estado = Estado.IDLE;
     private float x, y;
     private boolean giro = false, enElAire=false;
