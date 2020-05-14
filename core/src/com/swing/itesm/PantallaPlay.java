@@ -31,12 +31,15 @@ class PantallaPlay extends Pantalla {
     public final float CONSTANT_VIDA = 4;
     public int vidaPorSegundo = 10;
     private final int AUMENTO_VIDA = 4;
+    private  final int MIN_VIDA_SEGUNDO = 4;
     private float vidaJugador;
     private final float DAÑO_POR_ITEM = 7;
     float barraVidaDimentions;
     private int score;
     private final float AUMENTO_VELOCIDAD = .01f;
     private final float SPEED_LENTA = 2;
+    private float tiempoControlarVida;
+    private final float TIEMPO_REDUCIR_VIDA = 12;
     private float tiempoItemRalentizacion = 0;
     private float tiempoItemInvulnerable = 0;
     private static final float DURACION_ITEM = 5;//valor en segundos
@@ -142,8 +145,21 @@ class PantallaPlay extends Pantalla {
         restarVida(delta);
         aumentarPuntos(delta);
         aumentarVelocidad();
+        controlarGeneradorVida(delta);
         verificarFinDeJuego();
 
+    }
+
+    private void controlarGeneradorVida(float delta) {
+        tiempoControlarVida += delta;
+        if (tiempoControlarVida >= TIEMPO_REDUCIR_VIDA){
+            if (vidaConstante.get(vidaConstante.size-1).sprite.getX() > ANCHO
+            && vidaPorSegundo > MIN_VIDA_SEGUNDO){
+                vidaConstante.pop();
+                tiempoControlarVida = 0;
+                vidaPorSegundo--;
+            }
+        }
     }
 
     private void verficarColsionesItems(float delta) {
