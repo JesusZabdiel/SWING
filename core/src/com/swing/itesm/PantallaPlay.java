@@ -349,11 +349,11 @@ class PantallaPlay extends Pantalla {
         escenario.render(batch);
         personaje.render(batch);
         ojo.render(batch);
-        batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-15,Pantalla.ALTO - barraVida.getHeight()-15);
+        batch.draw(barraVidaBack, Pantalla.ANCHO-barraVida.getWidth()-150,Pantalla.ALTO - barraVida.getHeight()-25);
 
         if(vidaJugador >=0){
-            batch.draw(barraVida,Pantalla.ANCHO-barraVida.getWidth()-15,
-                    Pantalla.ALTO - barraVida.getHeight()-15,barraVidaDimentions,barraVida.getHeight());
+            batch.draw(barraVida,Pantalla.ANCHO-barraVida.getWidth()-150,
+                    Pantalla.ALTO - barraVida.getHeight()-25,barraVidaDimentions,barraVida.getHeight());
         }
 
 
@@ -369,7 +369,7 @@ class PantallaPlay extends Pantalla {
         }
 
         marcador.render(batch);
-        batch.draw(texturaBtnPause, 20,ALTO-texturaBtnPause.getHeight()-20);
+        batch.draw(texturaBtnPause, ANCHO-100,ALTO-texturaBtnPause.getHeight(), 56,74);
         escenario.renderFront(batch);
         batch.end();
 
@@ -471,8 +471,9 @@ class PantallaPlay extends Pantalla {
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
             Vector3 v = new Vector3(screenX,screenY,0);
             camara.unproject(v);
-            if(v.x >=20 && v.x <= texturaBtnPause.getWidth()+20
-                    && v.y <= ALTO-20 && v.y >= ALTO-texturaBtnPause.getHeight()-20){
+
+            if(v.x >=ANCHO-100 && v.x <= texturaBtnPause.getWidth()+ANCHO-100
+                    && v.y <= ALTO && v.y >= ALTO-texturaBtnPause.getHeight()){
                 estadoJuego = EstadoJuego.PAUSADO;
                 escenaPausa = new EscenaPausa(vista, batch);
                 Gdx.input.setInputProcessor(escenaPausa);
