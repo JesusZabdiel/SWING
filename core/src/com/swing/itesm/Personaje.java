@@ -63,6 +63,8 @@ public class Personaje {
             sprite.setRegion(texturaPersonaje[0][0]);
 
         }else if (estado == Estado.CORRIENDO){
+            color.setRotation(0);
+            sprite.setRotation(0);
             TextureRegion regionColor = (TextureRegion)animacionColor.getKeyFrame(timerAnimacion);
             TextureRegion regionTrazo = (TextureRegion)animacionTrazo.getKeyFrame(timerAnimacion);
             color.setRegion(regionColor);
