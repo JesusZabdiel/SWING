@@ -77,6 +77,9 @@ public class PantallaCargando implements Screen {
         assetManager.load("gancho.wav",Sound.class);
         assetManager.load("muerte.mp3",Sound.class);
         assetManager.load("salud.mp3",Sound.class);
+        assetManager.load("escudo2.mp3",Sound.class);
+        assetManager.load("golpe.mp3",Sound.class);
+        assetManager.load("ralentizar.mp3",Sound.class);
 
         assetManager.finishLoading();
 

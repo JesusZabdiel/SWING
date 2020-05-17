@@ -50,6 +50,9 @@ class PantallaPlay extends Pantalla {
     private Sound efectoCorrer;
     private Sound efectoMuerte;
     private Sound efectoSalud;
+    private Sound efectoEscudo;
+    private Sound efectoGolpe;
+    private Sound efectoRalentizar;
 
     //Textures
     private Texture texturaPersonaje;
@@ -167,13 +170,16 @@ class PantallaPlay extends Pantalla {
                 item.generarPosicionItem();
                 if (item instanceof Daño){
                     restarVidaDano();
+
                 }else if (item instanceof Invulnerbilidad){
                     personaje.setInvulnerabilidad(true);
+                    efectoEscudo.play();
                     //Si agarra otro item de invulnerabilidad antes que se acabe el tiempo, el tiempo se reincia
                     tiempoItemInvulnerable = 0;
                 }else{
                     tiempoItemRalentizacion = 0;
                     personaje.setRelentizado(true);
+                    efectoRalentizar.play();
                 }
             }
         }
@@ -182,6 +188,7 @@ class PantallaPlay extends Pantalla {
     private void restarVidaDano() {
         if (!personaje.isInvulnerable()){
             vidaJugador -= DAÑO_POR_ITEM;
+            efectoGolpe.play();
         }
     }
 
@@ -194,6 +201,7 @@ class PantallaPlay extends Pantalla {
     private void controlarInvulnerabilidad(float delta) {
         if (personaje.isInvulnerable()) {
             tiempoItemInvulnerable += delta;
+
             if (tiempoItemInvulnerable >= DURACION_ITEM) {
                 personaje.setInvulnerabilidad(false);
                 tiempoItemInvulnerable = 0;
@@ -205,6 +213,7 @@ class PantallaPlay extends Pantalla {
     private void controlarRalentizacion(float delta){
         if (personaje.isRelentizado()) {
             tiempoItemRalentizacion += delta;
+
             if (tiempoItemRalentizacion >= DURACION_ITEM) {
                 personaje.setRelentizado(false);
                 tiempoItemRalentizacion = 0;
@@ -306,6 +315,9 @@ class PantallaPlay extends Pantalla {
         efectoGancho=manager.get("gancho.wav");
         efectoMuerte=manager.get("muerte.mp3");
         efectoSalud=manager.get("salud.mp3");
+        efectoEscudo=manager.get("escudo2.mp3");
+        efectoGolpe=manager.get("golpe.mp3");
+        efectoRalentizar=manager.get("ralentizar.mp3");
 
         //Texturas
         backGround1 = manager.get("layers/1.png");
@@ -415,6 +427,9 @@ class PantallaPlay extends Pantalla {
         manager.unload("gancho.wav");
         manager.unload("muerte.mp3");
         manager.unload("salud.mp3");
+        manager.unload("escudo2.mp3");
+        manager.unload("golpe.mp3");
+        manager.unload("ralentizar.mp3");
         manager.unload("layers/1.png");
         manager.unload("layers/2.png");
         manager.unload("layers/3.png");
@@ -520,6 +535,8 @@ class PantallaPlay extends Pantalla {
             //pixmap.setColor(255,255,255,0.5f);
             //pixmap.fillCircle(300,300,300);
             efectoCorrer.pause();
+            efectoEscudo.pause();
+            efectoRalentizar.pause();
             Texture texturaFondoGameOver = new Texture("negro.png");
             Image imgGameOver = new Image(texturaFondoGameOver);
             imgGameOver.setColor(0,0,0,0.7f);
@@ -580,6 +597,8 @@ class PantallaPlay extends Pantalla {
 
             super(vista, batch);
             efectoCorrer.stop();
+            efectoEscudo.stop();
+            efectoRalentizar.stop();
             efectoMuerte.play();
             Texture texturaFondoGameOver = new Texture("negro.png");
             Image imgGameOver = new Image(texturaFondoGameOver);
