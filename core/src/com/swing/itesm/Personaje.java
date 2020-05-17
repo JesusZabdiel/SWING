@@ -70,33 +70,26 @@ public class Personaje {
             color.setRegion(regionColor);
             sprite.setRegion(regionTrazo);
 
-
         }else if (estado==Estado.SALTANDO) {
-            color.setRotation(color.getRotation()+5);
-            sprite.setRotation(sprite.getRotation()+5);
-            if (sprite.getRotation()>170){
-                estado=Estado.CAYENDO;
-            }
+            color.setRotation(-30);
+            sprite.setRotation(-30);
             color.setRegion(colorPersonaje[1][0]);
             sprite.setRegion(texturaPersonaje[1][0]);
 
         }else if (estado==Estado.CAYENDO){
-            color.setRotation(0);
-            sprite.setRotation(0);
-
             color.setRegion(colorPersonaje[1][1]);
             sprite.setRegion(texturaPersonaje[1][1]);
 
         }else if(estado==Estado.SUBIENDO){
-            color.setRegion(colorPersonaje[1][2]);
-            sprite.setRegion(texturaPersonaje[1][2]);
-            color.setRotation(color.getRotation()+5);
-            sprite.setRotation(sprite.getRotation()+5);
-            if (sprite.getRotation()>80){
-                estado = Estado.SALTANDO;
-            }
+            float sacudida = (float)Math.random()*4;
+            color.setRotation(-30+sacudida);
+            sprite.setRotation(-30+sacudida);
+            color.setRegion(300,190,150,200);
+            sprite.setRegion(300,190,150,200);
 
         }else if (estado==Estado.BAJANDO){
+            color.setRotation(-30);
+            sprite.setRotation(-30);
             color.setRegion(colorPersonaje[1][3]);
             sprite.setRegion(texturaPersonaje[1][3]);
         }
@@ -114,10 +107,12 @@ public class Personaje {
             estado = Estado.CORRIENDO;
             color.setY(floor);
             sprite.setY(floor);
+            gravedad = 90;
         }else if (enElAire==false && giro==true) {
-            estado = Estado.CORRIENDO;
+            estado = Estado.SUBIENDO;
             color.setY(fakeRoof-color.getHeight());
             sprite.setY(fakeRoof-sprite.getHeight());
+            gravedad = -90;
         }else if (enElAire==true && giro == false){
             color.setPosition(color.getX(), -gravedad * (float)Math.pow(timerMovimiento,2) + color.getY());
             sprite.setPosition(sprite.getX(), -gravedad * (float)Math.pow(timerMovimiento,2) + sprite.getY());
@@ -145,7 +140,8 @@ public class Personaje {
         timerMovimiento = 0;
         gravedad = gravedad * -1;
         enElAire = true;
-        estado=Estado.SUBIENDO;
+        estado = Estado.SUBIENDO;
+
 
     }
 

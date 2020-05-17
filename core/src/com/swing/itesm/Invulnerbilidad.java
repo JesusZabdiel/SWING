@@ -8,7 +8,7 @@ public class Invulnerbilidad extends Item{
 
     public Invulnerbilidad(Texture textura) {
         super(textura);
-        probabilidad = 5;
+        probabilidad = 2;
         visible = false;
     }
 }
