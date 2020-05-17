@@ -1,7 +1,6 @@
 package com.swing.itesm;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -12,6 +11,7 @@ import com.swing.itesm.PantallaPlay.Estado;
 
 
 public class Personaje {
+    private Color chroma = Color.RED;
     private Animation animacionTrazo;
     private Animation animacionColor;
     public Sprite color;
@@ -24,12 +24,12 @@ public class Personaje {
     private Estado estado = Estado.IDLE;
     private float x, y;
     private boolean giro = false, enElAire=false;
-    private int gravedad = 90;
+    private int gravedad = 30;
     private float timerMovimiento;
-    private boolean invulnerabilidad;
+    private boolean invulnerabilidad, relentizado;
 
 
-    public Personaje(Texture textura, Texture relleno, Color chroma, Estado estado){
+    public Personaje(Texture textura, Texture relleno, Estado estado){
         TextureRegion regionTrazo = new TextureRegion(textura);
         TextureRegion regionColor = new TextureRegion(relleno);
 
@@ -46,7 +46,6 @@ public class Personaje {
 
         sprite = new Sprite(texturaPersonaje[0][0]);
         color = new Sprite(colorPersonaje[0][0]);
-        color.setColor(chroma);
 
         this.x=50;
         this.y=floor;
@@ -58,6 +57,8 @@ public class Personaje {
     }
 
     public void render(SpriteBatch batch){
+        color.setColor(chroma);
+
         if (estado == Estado.IDLE){
             color.setRegion(colorPersonaje[0][0]);
             sprite.setRegion(texturaPersonaje[0][0]);
@@ -100,8 +101,12 @@ public class Personaje {
 
 
     public void moverPersonaje(float delta) {
-        timerAnimacion+= Gdx.graphics.getDeltaTime();
+        timerAnimacion+= delta;
         timerMovimiento+= delta;
+        if(relentizado){
+            timerMovimiento = timerMovimiento/1.08f;
+        }
+
 
         if(enElAire==false && giro==false) {
             estado = Estado.CORRIENDO;
@@ -141,8 +146,6 @@ public class Personaje {
         gravedad = gravedad * -1;
         enElAire = true;
         estado = Estado.SUBIENDO;
-
-
     }
 
     public void setInvulnerabilidad(boolean invulnerabilidad) {
@@ -151,5 +154,18 @@ public class Personaje {
 
     public boolean isInvulnerable() {
         return invulnerabilidad;
+    }
+
+    public void setRelentizado(boolean relentizado){
+        this.relentizado = relentizado;
+    }
+
+    public boolean isRelentizado(){
+        return relentizado;
+    }
+
+    public void setColor(Color color){
+        System.out.println("nono");
+        this.chroma = color;
     }
 }

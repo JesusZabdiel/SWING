@@ -67,13 +67,9 @@ class PantallaPlay extends Pantalla {
     private Escenario escenario;
     private Texture backGround6, backGround5, backGround4, backGround3, backGround2, backGround1;
 
-    // Colores
-    private Color amarillo = new Color(0.9764f,0.7647f,0.2078f,1);
-    private Color azul = new Color(0.1529f,0.3647f,1,1);
 
     //Objects
     //private  Player player;
-    public Estado estadoPersonaje;
     public  EstadoJuego  estadoJuego;
     private int tempEstado;
     private Personaje personaje;
@@ -177,7 +173,7 @@ class PantallaPlay extends Pantalla {
                     tiempoItemInvulnerable = 0;
                 }else{
                     tiempoItemRalentizacion = 0;
-                    setLowSpeed();
+                    personaje.setRelentizado(true);
                 }
             }
         }
@@ -205,12 +201,12 @@ class PantallaPlay extends Pantalla {
         }
     }
 
+
     private void controlarRalentizacion(float delta){
-        if (juegoRalentizado) {
+        if (personaje.isRelentizado()) {
             tiempoItemRalentizacion += delta;
             if (tiempoItemRalentizacion >= DURACION_ITEM) {
-                juegoRalentizado = false;
-                speed = speedAuxiliar;
+                personaje.setRelentizado(false);
                 tiempoItemRalentizacion = 0;
             }
         }
@@ -266,6 +262,7 @@ class PantallaPlay extends Pantalla {
             Rectangle rectVida = vida.sprite.getBoundingRectangle();
             Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
             if (rectPlayer.overlaps(rectVida)) {
+                marcador.marcar(6);
                 efectoSalud.play();
                 vida.generarPosicionItem();
                 if (vidaJugador <= 100 - AUMENTO_VIDA){
@@ -290,8 +287,7 @@ class PantallaPlay extends Pantalla {
 
 
     private void iniciarPersonaje() {
-        color = azul;
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color, Estado.CORRIENDO);
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, Estado.CORRIENDO);
         efectoCorrer.loop();
         personaje.sprite.setScale(.7f);
         personaje.color.setScale(.7f);

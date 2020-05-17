@@ -27,15 +27,9 @@ class PantallaCustomize extends Pantalla {
     private Stage escenaMenu;  // botones,....
 
     // Colores
-    private Color amarillo = new Color(0.9764f,0.7647f,0.2078f,1);
-    private Color azul = new Color(0.1529f,0.3647f,1,1);
-    private Color rojo = new Color(255,0.34117f,0.2f,1);
-    private Color pink = new Color(0.8784f,0.2f,1,1);
-    private Color verde = new Color (0.5764f,0.9803f,0.7098f,1);
 
     public PantallaPlay.Estado estadoPersonaje;
     private Personaje personaje;
-    private Color color;
     private Texture texturaPantalla;
 
     //AssetManager
@@ -62,8 +56,7 @@ class PantallaCustomize extends Pantalla {
     }
 
     private void iniciarPersonaje() {
-        color = verde;
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, color, PantallaPlay.Estado.IDLE);
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, PantallaPlay.Estado.IDLE);
 
         personaje.sprite.setScale(2);
         personaje.color.setScale(2);
@@ -90,6 +83,7 @@ class PantallaCustomize extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                personaje.setColor(Color.VIOLET);
                 juego.setScreen(new PantallaMenu(juego));
             }
         });
@@ -106,15 +100,11 @@ class PantallaCustomize extends Pantalla {
         assetManager.load("ninjaTrazo.png", Texture.class);
         assetManager.load("ninjaRelleno.png", Texture.class);
 
-
         assetManager.finishLoading();
         texturaPantalla = assetManager.get("fondo.png");
 
         texturaPersonaje = assetManager.get("ninjaTrazo.png");
         rellenoPersonaje = assetManager.get("ninjaRelleno.png");
-
-
-
     }
 
 
@@ -192,14 +182,11 @@ class PantallaCustomize extends Pantalla {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-
             return false;
         }
 
         @Override
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
             return false;
         }
 
