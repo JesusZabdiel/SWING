@@ -74,7 +74,7 @@ class PantallaInstrucciones extends Pantalla {
     private void cargarTexturas() {
 
         texturaFondoShop = new Texture("fondo.png");
-        texturaInstrucciones = new Texture ("Instrucciones.png");
+        texturaInstrucciones = new Texture ("Explicacion.png");
 
     }
 
@@ -88,8 +88,7 @@ class PantallaInstrucciones extends Pantalla {
         batch.begin();
 
         batch.draw(texturaFondoShop,0,0);
-        batch.draw(texturaInstrucciones,ANCHO/2-texturaInstrucciones.getWidth()/2,ALTO/2-texturaInstrucciones.getHeight()/2);
-
+        batch.draw(texturaInstrucciones,0,0);
         batch.end();
         escenaMenu.draw();
 

@@ -20,7 +20,7 @@ class PantallaMenu extends Pantalla {
     //private Texture texturaFondo;
 
     private Texture menu_1, texturaMenu_2, texturaOjo, texturaPupila,
-            texturaBtnPlay, texturaBtnOptions, texturaBtnShop, texturaBtnCustomize;
+            texturaBtnJugar, texturaBtnAcerca, texturaBtnComoJugar, texturaBtnPersonalizacion;
 
     // Menu
     private Stage escenaMenu;  // botones,....
@@ -63,10 +63,10 @@ class PantallaMenu extends Pantalla {
         texturaOjo = assetManager.get("menu_ojo.png");
         texturaPupila = assetManager.get("menu_pupila.png");
 
-        texturaBtnPlay = assetManager.get("Jugar.png");
-        texturaBtnOptions = assetManager.get("Acerca.png");
-        texturaBtnShop = assetManager.get("Como_jugar.png");
-        texturaBtnCustomize = assetManager.get("Personalización.png");
+        texturaBtnJugar = assetManager.get("Jugar.png");
+        texturaBtnAcerca = assetManager.get("Acerca.png");
+        texturaBtnComoJugar = assetManager.get("Como_jugar.png");
+        texturaBtnPersonalizacion = assetManager.get("Personalización.png");
 
     }
 
@@ -76,38 +76,36 @@ class PantallaMenu extends Pantalla {
 
 
         // Boton Play
-        TextureRegionDrawable trdPlay = new TextureRegionDrawable(new TextureRegion(texturaBtnPlay));
+        TextureRegionDrawable trdPlay = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
 
         // Boton JugarP
         //Texture texturaBtnJugarP = new Texture("btnSpace.png");
         //TextureRegionDrawable trdJugarP = new TextureRegionDrawable(new TextureRegion(texturaBtnJugarP));
 
         //Boton Options
-        TextureRegionDrawable trdOptions = new TextureRegionDrawable(new TextureRegion(texturaBtnOptions));
+        TextureRegionDrawable trdAcerca = new TextureRegionDrawable(new TextureRegion(texturaBtnAcerca));
 
         // Boton shop
-        TextureRegionDrawable trdShop = new TextureRegionDrawable(new TextureRegion(texturaBtnShop));
+        TextureRegionDrawable trdComoJugar = new TextureRegionDrawable(new TextureRegion(texturaBtnComoJugar));
 
         // Boton customize
-        TextureRegionDrawable trdCustomize = new TextureRegionDrawable(new TextureRegion(texturaBtnCustomize));
+        TextureRegionDrawable trdPersonalizacion = new TextureRegionDrawable(new TextureRegion(texturaBtnPersonalizacion));
 
 
 
-        ImageButton btnPlay = new ImageButton(trdPlay);
-        ImageButton btnOptions = new ImageButton(trdOptions);
-        ImageButton btnShop = new ImageButton(trdShop);
-        ImageButton btnCustomize = new ImageButton(trdCustomize);
+        ImageButton btnJugar = new ImageButton(trdPlay);
+        ImageButton btnAcerca = new ImageButton(trdAcerca);
+        ImageButton btnComoJugar = new ImageButton(trdComoJugar);
+        ImageButton btnPersonalizacion = new ImageButton(trdPersonalizacion);
 
-        btnPlay.setPosition(80,370);
-
-        btnCustomize.setPosition(80,280);
-
-        btnShop.setPosition(80,180);
-
-        btnOptions.setPosition(80,100);
+        int separacion = 35;
+        btnJugar.setPosition(80,480);
+        btnComoJugar.setPosition(80, btnJugar.getY()-btnComoJugar.getHeight()-separacion);
+        btnPersonalizacion.setPosition(80,btnComoJugar.getY()-btnPersonalizacion.getHeight()-separacion);
+        btnAcerca.setPosition(80,btnPersonalizacion.getY()-btnAcerca.getHeight()-separacion);
 
         //Listener1
-        btnPlay.addListener(new ClickListener(){
+        btnJugar.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -116,7 +114,7 @@ class PantallaMenu extends Pantalla {
         });
 
         //Listener2
-        btnCustomize.addListener(new ClickListener(){
+        btnPersonalizacion.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -125,7 +123,7 @@ class PantallaMenu extends Pantalla {
         });
 
         //Listener3
-        btnShop.addListener(new ClickListener(){
+        btnComoJugar.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -134,7 +132,7 @@ class PantallaMenu extends Pantalla {
         });
 
         //Listener4
-        btnOptions.addListener(new ClickListener(){
+        btnAcerca.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -142,10 +140,10 @@ class PantallaMenu extends Pantalla {
             }
         });
 
-        escenaMenu.addActor(btnPlay);
-        escenaMenu.addActor(btnOptions);
-        escenaMenu.addActor(btnShop);
-        escenaMenu.addActor(btnCustomize);
+        escenaMenu.addActor(btnJugar);
+        escenaMenu.addActor(btnAcerca);
+        escenaMenu.addActor(btnComoJugar);
+        escenaMenu.addActor(btnPersonalizacion);
 
         Gdx.input.setInputProcessor(escenaMenu);
 
@@ -210,10 +208,10 @@ class PantallaMenu extends Pantalla {
     @Override
     public void dispose() {
 
-        texturaBtnCustomize.dispose();
-        texturaBtnOptions.dispose();
-        texturaBtnPlay.dispose();
-        texturaBtnShop.dispose();
+        texturaBtnPersonalizacion.dispose();
+        texturaBtnAcerca.dispose();
+        texturaBtnJugar.dispose();
+        texturaBtnComoJugar.dispose();
         assetManager.unload("menu_1.png");
         assetManager.unload("menu_2.png");
         assetManager.unload("menu_ojo.png");
