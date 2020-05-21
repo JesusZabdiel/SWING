@@ -1,12 +1,15 @@
 package com.swing.itesm;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import com.swing.itesm.PantallaPlay.Estado;
 
 
@@ -165,7 +168,6 @@ public class Personaje {
     }
 
     public void setColor(Color color){
-        System.out.println("nono");
         this.chroma = color;
     }
 }

@@ -3,6 +3,7 @@ package com.swing.itesm;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,6 +28,12 @@ class PantallaCustomize extends Pantalla {
     private Stage escenaMenu;  // botones,....
 
     // Colores
+    public static Array<Color> colores;
+    private  Color actualColor;
+
+
+    //Preferences
+    private Preferences prefCustomize;
 
     public PantallaPlay.Estado estadoPersonaje;
     private Personaje personaje;
@@ -48,11 +55,32 @@ class PantallaCustomize extends Pantalla {
 
         cargarTexturas();
         iniciarPersonaje();
+        crearColores();
+        crearObjetoPreferencias();
+        cargarPreferencias();
 
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         crearMenu();
 
+    }
+
+    private void cargarPreferencias() {
+        actualColor = colores.get(prefCustomize.getInteger("ColorPersonaje"));
+    }
+
+    private void crearObjetoPreferencias() {
+        prefCustomize = Gdx.app.getPreferences("Preferencias Customize");
+    }
+
+    private void crearColores() {
+        colores = new Array<>();
+        colores.add(Color.RED);
+        colores.add(Color.BLUE);
+        colores.add(Color.DARK_GRAY);
+        colores.add(Color.SALMON);
+        colores.add(Color.GREEN);
+        colores.add(Color.GOLD);
     }
 
     private void iniciarPersonaje() {
@@ -74,26 +102,69 @@ class PantallaCustomize extends Pantalla {
         Texture texturaBtnMenu = new Texture("Salir.png");
         TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
 
+        //btn cambiar color (PROVISIONAL)
+        Texture texturaBtnTest = new Texture("testSquare.png");
+        TextureRegionDrawable trdTest = new TextureRegionDrawable(new TextureRegion(texturaBtnTest));
+
+        //Botón guardar
+        Texture textureGuardar = new Texture("testSquare.png");
+        TextureRegionDrawable trdGuardar = new TextureRegionDrawable(new TextureRegion(textureGuardar));
+
         ImageButton btnMenu = new ImageButton(trdMenu);
+        ImageButton btnTest = new ImageButton(trdTest);
+        ImageButton btbGuardar = new ImageButton(trdGuardar);
+
 
         btnMenu.setPosition(80,ALTO-40-btnMenu.getHeight());
+        btnTest.setPosition(ANCHO/2, ALTO/2);
+        btbGuardar.setPosition(ANCHO/2 + 200, ALTO/2 - 100);
 
         //Listener1
         btnMenu.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                personaje.setColor(Color.VIOLET);
+                //personaje.setColor(Color.VIOLET);
                 juego.setScreen(new PantallaMenu(juego));
             }
         });
 
+        btnTest.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                //super.clicked(event, x, y);
+                //personaje.setColor(Color.VIOLET);
+                cambiarColorPersonaje();
+            }
+        });
+
+        btbGuardar.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                prefCustomize.putInteger("ColorPersonaje", colores.indexOf(actualColor, true));
+                prefCustomize.flush();
+                System.out.println("Se guardó la configuración");
+            }
+        });
+
         escenaMenu.addActor(btnMenu);
+        escenaMenu.addActor(btnTest);
+        escenaMenu.addActor(btbGuardar);
 
         Gdx.input.setInputProcessor(escenaMenu);
     }
 
+    private void cambiarColorPersonaje() {
+        int nuevoColor = colores.indexOf(actualColor, true) +1;
+        if (nuevoColor <= colores.size-1){
+            personaje.setColor(colores.get(nuevoColor));
+            actualColor = colores.get(nuevoColor);
+        }else{
+            actualColor = Color.RED;
+            personaje.setColor(actualColor);
+        }
 
+    }
 
     private void cargarTexturas() {
         assetManager.load("fondo.png", Texture.class);
