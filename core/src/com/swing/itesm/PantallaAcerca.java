@@ -71,7 +71,7 @@ class PantallaAcerca extends Pantalla {
 
     private void cargarTexturas() {
 
-        texturaFondoOptions = new Texture("fondo.png");
+        texturaFondoOptions = new Texture("creditos.png");
 
     }
 
@@ -79,26 +79,13 @@ class PantallaAcerca extends Pantalla {
 
     @Override
     public void render(float delta) {
-        Texto texto =  new Texto("fontScore.fnt");
         borrarPantalla();
 
         batch.setProjectionMatrix(camara.combined);
-        String nombres =
-                "Sebastian Garcia Olivares      ISC\n" +
-                "Jesus Zabdiel Sanchez Chavez ISC\n" +
-                "Mariana Caballero Cabrera     ISC\n" +
-                "Alejandro Torices Oliva         ISC\n";
-
-        String creditos = "Un juego de:";
-
-
 
         batch.begin();
 
         batch.draw(texturaFondoOptions,0,0);
-        texto.render(batch, creditos, ANCHO/2, 650);
-        texto.render(batch, nombres,ANCHO/2, 540);
-
 
         batch.end();
 
