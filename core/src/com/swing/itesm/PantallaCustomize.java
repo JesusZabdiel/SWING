@@ -28,7 +28,6 @@ class PantallaCustomize extends Pantalla {
     private Stage escenaMenu;  // botones,....
 
     // Colores
-    public static Array<Color> colores;
     public Color actualColor;
 
 
@@ -54,7 +53,6 @@ class PantallaCustomize extends Pantalla {
     public void show() {
 
         cargarTexturas();
-        crearColores();
         crearObjetoPreferencias();
         cargarPreferencias();
         iniciarPersonaje();
@@ -67,22 +65,13 @@ class PantallaCustomize extends Pantalla {
     }
 
     private void cargarPreferencias() {
-        actualColor = colores.get(prefCustomize.getInteger("ColorPersonaje"));
+        actualColor = Juego.colores.get(prefCustomize.getInteger("ColorPersonaje"));
     }
 
     private void crearObjetoPreferencias() {
         prefCustomize = Gdx.app.getPreferences("Preferencias Customize");
     }
 
-    private void crearColores() {
-        colores = new Array<>();
-        colores.add(Color.RED);
-        colores.add(Color.BLUE);
-        colores.add(Color.DARK_GRAY);
-        colores.add(Color.SALMON);
-        colores.add(Color.GREEN);
-        colores.add(Color.GOLD);
-    }
 
     private void iniciarPersonaje() {
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, actualColor, PantallaPlay.Estado.IDLE);
@@ -142,7 +131,7 @@ class PantallaCustomize extends Pantalla {
         btbGuardar.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                prefCustomize.putInteger("ColorPersonaje", colores.indexOf(actualColor, true));
+                prefCustomize.putInteger("ColorPersonaje", Juego.colores.indexOf(actualColor, true));
                 prefCustomize.flush();
                 System.out.println("Se guardó la configuración");
             }
@@ -156,10 +145,10 @@ class PantallaCustomize extends Pantalla {
     }
 
     private void cambiarColorPersonaje() {
-        int nuevoColor = colores.indexOf(actualColor, true) +1;
-        if (nuevoColor <= colores.size-1){
-            personaje.setColor(colores.get(nuevoColor));
-            actualColor = colores.get(nuevoColor);
+        int nuevoColor = Juego.colores.indexOf(actualColor, true) +1;
+        if (nuevoColor <= Juego.colores.size-1){
+            personaje.setColor(Juego.colores.get(nuevoColor));
+            actualColor = Juego.colores.get(nuevoColor);
         }else{
             actualColor = Color.RED;
             personaje.setColor(actualColor);

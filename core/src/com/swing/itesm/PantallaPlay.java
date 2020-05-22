@@ -295,7 +295,7 @@ class PantallaPlay extends Pantalla {
 
 
     private void iniciarPersonaje() {
-        Color chroma = PantallaCustomize.colores.get(prefPersonaje.getInteger("ColorPersonaje"));
+        Color chroma = Juego.colores.get(prefPersonaje.getInteger("ColorPersonaje"));
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, chroma, Estado.CORRIENDO);
         efectoCorrer.loop();
         personaje.sprite.setScale(.7f);
