@@ -2,6 +2,7 @@ package com.swing.itesm;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -20,9 +21,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 class PantallaPlay extends Pantalla {
-
-
-
     private final Juego juego;
 
     //jugability
@@ -91,7 +89,7 @@ class PantallaPlay extends Pantalla {
 
     //Game Over
     private EscenaGameOver escenaGameOver;
-
+    private Preferences prefPersonaje;
 
 
     public PantallaPlay(Juego juego) {
@@ -102,6 +100,7 @@ class PantallaPlay extends Pantalla {
 
     @Override
     public void show() {
+        prefPersonaje = Gdx.app.getPreferences("Preferencias Customize");
         estadoJuego = EstadoJuego.JUGANDO;
         manager = juego.getAssetManager();
         cargarTexturas();
@@ -296,7 +295,8 @@ class PantallaPlay extends Pantalla {
 
 
     private void iniciarPersonaje() {
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, Estado.CORRIENDO);
+        Color chroma = PantallaCustomize.colores.get(prefPersonaje.getInteger("ColorPersonaje"));
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, chroma, Estado.CORRIENDO);
         efectoCorrer.loop();
         personaje.sprite.setScale(.7f);
         personaje.color.setScale(.7f);

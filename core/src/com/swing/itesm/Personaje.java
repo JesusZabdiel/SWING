@@ -9,12 +9,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import com.swing.itesm.PantallaPlay.Estado;
 
 
 public class Personaje {
-    private Color chroma = Color.RED;
+    private Color chroma;
     private Animation animacionTrazo;
     private Animation animacionColor;
     public Sprite color;
@@ -32,7 +31,7 @@ public class Personaje {
     private boolean invulnerabilidad, relentizado;
 
 
-    public Personaje(Texture textura, Texture relleno, Estado estado){
+    public Personaje(Texture textura, Texture relleno, Color chroma, Estado estado){
         TextureRegion regionTrazo = new TextureRegion(textura);
         TextureRegion regionColor = new TextureRegion(relleno);
 
@@ -55,6 +54,7 @@ public class Personaje {
         sprite.setPosition(x,y);
         color.setPosition(x,y);
         this.estado = estado;
+        this.chroma = chroma;
         this.invulnerabilidad = false;
 
     }

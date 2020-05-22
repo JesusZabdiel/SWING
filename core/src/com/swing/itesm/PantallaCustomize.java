@@ -29,11 +29,11 @@ class PantallaCustomize extends Pantalla {
 
     // Colores
     public static Array<Color> colores;
-    private  Color actualColor;
+    public Color actualColor;
 
 
     //Preferences
-    private Preferences prefCustomize;
+    public Preferences prefCustomize;
 
     public PantallaPlay.Estado estadoPersonaje;
     private Personaje personaje;
@@ -54,10 +54,11 @@ class PantallaCustomize extends Pantalla {
     public void show() {
 
         cargarTexturas();
-        iniciarPersonaje();
         crearColores();
         crearObjetoPreferencias();
         cargarPreferencias();
+        iniciarPersonaje();
+
 
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
@@ -84,7 +85,7 @@ class PantallaCustomize extends Pantalla {
     }
 
     private void iniciarPersonaje() {
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, PantallaPlay.Estado.IDLE);
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, actualColor, PantallaPlay.Estado.IDLE);
 
         personaje.sprite.setScale(2);
         personaje.color.setScale(2);
