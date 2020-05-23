@@ -74,12 +74,12 @@ public class PantallaCargando implements Screen {
 
         //Sonido
         assetManager.load("correr5.mp3", Sound.class);
-        assetManager.load("gancho.wav",Sound.class);
+        assetManager.load("salto3.mp3",Sound.class);
         assetManager.load("muerte.mp3",Sound.class);
         assetManager.load("salud.mp3",Sound.class);
-        assetManager.load("escudo2.mp3",Sound.class);
-        assetManager.load("golpe.mp3",Sound.class);
-        assetManager.load("ralentizar.mp3",Sound.class);
+        assetManager.load("escudo5.mp3",Sound.class);
+        assetManager.load("golpe2.mp3",Sound.class);
+        assetManager.load("ralentizacion.mp3",Sound.class);
 
         assetManager.finishLoading();
 

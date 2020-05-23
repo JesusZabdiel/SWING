@@ -312,12 +312,12 @@ class PantallaPlay extends Pantalla {
 
         //Sonido
         efectoCorrer=manager.get("correr5.mp3");
-        efectoGancho=manager.get("gancho.wav");
+        efectoGancho=manager.get("salto3.mp3");
         efectoMuerte=manager.get("muerte.mp3");
         efectoSalud=manager.get("salud.mp3");
-        efectoEscudo=manager.get("escudo2.mp3");
-        efectoGolpe=manager.get("golpe.mp3");
-        efectoRalentizar=manager.get("ralentizar.mp3");
+        efectoEscudo=manager.get("escudo5.mp3");
+        efectoGolpe=manager.get("golpe2.mp3");
+        efectoRalentizar=manager.get("ralentizacion.mp3");
 
         //Texturas
         backGround1 = manager.get("layers/1.png");
@@ -424,12 +424,12 @@ class PantallaPlay extends Pantalla {
     @Override
     public void dispose() {
         manager.unload("correr5.mp3");
-        manager.unload("gancho.wav");
+        manager.unload("salto3.mp3");
         manager.unload("muerte.mp3");
         manager.unload("salud.mp3");
-        manager.unload("escudo2.mp3");
-        manager.unload("golpe.mp3");
-        manager.unload("ralentizar.mp3");
+        manager.unload("escudo5.mp3");
+        manager.unload("golpe2.mp3");
+        manager.unload("ralentizacion.mp3");
         manager.unload("layers/1.png");
         manager.unload("layers/2.png");
         manager.unload("layers/3.png");
