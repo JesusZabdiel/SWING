@@ -83,13 +83,17 @@ class PantallaPlay extends Pantalla {
     //AssetManager
     private AssetManager manager;
 
+    //Objeto Preferencias
+    Preferences highScorePref;
+
 
     //Pausa
     private EscenaPausa escenaPausa;
+    private Preferences prefPersonaje;
 
     //Game Over
     private EscenaGameOver escenaGameOver;
-    private Preferences prefPersonaje;
+
 
 
     public PantallaPlay(Juego juego) {
@@ -101,6 +105,8 @@ class PantallaPlay extends Pantalla {
     @Override
     public void show() {
         prefPersonaje = Gdx.app.getPreferences("Preferencias Customize");
+        highScorePref = Gdx.app.getPreferences("High Score");
+        System.out.println(highScorePref.getInteger("BestScore"));
         estadoJuego = EstadoJuego.JUGANDO;
         manager = juego.getAssetManager();
         cargarTexturas();
@@ -253,9 +259,12 @@ class PantallaPlay extends Pantalla {
     private void verificarFinDeJuego() {
         if(vidaJugador <= 0){
             estadoJuego = EstadoJuego.PERDIO;
-            escenaGameOver = new EscenaGameOver(vista, batch);
+            escenaGameOver = new EscenaGameOver(vista, batch, score);
             Gdx.input.setInputProcessor(escenaGameOver);
             tempEstado=0;
+            if (score > highScorePref.getInteger("BestScore")){
+                highScorePref.putInteger("BestScore", score);
+            }
         }
     }
 
@@ -388,8 +397,23 @@ class PantallaPlay extends Pantalla {
 
         if(estadoJuego == EstadoJuego.PERDIO){
             escenaGameOver.draw();
+            batch.begin();
+            dibujarTextoScore();
+            batch.end();
         }
 
+    }
+
+    private void dibujarTextoScore() {
+        int bestScore = highScorePref.getInteger("BestScore");
+        Texto scoreText = new Texto("fontScore.fnt");
+        String textoScore = "Score: " + score;
+        String textoBestScore = "¡New Best Score!: " + score;
+        if (score > bestScore){
+            scoreText.render(batch, textoBestScore, ANCHO/2,ALTO-100);
+        }else{
+            scoreText.render(batch, textoScore, ANCHO/2,ALTO-100);
+        }
     }
 
     private void aumentarPuntos(float delta) {
@@ -593,7 +617,7 @@ class PantallaPlay extends Pantalla {
     class EscenaGameOver extends Stage{
 
 
-        public EscenaGameOver (Viewport vista, SpriteBatch batch){
+        public EscenaGameOver (Viewport vista, SpriteBatch batch, int score){
 
             super(vista, batch);
             efectoCorrer.stop();
@@ -604,13 +628,15 @@ class PantallaPlay extends Pantalla {
             Image imgGameOver = new Image(texturaFondoGameOver);
             imgGameOver.setPosition(0,0);
 
+
+
             // Boton Jugar
             Texture texturaBtnJugar = new Texture("Volver_Jugar.png");
             TextureRegionDrawable trdPlay = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
 
             ImageButton btnPlay = new ImageButton(trdPlay);
 
-            btnPlay.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/3);
+            btnPlay.setPosition(ANCHO/2-btnPlay.getWidth()/2,2*ALTO/4);
 
             // Boton Menu
             Texture texturaBtnMenu = new Texture("Salir.png");
@@ -618,7 +644,8 @@ class PantallaPlay extends Pantalla {
 
             ImageButton btnMenu = new ImageButton(trdMenu);
 
-            btnMenu.setPosition(ANCHO/2-btnMenu.getWidth()/2,2*ALTO/3-234);
+            btnMenu.setPosition(ANCHO/2-btnMenu.getWidth()/2,2*ALTO/5);
+
 
             this.addActor(imgGameOver);
             this.addActor(btnPlay);

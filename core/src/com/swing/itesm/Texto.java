@@ -20,4 +20,5 @@ class Texto {
         font.setColor(1,1,1,1);
         font.draw(bacth,glyph,x-anchoTexto/2,y);
     }
+
 }

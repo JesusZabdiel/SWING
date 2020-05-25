@@ -2,6 +2,7 @@ package com.swing.itesm;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -18,9 +19,15 @@ class PantallaMenu extends Pantalla {
     private final Juego juego;
 
     //private Texture texturaFondo;
-
     private Texture menu_1, texturaMenu_2, texturaOjo, texturaPupila,
             texturaBtnJugar, texturaBtnAcerca, texturaBtnComoJugar, texturaBtnPersonalizacion;
+
+    //Objeto preferencias score
+    Preferences highScorePref;
+
+
+    //highScore
+    int higScore;
 
     // Menu
     private Stage escenaMenu;  // botones,....
@@ -36,14 +43,26 @@ class PantallaMenu extends Pantalla {
 
     @Override
     public void show() {
+        crearObjetoPreferencias();
+        cargarPreferencias();
         cargarTexturas();
         crearMenu();
+        cargarPreferencias();
         Gdx.input.setInputProcessor(escenaMenu);
         pupila = new Sprite(texturaPupila);
         menu_2 = new Sprite(texturaMenu_2);
         pupila.setPosition(840,300);
         menu_2.setPosition(0,0);
 
+    }
+
+    private void crearObjetoPreferencias() {
+        highScorePref =  Gdx.app.getPreferences("High Score");
+        //highScorePref.putInteger("BestScore", higScore);
+    }
+
+    private void cargarPreferencias() {
+        higScore = highScorePref.getInteger("HighScore");
     }
 
     private void cargarTexturas() {
@@ -182,8 +201,18 @@ class PantallaMenu extends Pantalla {
         batch.end();
 
         escenaMenu.draw();
+        batch.begin();
+        dibujarBestScore();
+        batch.end();
 
     }
+
+    private void dibujarBestScore() {
+        Texto scoreText = new Texto("fontScore.fnt");
+        String textoBestScore = "Best Score " + highScorePref.getInteger("BestScore");
+        scoreText.render(batch, textoBestScore, ANCHO-300,ALTO-50);
+    }
+
 
     @Override
     public void resize(int width, int height) {

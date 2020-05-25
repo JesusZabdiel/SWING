@@ -26,9 +26,9 @@ class Marcador {
         this.puntos+=puntos;
     }
 
-    public void render(SpriteBatch bacth){
+    public void render(SpriteBatch batch){
         String mesaje = (int)puntos + "";
-        texto.render(bacth, mesaje,x,y);
+        texto.render(batch, mesaje,x,y);
     }
 
     public int getScore() {
