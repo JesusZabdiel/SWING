@@ -3,6 +3,7 @@ package com.swing.itesm;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -80,6 +81,7 @@ public class PantallaCargando implements Screen {
         assetManager.load("escudo5.mp3",Sound.class);
         assetManager.load("golpe2.mp3",Sound.class);
         assetManager.load("ralentizacion.mp3",Sound.class);
+        assetManager.load("BGMusic.mp3", Music.class);
 
         assetManager.finishLoading();
 

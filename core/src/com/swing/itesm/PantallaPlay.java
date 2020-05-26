@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -43,7 +44,10 @@ class PantallaPlay extends Pantalla {
     private static final float DURACION_ITEM = 5;//valor en segundos
     private boolean juegoRalentizado = false;
 
-    //efectos sonido
+    //Musica
+    private Music musicaBG;
+
+    //Efectos sonido
     private Sound efectoGancho;
     private Sound efectoCorrer;
     private Sound efectoMuerte;
@@ -117,6 +121,8 @@ class PantallaPlay extends Pantalla {
         crearVidaConstante();
         crearMarcador();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
+        musicaBG.play();
+        musicaBG.setLooping(true);
 
     }
 
@@ -327,6 +333,7 @@ class PantallaPlay extends Pantalla {
         efectoEscudo=manager.get("escudo5.mp3");
         efectoGolpe=manager.get("golpe2.mp3");
         efectoRalentizar=manager.get("ralentizacion.mp3");
+        musicaBG = manager.get("BGMusic.mp3");
 
         //Texturas
         backGround1 = manager.get("layers/1.png");
@@ -468,6 +475,7 @@ class PantallaPlay extends Pantalla {
         manager.unload("pause.png");
         manager.unload("Obstaculo.png");
         manager.unload("ojo.png");
+        manager.unload("BGMusic.mp3");
 
     }
 
@@ -565,6 +573,7 @@ class PantallaPlay extends Pantalla {
             Image imgGameOver = new Image(texturaFondoGameOver);
             imgGameOver.setColor(0,0,0,0.7f);
             imgGameOver.setPosition(0,0);
+            musicaBG.setVolume(0.5f);
 
 
             // Boton Jugar
@@ -597,6 +606,7 @@ class PantallaPlay extends Pantalla {
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
                     efectoCorrer.loop();
+                    musicaBG.setVolume(1);
                 }
             });
             //Listener Menu
@@ -620,6 +630,7 @@ class PantallaPlay extends Pantalla {
         public EscenaGameOver (Viewport vista, SpriteBatch batch, int score){
 
             super(vista, batch);
+            musicaBG.stop();
             efectoCorrer.stop();
             efectoEscudo.stop();
             efectoRalentizar.stop();

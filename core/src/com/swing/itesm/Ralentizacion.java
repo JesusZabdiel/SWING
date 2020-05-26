@@ -8,7 +8,7 @@ public class Ralentizacion extends Item {
 
     public Ralentizacion(Texture textura) {
         super(textura);
-        probabilidad = 20;
+        probabilidad = 10;
         visible = false;
     }
 }
