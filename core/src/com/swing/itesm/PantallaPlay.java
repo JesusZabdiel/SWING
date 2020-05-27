@@ -61,6 +61,7 @@ class PantallaPlay extends Pantalla {
     private Texture rellenoPersonaje;
     private Texture texturaVida;
     private Texture barraVidaBack;
+    private Texture barraVidaBloqueada;
     private Texture barraVida;
     private Texture texturaBtnPause;
     private Texture texturaOjo;
@@ -347,6 +348,7 @@ class PantallaPlay extends Pantalla {
         texturaVida = manager.get("Life.png");
         barraVida = manager.get("lifeBar.png");
         barraVidaBack = manager.get("lifeBarBack.png");
+        barraVidaBloqueada = manager.get("lifeBarBlock.png");
         texturaBtnPause = manager.get("pause.png");
         texturaDaño = manager.get("Obstaculo.png");
         texturaInvulnerable = manager.get("invulnerable_Small.png");
@@ -378,7 +380,12 @@ class PantallaPlay extends Pantalla {
         if(vidaJugador >=0){
             batch.draw(barraVida,Pantalla.ANCHO-barraVida.getWidth()-150,
                     Pantalla.ALTO - barraVida.getHeight()-25,barraVidaDimentions,barraVida.getHeight());
+            if(personaje.isInvulnerable()){
+                batch.draw(barraVidaBloqueada,Pantalla.ANCHO-barraVida.getWidth()-150,
+                        Pantalla.ALTO - barraVida.getHeight()-25,barraVidaDimentions,barraVida.getHeight());
+            }
         }
+
 
 
         for (Vida vida: vidaConstante ) {
@@ -472,6 +479,7 @@ class PantallaPlay extends Pantalla {
         manager.unload("Life.png");
         manager.unload("lifeBar.png");
         manager.unload("lifeBarBack.png");
+        manager.unload("lifeBarBlock.png");
         manager.unload("pause.png");
         manager.unload("Obstaculo.png");
         manager.unload("ojo.png");
