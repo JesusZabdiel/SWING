@@ -3,6 +3,7 @@ package com.swing.itesm;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -12,6 +13,7 @@ public class Juego extends Game {
 	public static final float ANCHO = 1280;
 	public static final float ALTO = 720;
 	public static Array<Color> colores;
+	public Music musicaMenu;
 
 	private final AssetManager assetManager = new AssetManager();
 
@@ -21,6 +23,11 @@ public class Juego extends Game {
 	public void create () {
 		assetManager.setLoader(TiledMap.class,
 				new TmxMapLoader(new InternalFileHandleResolver()));
+		assetManager.load("Redhead_From_Mars.mp3", Music.class);
+
+		assetManager.finishLoading();
+		musicaMenu = assetManager.get("Redhead_From_Mars.mp3");
+
 
 		//pantalla inicial
 		setScreen(new PantallaMenu(this));

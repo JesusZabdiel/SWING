@@ -4,6 +4,7 @@ package com.swing.itesm;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -25,7 +26,7 @@ class PantallaMenu extends Pantalla {
     //Objeto preferencias score
     Preferences highScorePref;
 
-
+    //Musica
     //highScore
     int higScore;
 
@@ -53,6 +54,8 @@ class PantallaMenu extends Pantalla {
         menu_2 = new Sprite(texturaMenu_2);
         pupila.setPosition(840,300);
         menu_2.setPosition(0,0);
+        juego.musicaMenu.play();
+        juego.musicaMenu.setLooping(true);
 
     }
 
@@ -75,6 +78,7 @@ class PantallaMenu extends Pantalla {
         assetManager.load("Acerca.png", Texture.class);
         assetManager.load("Como_jugar.png", Texture.class);
         assetManager.load("Personalización.png", Texture.class);
+
 
         assetManager.finishLoading();
         menu_1 = assetManager.get("menu_1.png");
@@ -128,6 +132,7 @@ class PantallaMenu extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
+                juego.musicaMenu.stop();
                 juego.setScreen(new PantallaCargando(juego));
             }
         });
@@ -249,6 +254,8 @@ class PantallaMenu extends Pantalla {
         assetManager.unload("Acerca.png");
         assetManager.unload("Como_jugar.png");
         assetManager.unload("Personalización.png");
+        assetManager.unload("Redhead_From_Mars.mp3");
+
 
     }
 
