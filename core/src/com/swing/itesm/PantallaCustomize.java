@@ -51,7 +51,6 @@ class PantallaCustomize extends Pantalla {
 
     @Override
     public void show() {
-
         cargarTexturas();
         crearObjetoPreferencias();
         cargarPreferencias();
@@ -79,8 +78,8 @@ class PantallaCustomize extends Pantalla {
         personaje.sprite.setScale(2);
         personaje.color.setScale(2);
 
-        personaje.sprite.setPosition(ANCHO/2-personaje.sprite.getWidth(),ALTO/6+personaje.sprite.getHeight());
-        personaje.color.setPosition(ANCHO/2-personaje.sprite.getWidth(),ALTO/6+personaje.sprite.getHeight());
+        personaje.sprite.setPosition(ANCHO/3-personaje.sprite.getWidth(),ALTO/10+personaje.sprite.getHeight());
+        personaje.color.setPosition(ANCHO/3-personaje.sprite.getWidth(),ALTO/10+personaje.sprite.getHeight());
 
     }
 
@@ -93,11 +92,11 @@ class PantallaCustomize extends Pantalla {
         TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
 
         //btn cambiar color (PROVISIONAL)
-        Texture texturaBtnTest = new Texture("testSquare.png");
+        Texture texturaBtnTest = new Texture("Cambiar color.png");
         TextureRegionDrawable trdTest = new TextureRegionDrawable(new TextureRegion(texturaBtnTest));
 
         //Botón guardar
-        Texture textureGuardar = new Texture("testSquare.png");
+        Texture textureGuardar = new Texture("Guardar.png");
         TextureRegionDrawable trdGuardar = new TextureRegionDrawable(new TextureRegion(textureGuardar));
 
         ImageButton btnMenu = new ImageButton(trdMenu);
@@ -106,8 +105,8 @@ class PantallaCustomize extends Pantalla {
 
 
         btnMenu.setPosition(80,ALTO-40-btnMenu.getHeight());
-        btnTest.setPosition(ANCHO/2, ALTO/2);
-        btbGuardar.setPosition(ANCHO/2 + 200, ALTO/2 - 100);
+        btnTest.setPosition(ANCHO/2+20, ALTO/2);
+        btbGuardar.setPosition(ANCHO/2 + 220, ALTO/2 - 150);
 
         //Listener1
         btnMenu.addListener(new ClickListener(){
