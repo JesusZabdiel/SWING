@@ -271,6 +271,7 @@ class PantallaPlay extends Pantalla {
             tempEstado=0;
             if (score > highScorePref.getInteger("BestScore")){
                 highScorePref.putInteger("BestScore", score);
+                highScorePref.flush();
             }
         }
     }

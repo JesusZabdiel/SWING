@@ -28,7 +28,7 @@ class PantallaMenu extends Pantalla {
 
     //Musica
     //highScore
-    int higScore;
+    private int higScore;
 
     // Menu
     private Stage escenaMenu;  // botones,....
@@ -61,11 +61,10 @@ class PantallaMenu extends Pantalla {
 
     private void crearObjetoPreferencias() {
         highScorePref =  Gdx.app.getPreferences("High Score");
-        //highScorePref.putInteger("BestScore", higScore);
     }
 
     private void cargarPreferencias() {
-        higScore = highScorePref.getInteger("HighScore");
+        higScore = highScorePref.getInteger("HighScore",0);
     }
 
     private void cargarTexturas() {
