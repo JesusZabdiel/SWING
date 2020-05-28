@@ -114,6 +114,13 @@ class PantallaMenu extends Pantalla {
         TextureRegionDrawable trdPersonalizacion = new TextureRegionDrawable(new TextureRegion(texturaBtnPersonalizacion));
 
 
+        //******** Boton Provisional Pantalla config **********
+        Texture texturaBtnConfig = new Texture("check.png");
+        TextureRegionDrawable trdBtnConfiguracion = new TextureRegionDrawable(new TextureRegion(texturaBtnConfig));
+
+
+        ImageButton btnConfig = new ImageButton(trdBtnConfiguracion);
+
 
         ImageButton btnJugar = new ImageButton(trdPlay);
         ImageButton btnAcerca = new ImageButton(trdAcerca);
@@ -125,6 +132,8 @@ class PantallaMenu extends Pantalla {
         btnComoJugar.setPosition(80, btnJugar.getY()-btnComoJugar.getHeight()-separacion);
         btnPersonalizacion.setPosition(80,btnComoJugar.getY()-btnPersonalizacion.getHeight()-separacion);
         btnAcerca.setPosition(80,btnPersonalizacion.getY()-btnAcerca.getHeight()-separacion);
+
+        btnConfig.setPosition(100,250);
 
         //Listener1
         btnJugar.addListener(new ClickListener(){
@@ -163,10 +172,18 @@ class PantallaMenu extends Pantalla {
             }
         });
 
+        btnConfig.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                juego.setScreen(new PantallaConfiguracion(juego));
+            }
+        });
+
         escenaMenu.addActor(btnJugar);
         escenaMenu.addActor(btnAcerca);
         escenaMenu.addActor(btnComoJugar);
         escenaMenu.addActor(btnPersonalizacion);
+        escenaMenu.addActor(btnConfig);
 
         Gdx.input.setInputProcessor(escenaMenu);
 

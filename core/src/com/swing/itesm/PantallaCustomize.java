@@ -8,13 +8,11 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
 
 class PantallaCustomize extends Pantalla {
 
@@ -25,7 +23,7 @@ class PantallaCustomize extends Pantalla {
     private Texture rellenoPersonaje;
 
     // Menu
-    private Stage escenaMenu;  // botones,....
+    private Stage escenaCustomize;  // botones,....
 
     // Colores
     public Color actualColor;
@@ -34,7 +32,6 @@ class PantallaCustomize extends Pantalla {
     //Preferences
     public Preferences prefCustomize;
 
-    public PantallaPlay.Estado estadoPersonaje;
     private Personaje personaje;
     private Texture texturaPantalla;
 
@@ -60,7 +57,7 @@ class PantallaCustomize extends Pantalla {
 
 
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
-        crearMenu();
+        crearPantallaCustomize();
 
     }
 
@@ -84,9 +81,9 @@ class PantallaCustomize extends Pantalla {
 
     }
 
-    private void crearMenu() {
+    private void crearPantallaCustomize() {
 
-        escenaMenu = new Stage(vista);
+        escenaCustomize = new Stage(vista);
 
         // Boton Play
         Texture texturaBtnMenu = new Texture("Salir.png");
@@ -137,11 +134,11 @@ class PantallaCustomize extends Pantalla {
             }
         });
 
-        escenaMenu.addActor(btnMenu);
-        escenaMenu.addActor(btnTest);
-        escenaMenu.addActor(btbGuardar);
+        escenaCustomize.addActor(btnMenu);
+        escenaCustomize.addActor(btnTest);
+        escenaCustomize.addActor(btbGuardar);
 
-        Gdx.input.setInputProcessor(escenaMenu);
+        Gdx.input.setInputProcessor(escenaCustomize);
     }
 
     private void cambiarColorPersonaje() {
@@ -183,7 +180,7 @@ class PantallaCustomize extends Pantalla {
 
         batch.end();
 
-        escenaMenu.draw();
+        escenaCustomize.draw();
 
     }
 
