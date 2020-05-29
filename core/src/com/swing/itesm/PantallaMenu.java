@@ -26,6 +26,9 @@ class PantallaMenu extends Pantalla {
     Preferences preferencias;
 
     //Musica
+    private boolean musicOn;
+    private boolean efectsOn;
+
     //highScore
     private int higScore;
 
@@ -43,7 +46,6 @@ class PantallaMenu extends Pantalla {
 
     @Override
     public void show() {
-        crearObjetosPreferencias();
         cargarPreferencias();
         cargarTexturas();
         crearMenu();
@@ -60,14 +62,14 @@ class PantallaMenu extends Pantalla {
 
     }
 
-    private void crearObjetosPreferencias() {
-        preferencias =  Gdx.app.getPreferences("Preferencias");
-    }
-
     private void cargarPreferencias() {
+        preferencias =  Gdx.app.getPreferences("Preferencias");
         higScore = preferencias.getInteger("HighScore",0);
-    }
+        musicOn = preferencias.getBoolean("Music", true);
+        efectsOn = preferencias.getBoolean("Efectos",true);
 
+
+    }
     private void cargarTexturas() {
         assetManager.load("menu_1.png", Texture.class);
         assetManager.load("menu_2.png", Texture.class);
