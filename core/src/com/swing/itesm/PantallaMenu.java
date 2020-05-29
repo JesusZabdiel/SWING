@@ -116,7 +116,7 @@ class PantallaMenu extends Pantalla {
 
 
         //******** Boton Provisional Pantalla config **********
-        Texture texturaBtnConfig = new Texture("check.png");
+        Texture texturaBtnConfig = new Texture("btnConfig.png");
         TextureRegionDrawable trdBtnConfiguracion = new TextureRegionDrawable(new TextureRegion(texturaBtnConfig));
 
 
@@ -132,9 +132,9 @@ class PantallaMenu extends Pantalla {
         btnJugar.setPosition(80,480);
         btnComoJugar.setPosition(80, btnJugar.getY()-btnComoJugar.getHeight()-separacion);
         btnPersonalizacion.setPosition(80,btnComoJugar.getY()-btnPersonalizacion.getHeight()-separacion);
-        btnAcerca.setPosition(80,btnPersonalizacion.getY()-btnAcerca.getHeight()-separacion);
-
-        btnConfig.setPosition(100,250);
+        //diseño prototipo
+        btnConfig.setPosition(80,btnPersonalizacion.getY()-btnAcerca.getHeight()-separacion);
+        btnAcerca.setPosition(80,btnConfig.getY()-btnAcerca.getHeight()-separacion);
 
         //Listener1
         btnJugar.addListener(new ClickListener(){
@@ -176,6 +176,7 @@ class PantallaMenu extends Pantalla {
         btnConfig.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event,x,y);
                 juego.setScreen(new PantallaConfiguracion(juego));
             }
         });

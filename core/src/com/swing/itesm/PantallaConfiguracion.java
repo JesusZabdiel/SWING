@@ -20,6 +20,7 @@ public class PantallaConfiguracion extends Pantalla {
     private Stage escenaConfiguracion;
     private  final AssetManager assetManager;
     private Texture texturaFondo;
+    private final float BUTTON_SPACING = 50;
 
 
     private Preferences preferencias;
@@ -61,7 +62,7 @@ public class PantallaConfiguracion extends Pantalla {
     }
 
     private void crearPantallaConfiguracion() {
-        escenaConfiguracion = new Stage();
+        escenaConfiguracion = new Stage(vista);
 
         //boton salir
         Texture texturaBtnMenu = new Texture("Salir.png");
@@ -89,11 +90,11 @@ public class PantallaConfiguracion extends Pantalla {
         final ImageButton btnMusicOn = new ImageButton(trdMusicaOn);
         final ImageButton btnMusicOff = new ImageButton(trdMusicaOff);
 
-        float  xButtonEfect = ANCHO/2;
-        float  yButtonEfeect = ALTO/2+100;
+        float  xButtonEfect = ANCHO/2 + BUTTON_SPACING;
+        float  yButtonEfeect = ALTO/2 + BUTTON_SPACING ;
 
-        float xButtonMusic = ANCHO/2;
-        float yButtonMusic = ALTO/2 -100;
+        float xButtonMusic = ANCHO/2 + BUTTON_SPACING;
+        float yButtonMusic = ALTO/2 - BUTTON_SPACING - btnMusicOn.getHeight();
 
         btnEfectosOn.setPosition(xButtonEfect,yButtonEfeect);
         btnEfectosOff.setPosition(xButtonEfect,yButtonEfeect);
@@ -124,6 +125,7 @@ public class PantallaConfiguracion extends Pantalla {
         btnMenu.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 juego.setScreen(new PantallaMenu(juego));
             }
         });
@@ -132,6 +134,7 @@ public class PantallaConfiguracion extends Pantalla {
         btnEfectosOn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 btnEfectosOn.setVisible(false);
                 btnEfectosOff.setVisible(true);
                 preferencias.putBoolean("Efectos", false);
@@ -142,6 +145,7 @@ public class PantallaConfiguracion extends Pantalla {
         btnEfectosOff.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 btnEfectosOn.setVisible(true);
                 btnEfectosOff.setVisible(false);
                 preferencias.putBoolean("Efectos", true);
@@ -153,6 +157,7 @@ public class PantallaConfiguracion extends Pantalla {
         btnMusicOn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 btnMusicOn.setVisible(false);
                 btnMusicOff.setVisible(true);
                 preferencias.putBoolean("Musica", false);
@@ -165,6 +170,7 @@ public class PantallaConfiguracion extends Pantalla {
         btnMusicOff.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
                 btnMusicOff.setVisible(false);
                 btnMusicOn.setVisible(true);
                 preferencias.putBoolean("Musica", true);
@@ -200,16 +206,14 @@ public class PantallaConfiguracion extends Pantalla {
         dibujarTexto();
         batch.end();
 
-
-
     }
 
     private void dibujarTexto() {
         Texto configText = new Texto("fontScore.fnt");
         String textoEfectos = "Efectos ";
         String textoMusic = "Musica ";
-        configText.render(batch, textoEfectos, ANCHO/2,ALTO/2+100);
-        configText.render(batch, textoMusic, ANCHO/2,ALTO/2 -100);
+        configText.render(batch, textoEfectos, ANCHO/2-ANCHO/5,ALTO/2+BUTTON_SPACING);
+        configText.render(batch, textoMusic, ANCHO/2-ANCHO/5,ALTO/2 -BUTTON_SPACING);
 
 
     }
