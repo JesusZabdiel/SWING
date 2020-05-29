@@ -98,6 +98,9 @@ public class PantallaConfiguracion extends Pantalla {
 
         btnEfectosOn.setPosition(xButtonEfect,yButtonEfeect);
         btnEfectosOff.setPosition(xButtonEfect,yButtonEfeect);
+        btnMusicOn.setPosition(xButtonMusic, yButtonMusic);
+        btnMusicOff.setPosition(xButtonMusic, yButtonMusic);
+        btnMenu.setPosition(80, ALTO-40-btnMenu.getHeight());
 
         //elegir qué imagen debe ponerse
         if(efectsOn){
@@ -116,10 +119,7 @@ public class PantallaConfiguracion extends Pantalla {
             btnEfectosOn.setVisible(false);
         }
 
-        btnMusicOn.setPosition(xButtonMusic,yButtonMusic);
-        btnMusicOff.setPosition(xButtonMusic,yButtonMusic);
 
-        btnMenu.setPosition(80, ALTO-40-btnMenu.getHeight());
 
         //listener regresar al menú
         btnMenu.addListener(new ClickListener(){
@@ -186,10 +186,7 @@ public class PantallaConfiguracion extends Pantalla {
         escenaConfiguracion.addActor(btnMusicOff);
         escenaConfiguracion.addActor(btnMenu);
 
-
         Gdx.input.setInputProcessor(escenaConfiguracion);
-
-
     }
 
     @Override

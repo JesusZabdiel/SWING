@@ -43,6 +43,8 @@ class PantallaPlay extends Pantalla {
     private float tiempoItemInvulnerable = 0;
     private static final float DURACION_ITEM = 5;//valor en segundos
     private boolean juegoRalentizado = false;
+    private boolean musicOn;
+    private boolean efectsOn;
 
     //Musica
     private Music musicaBG;
@@ -96,6 +98,9 @@ class PantallaPlay extends Pantalla {
     //Pausa
     private EscenaPausa escenaPausa;
 
+    //En cond¿figuración
+    private EscenaConfiguracion escenaConfiguracion;
+
 
     //Game Over
     private EscenaGameOver escenaGameOver;
@@ -110,9 +115,9 @@ class PantallaPlay extends Pantalla {
 
     @Override
     public void show() {
-        preferencias = Gdx.app.getPreferences("Preferencias");
         estadoJuego = EstadoJuego.JUGANDO;
         manager = juego.getAssetManager();
+        cargarPreferencias();
         cargarTexturas();
         crearEscenario();
         iniciarPersonaje();
@@ -127,6 +132,12 @@ class PantallaPlay extends Pantalla {
         }
 
 
+    }
+
+    private void cargarPreferencias() {
+        preferencias = Gdx.app.getPreferences("Preferencias");
+        musicOn = preferencias.getBoolean("Musica",true);
+        efectsOn = preferencias.getBoolean("Efectos",true);
     }
 
     private void crearItems() {
@@ -268,7 +279,7 @@ class PantallaPlay extends Pantalla {
     private void verificarFinDeJuego() {
         if(vidaJugador <= 0){
             estadoJuego = EstadoJuego.PERDIO;
-            escenaGameOver = new EscenaGameOver(vista, batch, score);
+            escenaGameOver = new EscenaGameOver(vista, batch);
             Gdx.input.setInputProcessor(escenaGameOver);
             tempEstado=0;
             if (score > preferencias.getInteger("BestScore")){
@@ -412,6 +423,13 @@ class PantallaPlay extends Pantalla {
             escenaPausa.draw();
         }
 
+        if(estadoJuego == EstadoJuego.CONFIGURACION){
+            escenaConfiguracion.draw();
+            batch.begin();
+            dibujarTextoConfiguraciones();
+            batch.end();
+        }
+
         if(estadoJuego == EstadoJuego.PERDIO){
             escenaGameOver.draw();
             batch.begin();
@@ -431,6 +449,16 @@ class PantallaPlay extends Pantalla {
         }else{
             scoreText.render(batch, textoScore, ANCHO/2,ALTO-100);
         }
+    }
+
+    private void dibujarTextoConfiguraciones() {
+        Texto configText = new Texto("fontScore.fnt");
+        String textoEfectos = "Efectos ";
+        String textoMusic = "Musica ";
+        configText.render(batch, textoEfectos, ANCHO/2-ANCHO/5,ALTO/2+50);
+        configText.render(batch, textoMusic, ANCHO/2-ANCHO/5,ALTO/2 -50);
+
+
     }
 
     private void aumentarPuntos(float delta) {
@@ -568,15 +596,12 @@ class PantallaPlay extends Pantalla {
     // Clase pausa ( ventana que se muestra cuando el usuario pausa la app)
 
     class EscenaPausa extends Stage{
+        private final float BUTTON_SPACING = 100;
 
-
-        public EscenaPausa (Viewport vista, SpriteBatch batch){
+        public EscenaPausa (final Viewport vista, final SpriteBatch batch){
 
             super(vista, batch);
 
-            //Pixmap pixmap = new Pixmap((int)(ANCHO*0.7f), (int)(ALTO*0.8f), Pixmap.Format.RGBA8888);
-            //pixmap.setColor(255,255,255,0.5f);
-            //pixmap.fillCircle(300,300,300);
             efectoCorrer.pause();
             efectoEscudo.pause();
             efectoRalentizar.pause();
@@ -590,27 +615,34 @@ class PantallaPlay extends Pantalla {
             // Boton Jugar
             Texture texturaBtnJugar = new Texture("Reanudar.png");
             TextureRegionDrawable trdJugar = new TextureRegionDrawable(new TextureRegion(texturaBtnJugar));
-
-
-            ImageButton btnJugar = new ImageButton(trdJugar);
-
-            btnJugar.setPosition(ANCHO/2-(btnJugar.getWidth())/2,2*ALTO/3);
+            ImageButton btnReanudar = new ImageButton(trdJugar);
 
             // Boton Menu
             Texture texturaBtnMenu = new Texture("Salir.png");
             TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
-
             ImageButton btnMenu = new ImageButton(trdMenu);
 
-            btnMenu.setPosition(ANCHO/2-btnMenu.getWidth()/2,2*ALTO/3-234);
+            //Boton configuracion
+            Texture texturaBtnConfig = new Texture("btnConfig.png");
+            TextureRegionDrawable trdBtnConfiguracion = new TextureRegionDrawable(new TextureRegion(texturaBtnConfig));
+            ImageButton btnConfig = new ImageButton(trdBtnConfiguracion);
+
+
+            btnReanudar.setPosition(ANCHO/2-(btnReanudar.getWidth())/2,2*ALTO/3);
+            btnConfig.setPosition(ANCHO/2-(btnReanudar.getWidth())/2,btnReanudar.getY()
+                    - btnConfig.getHeight() - BUTTON_SPACING);
+            btnMenu.setPosition(ANCHO/2-btnMenu.getWidth()/2,btnConfig.getY()
+                    - btnMenu.getHeight() - BUTTON_SPACING);
+
 
 
             this.addActor(imgGameOver);
-            this.addActor(btnJugar);
+            this.addActor(btnReanudar);
             this.addActor(btnMenu);
+            this.addActor(btnConfig);
 
             //Listener
-            btnJugar.addListener(new ClickListener(){
+            btnReanudar.addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
@@ -630,7 +662,16 @@ class PantallaPlay extends Pantalla {
                 }
             });
 
-
+            //Listener configuración
+            btnConfig.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    escenaConfiguracion = new EscenaConfiguracion(vista, batch);
+                    estadoJuego = EstadoJuego.CONFIGURACION;
+                    Gdx.input.setInputProcessor(escenaConfiguracion);
+                }
+            });
 
         }
     }
@@ -638,7 +679,7 @@ class PantallaPlay extends Pantalla {
     class EscenaGameOver extends Stage{
 
 
-        public EscenaGameOver (Viewport vista, SpriteBatch batch, int score){
+        public EscenaGameOver (Viewport vista, SpriteBatch batch){
 
             super(vista, batch);
             musicaBG.stop();
@@ -693,14 +734,150 @@ class PantallaPlay extends Pantalla {
                 }
             });
 
+        }
+    }
+
+    private class EscenaConfiguracion extends Stage {
+        public EscenaConfiguracion(Viewport vista, SpriteBatch batch){
+            super(vista,batch);
+
+            Texture texturaFondoGameOver = new Texture("negro.png");
+            Image imgGameOver = new Image(texturaFondoGameOver);
+            imgGameOver.setColor(0,0,0,0.7f);
+            imgGameOver.setPosition(0,0);
+
+            //Botón guardar
+            Texture texturaBtnSalir = new Texture("Salir.png");
+            TextureRegionDrawable trdSalir = new TextureRegionDrawable(new TextureRegion(texturaBtnSalir));
+
+            //boton efectos on
+            Texture texturaBtnEfectosOn = new Texture("check.png");
+            TextureRegionDrawable trdEfectosOn = new TextureRegionDrawable(new TextureRegion(texturaBtnEfectosOn));
+
+            //boton efectos off
+            Texture textureBtnEfectosOff = new Texture("cross.png");
+            TextureRegionDrawable trdEfectosOff = new TextureRegionDrawable(new TextureRegion(textureBtnEfectosOff));
+
+            //boton musica on
+            Texture textureBtnMusicaOn = new Texture("check.png");
+            TextureRegionDrawable trdMusicaOn = new TextureRegionDrawable(new TextureRegion(textureBtnMusicaOn));
+
+            //Boton musica off
+            Texture textureBtnMusicaOff = new Texture("cross.png");
+            TextureRegionDrawable trdMusicaOff = new TextureRegionDrawable(new TextureRegion(textureBtnMusicaOff));
+
+
+            final ImageButton btnAtras = new ImageButton(trdSalir);
+            final ImageButton btnEfectosOn = new ImageButton(trdEfectosOn);
+            final ImageButton btnEfectosOff = new ImageButton(trdEfectosOff);
+            final ImageButton btnMusicOn = new ImageButton(trdMusicaOn);
+            final ImageButton btnMusicOff = new ImageButton(trdMusicaOff);
+
+            float  xButtonEfect = ANCHO/2 + 50;
+            float  yButtonEfeect = ALTO/2 + 50 ;
+            float xButtonMusic = ANCHO/2 + 50;
+            float yButtonMusic = ALTO/2 - 50 - btnMusicOn.getHeight();
+
+            btnEfectosOn.setPosition(xButtonEfect,yButtonEfeect);
+            btnEfectosOff.setPosition(xButtonEfect,yButtonEfeect);
+            btnMusicOn.setPosition(xButtonMusic, yButtonMusic);
+            btnMusicOff.setPosition(xButtonMusic, yButtonMusic);
+            btnAtras.setPosition(80, ALTO-40-btnAtras.getHeight());
+
+            //elegir qué imagen debe ponerse
+            if(efectsOn){
+                btnEfectosOn.setVisible(true);
+                btnEfectosOff.setVisible(false);
+            }else{
+                btnEfectosOn.setVisible(false);
+                btnEfectosOff.setVisible(true);
+            }
+
+            if (musicOn){
+                btnMusicOn.setVisible(true);
+                btnMusicOff.setVisible(false);
+            }else{
+                btnMusicOff.setVisible(true);
+                btnEfectosOn.setVisible(false);
+            }
+
+            //listener regresar al menú
+            btnAtras.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    estadoJuego = EstadoJuego.PAUSADO;
+                    preferencias.flush();
+                    Gdx.input.setInputProcessor(escenaPausa);
+                }
+            });
+
+            //Listener efectos on (se apaga)
+            btnEfectosOn.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    btnEfectosOn.setVisible(false);
+                    btnEfectosOff.setVisible(true);
+                    preferencias.putBoolean("Efectos", false);
+                    preferencias.flush();
+                }
+            });
+            //Listener efectos off (se prende)
+            btnEfectosOff.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    btnEfectosOn.setVisible(true);
+                    btnEfectosOff.setVisible(false);
+                    preferencias.putBoolean("Efectos", true);
+                    preferencias.flush();
+                }
+            });
+
+            //Listener musica On (se apaga)
+            btnMusicOn.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    btnMusicOn.setVisible(false);
+                    btnMusicOff.setVisible(true);
+                    preferencias.putBoolean("Musica", false);
+                    musicaBG.stop();
+                    preferencias.flush();
+                }
+            });
+
+            //listener musica off (se prende)
+            btnMusicOff.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    btnMusicOff.setVisible(false);
+                    btnMusicOn.setVisible(true);
+                    preferencias.putBoolean("Musica", true);
+                    musicaBG.play();
+                    musicaBG.setLooping(true);
+                    preferencias.flush();
+                }
+            });
+
+            this.addActor(imgGameOver);
+            this.addActor(btnEfectosOn);
+            this.addActor(btnEfectosOff);
+            this.addActor(btnMusicOn);
+            this.addActor(btnMusicOff);
+            this.addActor(btnAtras);
 
         }
+
     }
 
     private enum EstadoJuego {
         JUGANDO,
         PAUSADO,
         PERDIO,
+        CONFIGURACION,
     }
 
 
