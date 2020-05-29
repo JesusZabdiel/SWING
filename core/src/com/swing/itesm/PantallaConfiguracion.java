@@ -1,9 +1,9 @@
 package com.swing.itesm;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,6 +25,11 @@ public class PantallaConfiguracion extends Pantalla {
     private float buttonSpacing = 80;
 
 
+    private Preferences preferencias;
+    private boolean soundOn;
+    private  boolean efectsOn;
+
+
     public PantallaConfiguracion(Juego juego) {
         assetManager = new AssetManager();
         this.juego = juego;
@@ -34,9 +39,20 @@ public class PantallaConfiguracion extends Pantalla {
 
     @Override
     public void show() {
+        crearObjetoPreferencias();
+        cargarPreferencias();
         cargarTexturas();
         crearPantallaConfiguracion();
 
+    }
+
+    private void cargarPreferencias() {
+        soundOn = preferencias.getBoolean("Musica",true);
+        efectsOn = preferencias.getBoolean("Efectos", true);
+    }
+
+    private void crearObjetoPreferencias() {
+        preferencias = Gdx.app.getPreferences("Preferencias");
     }
 
     private void cargarTexturas() {
@@ -49,6 +65,10 @@ public class PantallaConfiguracion extends Pantalla {
 
     private void crearPantallaConfiguracion() {
         escenaConfiguracion = new Stage();
+
+        //boton salir
+        Texture texturaBtnMenu = new Texture("Salir.png");
+        TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
 
         //boton efectos on
         Texture texturaBtnEfectosOn = new Texture("check.png");
@@ -66,6 +86,7 @@ public class PantallaConfiguracion extends Pantalla {
         Texture textureBtnMusicaOff = new Texture("cross.png");
         TextureRegionDrawable trdMusicaOff = new TextureRegionDrawable(new TextureRegion(textureBtnMusicaOff));
 
+        final ImageButton btnMenu = new ImageButton(trdMenu);
         final ImageButton btnEfectosOn = new ImageButton(trdEfectosOn);
         final ImageButton btnEfectosOff = new ImageButton(trdEfectosOff);
         final ImageButton btnMusicOn = new ImageButton(trdMusicaOn);
@@ -79,10 +100,36 @@ public class PantallaConfiguracion extends Pantalla {
 
         btnEfectosOn.setPosition(xButtonEfect,yButtonEfeect);
         btnEfectosOff.setPosition(xButtonEfect,yButtonEfeect);
-        btnEfectosOff.setVisible(false);
+
+        //elegir qué imagen debe ponerse
+        if(preferencias.getBoolean("Efectos")){
+            btnEfectosOn.setVisible(true);
+            btnEfectosOff.setVisible(false);
+        }else{
+            btnEfectosOn.setVisible(false);
+            btnEfectosOff.setVisible(true);
+        }
+
+        if (preferencias.getBoolean("Musica")){
+            btnMusicOn.setVisible(true);
+            btnMusicOff.setVisible(false);
+        }else{
+            btnMusicOff.setVisible(true);
+            btnEfectosOn.setVisible(false);
+        }
+
         btnMusicOn.setPosition(xButtonMusic,yButtonMusic);
         btnMusicOff.setPosition(xButtonMusic,yButtonMusic);
-        btnMusicOff.setVisible(false);
+
+        btnMenu.setPosition(80,ALTO-40-btnMenu.getHeight());
+
+        //listener regresar al menú
+        btnMenu.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                juego.setScreen(new PantallaMenu(juego));
+            }
+        });
 
         //Listener efectos on (se apaga)
         btnEfectosOn.addListener(new ClickListener(){
@@ -90,6 +137,8 @@ public class PantallaConfiguracion extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 btnEfectosOn.setVisible(false);
                 btnEfectosOff.setVisible(true);
+                preferencias.putBoolean("Efectos", false);
+                preferencias.flush();
             }
         });
         //Listener efectos off (se prende)
@@ -98,6 +147,8 @@ public class PantallaConfiguracion extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 btnEfectosOn.setVisible(true);
                 btnEfectosOff.setVisible(false);
+                preferencias.putBoolean("Efectos", true);
+                preferencias.flush();
             }
         });
 
@@ -107,6 +158,9 @@ public class PantallaConfiguracion extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 btnMusicOn.setVisible(false);
                 btnMusicOff.setVisible(true);
+                preferencias.putBoolean("Musica", false);
+                juego.musicaMenu.stop();
+                preferencias.flush();
             }
         });
 
@@ -116,6 +170,10 @@ public class PantallaConfiguracion extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 btnMusicOff.setVisible(false);
                 btnMusicOn.setVisible(true);
+                preferencias.putBoolean("Musica", true);
+                juego.musicaMenu.play();
+                juego.musicaMenu.setLooping(true);
+                preferencias.flush();
             }
         });
 
@@ -123,6 +181,7 @@ public class PantallaConfiguracion extends Pantalla {
         escenaConfiguracion.addActor(btnEfectosOff);
         escenaConfiguracion.addActor(btnMusicOn);
         escenaConfiguracion.addActor(btnMusicOff);
+        escenaConfiguracion.addActor(btnMenu);
 
 
         Gdx.input.setInputProcessor(escenaConfiguracion);
@@ -149,12 +208,11 @@ public class PantallaConfiguracion extends Pantalla {
     }
 
     private void dibujarTexto() {
-        Texto efecText = new Texto("fontScore.fnt");
-        Texto musicText = new Texto("fontScore.fnt");
+        Texto configText = new Texto("fontScore.fnt");
         String textoEfectos = "Efectos ";
         String textoMusic = "Musica ";
-        efecText.render(batch, textoEfectos, ANCHO/2 - ANCHO/5,ALTO/2-buttonSpacing);
-        efecText.render(batch, textoMusic, ANCHO/2 - ANCHO/5,ALTO/2 - 2*buttonSpacing);
+        configText.render(batch, textoEfectos, ANCHO/2 - ANCHO/5,ALTO/2-buttonSpacing);
+        configText.render(batch, textoMusic, ANCHO/2 - ANCHO/5,ALTO/2 - 2*buttonSpacing);
 
 
     }

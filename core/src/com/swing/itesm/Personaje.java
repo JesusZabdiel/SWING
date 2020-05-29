@@ -111,12 +111,12 @@ public class Personaje {
         }
 
 
-        if(enElAire==false && giro==false) {
+        if(!enElAire && !giro) {
             estado = Estado.CORRIENDO;
             color.setY(floor);
             sprite.setY(floor);
             gravedad = 90;
-        }else if (enElAire==false && giro==true) {
+        }else if (!enElAire && giro) {
             estado = Estado.SUBIENDO;
             color.setY(fakeRoof-color.getHeight());
             sprite.setY(fakeRoof-sprite.getHeight());

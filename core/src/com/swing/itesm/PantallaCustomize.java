@@ -30,7 +30,7 @@ class PantallaCustomize extends Pantalla {
 
 
     //Preferences
-    public Preferences prefCustomize;
+    public Preferences preferencias;
 
     private Personaje personaje;
     private Texture texturaPantalla;
@@ -61,11 +61,11 @@ class PantallaCustomize extends Pantalla {
     }
 
     private void cargarPreferencias() {
-        actualColor = Juego.colores.get(prefCustomize.getInteger("ColorPersonaje"));
+        actualColor = Juego.colores.get(preferencias.getInteger("ColorPersonaje"));
     }
 
     private void crearObjetoPreferencias() {
-        prefCustomize = Gdx.app.getPreferences("Preferencias Customize");
+        preferencias = Gdx.app.getPreferences("Preferencias");
     }
 
 
@@ -84,11 +84,11 @@ class PantallaCustomize extends Pantalla {
 
         escenaCustomize = new Stage(vista);
 
-        // Boton Play
+        // Boton Salir
         Texture texturaBtnMenu = new Texture("Salir.png");
         TextureRegionDrawable trdMenu = new TextureRegionDrawable(new TextureRegion(texturaBtnMenu));
 
-        //btn cambiar color (PROVISIONAL)
+        //btn cambiar color
         Texture texturaBtnTest = new Texture("Cambiar color.png");
         TextureRegionDrawable trdTest = new TextureRegionDrawable(new TextureRegion(texturaBtnTest));
 
@@ -109,8 +109,6 @@ class PantallaCustomize extends Pantalla {
         btnMenu.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                //personaje.setColor(Color.VIOLET);
                 juego.setScreen(new PantallaMenu(juego));
             }
         });
@@ -127,8 +125,8 @@ class PantallaCustomize extends Pantalla {
         btbGuardar.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                prefCustomize.putInteger("ColorPersonaje", Juego.colores.indexOf(actualColor, true));
-                prefCustomize.flush();
+                preferencias.putInteger("ColorPersonaje", Juego.colores.indexOf(actualColor, true));
+                preferencias.flush();
                 System.out.println("Se guardó la configuración");
             }
         });

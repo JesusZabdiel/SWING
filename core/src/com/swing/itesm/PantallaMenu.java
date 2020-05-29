@@ -4,7 +4,6 @@ package com.swing.itesm;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,7 +23,7 @@ class PantallaMenu extends Pantalla {
             texturaBtnJugar, texturaBtnAcerca, texturaBtnComoJugar, texturaBtnPersonalizacion;
 
     //Objeto preferencias score
-    Preferences highScorePref;
+    Preferences preferencias;
 
     //Musica
     //highScore
@@ -44,7 +43,7 @@ class PantallaMenu extends Pantalla {
 
     @Override
     public void show() {
-        crearObjetoPreferencias();
+        crearObjetosPreferencias();
         cargarPreferencias();
         cargarTexturas();
         crearMenu();
@@ -54,17 +53,20 @@ class PantallaMenu extends Pantalla {
         menu_2 = new Sprite(texturaMenu_2);
         pupila.setPosition(840,300);
         menu_2.setPosition(0,0);
-        juego.musicaMenu.play();
-        juego.musicaMenu.setLooping(true);
+        if(preferencias.getBoolean("Musica")){
+            juego.musicaMenu.play();
+            juego.musicaMenu.setLooping(true);
+        }
+
 
     }
 
-    private void crearObjetoPreferencias() {
-        highScorePref =  Gdx.app.getPreferences("High Score");
+    private void crearObjetosPreferencias() {
+        preferencias =  Gdx.app.getPreferences("Preferencias");
     }
 
     private void cargarPreferencias() {
-        higScore = highScorePref.getInteger("HighScore",0);
+        higScore = preferencias.getInteger("HighScore",0);
     }
 
     private void cargarTexturas() {
@@ -230,7 +232,7 @@ class PantallaMenu extends Pantalla {
 
     private void dibujarBestScore() {
         Texto scoreText = new Texto("fontScore.fnt");
-        String textoBestScore = "Best Score " + highScorePref.getInteger("BestScore");
+        String textoBestScore = "Best Score " + preferencias.getInteger("BestScore");
         scoreText.render(batch, textoBestScore, ANCHO-300,ALTO-50);
     }
 

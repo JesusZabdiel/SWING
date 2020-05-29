@@ -89,12 +89,13 @@ class PantallaPlay extends Pantalla {
     private AssetManager manager;
 
     //Objeto Preferencias
-    Preferences highScorePref;
+    private Preferences preferencias;
+
 
 
     //Pausa
     private EscenaPausa escenaPausa;
-    private Preferences prefPersonaje;
+
 
     //Game Over
     private EscenaGameOver escenaGameOver;
@@ -109,9 +110,8 @@ class PantallaPlay extends Pantalla {
 
     @Override
     public void show() {
-        prefPersonaje = Gdx.app.getPreferences("Preferencias Customize");
-        highScorePref = Gdx.app.getPreferences("High Score");
-        System.out.println(highScorePref.getInteger("BestScore"));
+        preferencias = Gdx.app.getPreferences("Preferencias");
+        System.out.println(preferencias.getInteger("BestScore"));
         estadoJuego = EstadoJuego.JUGANDO;
         manager = juego.getAssetManager();
         cargarTexturas();
@@ -122,8 +122,11 @@ class PantallaPlay extends Pantalla {
         crearVidaConstante();
         crearMarcador();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
-        musicaBG.play();
-        musicaBG.setLooping(true);
+        if(preferencias.getBoolean("Musica")){
+            musicaBG.play();
+            musicaBG.setLooping(true);
+        }
+
 
     }
 
@@ -269,9 +272,9 @@ class PantallaPlay extends Pantalla {
             escenaGameOver = new EscenaGameOver(vista, batch, score);
             Gdx.input.setInputProcessor(escenaGameOver);
             tempEstado=0;
-            if (score > highScorePref.getInteger("BestScore")){
-                highScorePref.putInteger("BestScore", score);
-                highScorePref.flush();
+            if (score > preferencias.getInteger("BestScore")){
+                preferencias.putInteger("BestScore", score);
+                preferencias.flush();
             }
         }
     }
@@ -312,7 +315,7 @@ class PantallaPlay extends Pantalla {
 
 
     private void iniciarPersonaje() {
-        Color chroma = Juego.colores.get(prefPersonaje.getInteger("ColorPersonaje"));
+        Color chroma = Juego.colores.get(preferencias.getInteger("ColorPersonaje"));
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, chroma, Estado.CORRIENDO);
         efectoCorrer.loop();
         personaje.sprite.setScale(.7f);
@@ -420,7 +423,7 @@ class PantallaPlay extends Pantalla {
     }
 
     private void dibujarTextoScore() {
-        int bestScore = highScorePref.getInteger("BestScore");
+        int bestScore = preferencias.getInteger("BestScore");
         Texto scoreText = new Texto("fontScore.fnt");
         String textoScore = "Score: " + score;
         String textoBestScore = "¡New Best Score!: " + score;
