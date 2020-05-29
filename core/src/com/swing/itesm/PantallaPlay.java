@@ -111,7 +111,6 @@ class PantallaPlay extends Pantalla {
     @Override
     public void show() {
         preferencias = Gdx.app.getPreferences("Preferencias");
-        System.out.println(preferencias.getInteger("BestScore"));
         estadoJuego = EstadoJuego.JUGANDO;
         manager = juego.getAssetManager();
         cargarTexturas();

@@ -58,7 +58,6 @@ class PantallaMenu extends Pantalla {
             juego.musicaMenu.setLooping(true);
         }
 
-
     }
 
     private void crearObjetosPreferencias() {
@@ -109,7 +108,7 @@ class PantallaMenu extends Pantalla {
         //Boton Options
         TextureRegionDrawable trdAcerca = new TextureRegionDrawable(new TextureRegion(texturaBtnAcerca));
 
-        // Boton shop
+        // Boton Cómo jugar
         TextureRegionDrawable trdComoJugar = new TextureRegionDrawable(new TextureRegion(texturaBtnComoJugar));
 
         // Boton customize

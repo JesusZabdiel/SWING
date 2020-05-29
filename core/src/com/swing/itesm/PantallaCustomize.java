@@ -116,8 +116,6 @@ class PantallaCustomize extends Pantalla {
         btnTest.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //super.clicked(event, x, y);
-                //personaje.setColor(Color.VIOLET);
                 cambiarColorPersonaje();
             }
         });

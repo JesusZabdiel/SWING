@@ -19,14 +19,11 @@ public class PantallaConfiguracion extends Pantalla {
 
     private Stage escenaConfiguracion;
     private  final AssetManager assetManager;
-
     private Texture texturaFondo;
-
-    private float buttonSpacing = 80;
 
 
     private Preferences preferencias;
-    private boolean soundOn;
+    private boolean musicOn;
     private  boolean efectsOn;
 
 
@@ -47,7 +44,7 @@ public class PantallaConfiguracion extends Pantalla {
     }
 
     private void cargarPreferencias() {
-        soundOn = preferencias.getBoolean("Musica",true);
+        musicOn = preferencias.getBoolean("Musica",true);
         efectsOn = preferencias.getBoolean("Efectos", true);
     }
 
@@ -92,17 +89,17 @@ public class PantallaConfiguracion extends Pantalla {
         final ImageButton btnMusicOn = new ImageButton(trdMusicaOn);
         final ImageButton btnMusicOff = new ImageButton(trdMusicaOff);
 
-        float  xButtonEfect = ANCHO/2 - ANCHO/5;
-        float  yButtonEfeect = ALTO/2-100;
+        float  xButtonEfect = ANCHO/2;
+        float  yButtonEfeect = ALTO/2+100;
 
-        float xButtonMusic = ANCHO/2 - ANCHO/5;
-        float yButtonMusic = ALTO/2 -250;
+        float xButtonMusic = ANCHO/2;
+        float yButtonMusic = ALTO/2 -100;
 
         btnEfectosOn.setPosition(xButtonEfect,yButtonEfeect);
         btnEfectosOff.setPosition(xButtonEfect,yButtonEfeect);
 
         //elegir qué imagen debe ponerse
-        if(preferencias.getBoolean("Efectos")){
+        if(efectsOn){
             btnEfectosOn.setVisible(true);
             btnEfectosOff.setVisible(false);
         }else{
@@ -110,7 +107,7 @@ public class PantallaConfiguracion extends Pantalla {
             btnEfectosOff.setVisible(true);
         }
 
-        if (preferencias.getBoolean("Musica")){
+        if (musicOn){
             btnMusicOn.setVisible(true);
             btnMusicOff.setVisible(false);
         }else{
@@ -121,7 +118,7 @@ public class PantallaConfiguracion extends Pantalla {
         btnMusicOn.setPosition(xButtonMusic,yButtonMusic);
         btnMusicOff.setPosition(xButtonMusic,yButtonMusic);
 
-        btnMenu.setPosition(80,ALTO-40-btnMenu.getHeight());
+        btnMenu.setPosition(80, ALTO-40-btnMenu.getHeight());
 
         //listener regresar al menú
         btnMenu.addListener(new ClickListener(){
@@ -211,8 +208,8 @@ public class PantallaConfiguracion extends Pantalla {
         Texto configText = new Texto("fontScore.fnt");
         String textoEfectos = "Efectos ";
         String textoMusic = "Musica ";
-        configText.render(batch, textoEfectos, ANCHO/2 - ANCHO/5,ALTO/2-buttonSpacing);
-        configText.render(batch, textoMusic, ANCHO/2 - ANCHO/5,ALTO/2 - 2*buttonSpacing);
+        configText.render(batch, textoEfectos, ANCHO/2,ALTO/2+100);
+        configText.render(batch, textoMusic, ANCHO/2,ALTO/2 -100);
 
 
     }
