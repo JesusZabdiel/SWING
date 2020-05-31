@@ -25,7 +25,7 @@ public class PantallaCargando implements Screen {
     private Texture texturaCargando;
     private Sprite spriteCargando;
 
-    private AssetManager assetManager;
+    public static AssetManager assetManager;
 
     public PantallaCargando(Juego juego){
         this.juego = juego;

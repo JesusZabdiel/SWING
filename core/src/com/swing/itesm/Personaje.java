@@ -3,6 +3,8 @@ package com.swing.itesm;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -29,6 +31,15 @@ public class Personaje {
     private int gravedad = 30;
     private float timerMovimiento;
     private boolean invulnerabilidad, relentizado;
+
+    //Asset manager
+    private AssetManager manager;
+
+    //Efectos de sonido
+    private Sound efectoCorrer;
+    private Sound efectoGancho;
+    private Sound efectoEscudo;
+    private Sound efectoRalentizar;
 
 
     public Personaje(Texture textura, Texture relleno, Color chroma, Estado estado){
@@ -57,6 +68,13 @@ public class Personaje {
         this.chroma = chroma;
         this.invulnerabilidad = false;
 
+        //Tomo el assetmanager de PantallaCargando y uso sus efectos aqui
+        this.efectoCorrer = PantallaCargando.assetManager.get("correr5.mp3",Sound.class);
+        //Si pongo efecto correr aqui, sigue sonando en el aire pero ya no se traba
+        //efectoCorrer.loop();
+        this.efectoGancho = PantallaCargando.assetManager.get("salto3.mp3",Sound.class);
+        this.efectoEscudo = PantallaCargando.assetManager.get("escudo5.mp3",Sound.class);
+        this.efectoRalentizar = PantallaCargando.assetManager.get("ralentizacion.mp3",Sound.class);
     }
 
     public void render(SpriteBatch batch){
@@ -74,11 +92,13 @@ public class Personaje {
             color.setRegion(regionColor);
             sprite.setRegion(regionTrazo);
 
+
         }else if (estado==Estado.SALTANDO) {
             color.setRotation(-30);
             sprite.setRotation(-30);
             color.setRegion(colorPersonaje[1][0]);
             sprite.setRegion(texturaPersonaje[1][0]);
+
 
         }else if (estado==Estado.CAYENDO){
             color.setRegion(colorPersonaje[1][1]);
@@ -90,12 +110,13 @@ public class Personaje {
             sprite.setRotation(-30+sacudida);
             color.setRegion(300,190,150,200);
             sprite.setRegion(300,190,150,200);
-
+            //efectoGancho.play();
         }else if (estado==Estado.BAJANDO){
             color.setRotation(-30);
             sprite.setRotation(-30);
             color.setRegion(colorPersonaje[1][3]);
             sprite.setRegion(texturaPersonaje[1][3]);
+            //efectoGancho.play();
         }
 
         color.draw(batch);
@@ -108,6 +129,7 @@ public class Personaje {
         timerMovimiento+= delta;
         if(relentizado){
             timerMovimiento = timerMovimiento/1.08f;
+
         }
 
 
@@ -116,11 +138,14 @@ public class Personaje {
             color.setY(floor);
             sprite.setY(floor);
             gravedad = 90;
+
+            //efectoCorrer.loop();
         }else if (!enElAire && giro) {
             estado = Estado.SUBIENDO;
             color.setY(fakeRoof-color.getHeight());
             sprite.setY(fakeRoof-sprite.getHeight());
             gravedad = -90;
+
         }else if (enElAire==true && giro == false){
             color.setPosition(color.getX(), -gravedad * (float)Math.pow(timerMovimiento,2) + color.getY());
             sprite.setPosition(sprite.getX(), -gravedad * (float)Math.pow(timerMovimiento,2) + sprite.getY());
@@ -144,26 +169,48 @@ public class Personaje {
         }
     }
 
+    //Cuando salta o baja
     public void giro() {
         timerMovimiento = 0;
         gravedad = gravedad * -1;
         enElAire = true;
         estado = Estado.SUBIENDO;
+        efectoGancho.play();
+
     }
 
+
+
     public void setInvulnerabilidad(boolean invulnerabilidad) {
-        this.invulnerabilidad = invulnerabilidad;
+        //Cuando es invulnerable
+        if((this.invulnerabilidad = invulnerabilidad)==true){
+            this.invulnerabilidad=invulnerabilidad;
+            efectoEscudo.play();
+            //Cuando se acaba el efecto
+        }else{
+            this.invulnerabilidad=invulnerabilidad;
+        }
     }
 
     public boolean isInvulnerable() {
+
         return invulnerabilidad;
     }
 
     public void setRelentizado(boolean relentizado){
-        this.relentizado = relentizado;
+        //Cuando se ralentiza
+        if((this.relentizado = relentizado)==true){
+            this.relentizado=relentizado;
+            efectoRalentizar.play();
+            //Cuando se pasa el efecto
+        }else{
+            this.relentizado=relentizado;
+        }
+
     }
 
     public boolean isRelentizado(){
+
         return relentizado;
     }
 

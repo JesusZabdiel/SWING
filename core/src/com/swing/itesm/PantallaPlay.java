@@ -50,7 +50,7 @@ class PantallaPlay extends Pantalla {
     private Music musicaBG;
 
     //Efectos sonido
-    private Sound efectoGancho;
+    //private Sound efectoGancho;
     private Sound efectoCorrer;
     private Sound efectoMuerte;
     private Sound efectoSalud;
@@ -198,13 +198,13 @@ class PantallaPlay extends Pantalla {
 
                 }else if (item instanceof Invulnerbilidad){
                     personaje.setInvulnerabilidad(true);
-                    efectoEscudo.play();
+                    //efectoEscudo.play();
                     //Si agarra otro item de invulnerabilidad antes que se acabe el tiempo, el tiempo se reincia
                     tiempoItemInvulnerable = 0;
                 }else{
                     tiempoItemRalentizacion = 0;
                     personaje.setRelentizado(true);
-                    efectoRalentizar.play();
+                    //efectoRalentizar.play();
                 }
             }
         }
@@ -327,7 +327,7 @@ class PantallaPlay extends Pantalla {
     private void iniciarPersonaje() {
         Color chroma = Juego.colores.get(preferencias.getInteger("ColorPersonaje"));
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, chroma, Estado.CORRIENDO);
-        efectoCorrer.loop();
+        //efectoCorrer.loop();
         personaje.sprite.setScale(.7f);
         personaje.color.setScale(.7f);
         vidaJugador = 100;
@@ -342,7 +342,7 @@ class PantallaPlay extends Pantalla {
 
         //Sonido
         efectoCorrer=manager.get("correr5.mp3");
-        efectoGancho=manager.get("salto3.mp3");
+        //efectoGancho=manager.get("salto3.mp3");
         efectoMuerte=manager.get("muerte.mp3");
         efectoSalud=manager.get("salud.mp3");
         efectoEscudo=manager.get("escudo5.mp3");
@@ -483,6 +483,7 @@ class PantallaPlay extends Pantalla {
     @Override
     public void pause() {
 
+
     }
 
     @Override
@@ -569,9 +570,7 @@ class PantallaPlay extends Pantalla {
         public boolean touchUp(int screenX, int screenY, int pointer, int button) {
             if (estadoJuego == EstadoJuego.JUGANDO) {
                 personaje.giro();
-                efectoCorrer.pause();
-                efectoGancho.play();
-                efectoCorrer.loop();
+
                 return true;
             }
             return false;
@@ -602,6 +601,7 @@ class PantallaPlay extends Pantalla {
 
             super(vista, batch);
 
+            //ver qué onda con cómo pausar los audios
             efectoCorrer.pause();
             efectoEscudo.pause();
             efectoRalentizar.pause();

@@ -38,6 +38,5 @@
     <orderEntry type="library" exported="" name="Gradle: robovm-objc-2.3.8" level="project" />
     <orderEntry type="library" exported="" name="Gradle: gdx-box2d-1.9.10" level="project" />
     <orderEntry type="library" exported="" name="Gradle: gdx-1.9.10" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: ios.ios-1.0" level="project" />
   </component>
 </module>
