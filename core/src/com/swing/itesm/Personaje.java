@@ -94,8 +94,6 @@ public class Personaje {
         this.efectoEscudo = manager.get("escudo5.mp3",Sound.class);
         this.efectoRalentizar = manager.get("ralentizacion.mp3",Sound.class);
 
-        efectoCorrer.loop();
-
     }
 
     private void cargarPreferencias() {
@@ -126,16 +124,12 @@ public class Personaje {
 
         color.setColor(chroma);
 
-        if (estado != Estado.CORRIENDO){
-            efectoCorrer.pause();
-        }
 
         if (estado == Estado.IDLE){
             color.setRegion(colorPersonaje[0][0]);
             sprite.setRegion(texturaPersonaje[0][0]);
 
         }else if (estado == Estado.CORRIENDO){
-            efectoCorrer.resume();
             color.setRotation(0);
             sprite.setRotation(0);
             TextureRegion regionColor = (TextureRegion)animacionColor.getKeyFrame(timerAnimacion);
@@ -185,7 +179,6 @@ public class Personaje {
             sprite.setY(floor);
             gravedad = 90;
 
-            //efectoCorrer.loop();
         }else if (!enElAire && giro) {
             estado = Estado.SUBIENDO;
             color.setY(fakeRoof-color.getHeight());
@@ -265,6 +258,10 @@ public class Personaje {
 
     public void setColor(Color color){
         this.chroma = color;
+    }
+
+    public boolean getCorriendo(){
+        return estado == Estado.CORRIENDO;
     }
 
 }

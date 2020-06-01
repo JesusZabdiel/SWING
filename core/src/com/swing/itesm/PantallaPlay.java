@@ -130,6 +130,9 @@ class PantallaPlay extends Pantalla {
             musicaBG.play();
             musicaBG.setLooping(true);
         }
+        if (efectsOn){
+            efectoCorrer.loop();
+        }
 
 
     }
@@ -380,6 +383,7 @@ class PantallaPlay extends Pantalla {
     public void render(float delta) {
         //Update
         if (estadoJuego == EstadoJuego.JUGANDO){
+            verificarCorriendo();
             update(delta);
         }
 
@@ -442,6 +446,14 @@ class PantallaPlay extends Pantalla {
             batch.end();
         }
 
+    }
+
+    private void verificarCorriendo() {
+        if (personaje.getCorriendo()){
+            efectoCorrer.resume();
+        }else{
+            efectoCorrer.pause();
+        }
     }
 
     private void dibujarTextoScore() {
@@ -563,6 +575,7 @@ class PantallaPlay extends Pantalla {
             if(v.x >=ANCHO-100 && v.x <= texturaBtnPause.getWidth()+ANCHO-100
                     && v.y <= ALTO && v.y >= ALTO-texturaBtnPause.getHeight()){
                 estadoJuego = EstadoJuego.PAUSADO;
+                efectoCorrer.pause();
                 escenaPausa = new EscenaPausa(vista, batch);
                 Gdx.input.setInputProcessor(escenaPausa);
 
@@ -628,7 +641,7 @@ class PantallaPlay extends Pantalla {
             ImageButton btnMenu = new ImageButton(trdMenu);
 
             //Boton configuracion
-            Texture texturaBtnConfig = new Texture("btnConfig.png");
+            Texture texturaBtnConfig = new Texture("Configuración.png");
             TextureRegionDrawable trdBtnConfiguracion = new TextureRegionDrawable(new TextureRegion(texturaBtnConfig));
             ImageButton btnConfig = new ImageButton(trdBtnConfiguracion);
 
@@ -655,6 +668,7 @@ class PantallaPlay extends Pantalla {
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
                     //efectoCorrer.loop();
                     musicaBG.setVolume(1);
+                    efectoCorrer.resume();
                 }
             });
             //Listener Menu
@@ -883,7 +897,6 @@ class PantallaPlay extends Pantalla {
         PERDIO,
         CONFIGURACION,
     }
-
 
 
 }
