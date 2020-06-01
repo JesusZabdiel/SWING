@@ -198,13 +198,19 @@ class PantallaPlay extends Pantalla {
 
                 }else if (item instanceof Invulnerbilidad){
                     personaje.setInvulnerabilidad(true);
-                    //efectoEscudo.play();
+                    if (efectsOn){
+                        efectoEscudo.play();
+                    }
+
                     //Si agarra otro item de invulnerabilidad antes que se acabe el tiempo, el tiempo se reincia
                     tiempoItemInvulnerable = 0;
                 }else{
                     tiempoItemRalentizacion = 0;
                     personaje.setRelentizado(true);
-                    //efectoRalentizar.play();
+                    if(efectsOn){
+                        efectoRalentizar.play();
+                    }
+
                 }
             }
         }
@@ -213,7 +219,9 @@ class PantallaPlay extends Pantalla {
     private void restarVidaDano() {
         if (!personaje.isInvulnerable()){
             vidaJugador -= DAÑO_POR_ITEM;
-            efectoGolpe.play();
+            if(efectsOn){
+                efectoGolpe.play();
+            }
         }
     }
 
@@ -296,7 +304,9 @@ class PantallaPlay extends Pantalla {
             Rectangle rectPlayer = personaje.sprite.getBoundingRectangle();
             if (rectPlayer.overlaps(rectVida)) {
                 marcador.marcar(6);
-                efectoSalud.play();
+                if(efectsOn){
+                    efectoSalud.play();
+                }
                 vida.generarPosicionItem();
                 if (vidaJugador <= 100 - AUMENTO_VIDA){
                     aumentarVida();
@@ -837,7 +847,7 @@ class PantallaPlay extends Pantalla {
                     btnMusicOn.setVisible(false);
                     btnMusicOff.setVisible(true);
                     preferencias.putBoolean("Musica", false);
-                    musicaBG.stop();
+                    musicaBG.pause();
                     preferencias.flush();
                 }
             });

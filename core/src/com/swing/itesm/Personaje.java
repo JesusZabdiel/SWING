@@ -1,6 +1,8 @@
 package com.swing.itesm;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -17,6 +19,9 @@ public class Personaje {
 
     private Juego juego;
 
+    private Preferences preferences;
+
+    private boolean efectosOn;
     private Color chroma;
     private Animation animacionTrazo;
     private Animation animacionColor;
@@ -43,8 +48,14 @@ public class Personaje {
     private Sound efectoEscudo;
     private Sound efectoRalentizar;
 
+    //
+
+
+
 
     public Personaje(Texture textura, Texture relleno, Color chroma, Estado estado, Juego juego){
+
+
 
         this.juego = juego;
         manager = juego.getAssetManager();
@@ -74,6 +85,7 @@ public class Personaje {
         this.chroma = chroma;
         this.invulnerabilidad = false;
 
+        cargarPreferencias();
         verificarRecursos();
 
         //Tomo el assetmanager de PantallaCargando y uso sus efectos aqui
@@ -84,6 +96,11 @@ public class Personaje {
 
         efectoCorrer.loop();
 
+    }
+
+    private void cargarPreferencias() {
+        preferences = Gdx.app.getPreferences("Preferencias");
+        efectosOn = preferences.getBoolean("Efectos");
     }
 
     private void verificarRecursos() {
@@ -204,7 +221,10 @@ public class Personaje {
         gravedad = gravedad * -1;
         enElAire = true;
         estado = Estado.SUBIENDO;
-        efectoGancho.play();
+        if(efectosOn){
+            efectoGancho.play();
+        }
+
 
     }
 

@@ -161,7 +161,7 @@ public class PantallaConfiguracion extends Pantalla {
                 btnMusicOn.setVisible(false);
                 btnMusicOff.setVisible(true);
                 preferencias.putBoolean("Musica", false);
-                juego.musicaMenu.stop();
+                juego.musicaMenu.pause();
                 preferencias.flush();
             }
         });
