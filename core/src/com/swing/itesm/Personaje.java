@@ -74,15 +74,7 @@ public class Personaje {
         this.chroma = chroma;
         this.invulnerabilidad = false;
 
-        manager.load("correr5.mp3", Sound.class);
-        manager.load("salto3.mp3",Sound.class);
-        manager.load("muerte.mp3",Sound.class);
-        manager.load("salud.mp3",Sound.class);
-        manager.load("escudo5.mp3",Sound.class);
-        manager.load("golpe2.mp3",Sound.class);
-        manager.load("ralentizacion.mp3",Sound.class);
-        manager.load("BGMusic.mp3", Music.class);
-        manager.finishLoading();
+        verificarRecursos();
 
         //Tomo el assetmanager de PantallaCargando y uso sus efectos aqui
         this.efectoCorrer = manager.get("correr5.mp3",Sound.class);
@@ -92,6 +84,25 @@ public class Personaje {
 
         efectoCorrer.loop();
 
+    }
+
+    private void verificarRecursos() {
+        try {
+            this.efectoCorrer = manager.get("correr5.mp3",Sound.class);
+            this.efectoGancho = manager.get("salto3.mp3",Sound.class);
+            this.efectoEscudo = manager.get("escudo5.mp3",Sound.class);
+            this.efectoRalentizar = manager.get("ralentizacion.mp3",Sound.class);
+        }catch (Exception ex){
+            manager.load("correr5.mp3", Sound.class);
+            manager.load("salto3.mp3",Sound.class);
+            manager.load("muerte.mp3",Sound.class);
+            manager.load("salud.mp3",Sound.class);
+            manager.load("escudo5.mp3",Sound.class);
+            manager.load("golpe2.mp3",Sound.class);
+            manager.load("ralentizacion.mp3",Sound.class);
+            manager.load("BGMusic.mp3", Music.class);
+            manager.finishLoading();
+        }
     }
 
     public void render(SpriteBatch batch){
