@@ -121,7 +121,6 @@ class PantallaCustomize extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 preferencias.putInteger("ColorPersonaje", Juego.colores.indexOf(actualColor, true));
                 preferencias.flush();
-                System.out.println("Se guardó la configuración");
             }
         });
 

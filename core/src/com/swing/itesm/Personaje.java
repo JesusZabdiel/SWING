@@ -43,10 +43,8 @@ public class Personaje {
     private AssetManager manager;
 
     //Efectos de sonido
-    private Sound efectoCorrer;
     private Sound efectoGancho;
-    private Sound efectoEscudo;
-    private Sound efectoRalentizar;
+
 
     //
 
@@ -89,10 +87,8 @@ public class Personaje {
         verificarRecursos();
 
         //Tomo el assetmanager de PantallaCargando y uso sus efectos aqui
-        this.efectoCorrer = manager.get("correr5.mp3",Sound.class);
         this.efectoGancho = manager.get("salto3.mp3",Sound.class);
-        this.efectoEscudo = manager.get("escudo5.mp3",Sound.class);
-        this.efectoRalentizar = manager.get("ralentizacion.mp3",Sound.class);
+
 
     }
 
@@ -103,10 +99,10 @@ public class Personaje {
 
     private void verificarRecursos() {
         try {
-            this.efectoCorrer = manager.get("correr5.mp3",Sound.class);
+            //this.efectoCorrer = manager.get("correr5.mp3",Sound.class);
             this.efectoGancho = manager.get("salto3.mp3",Sound.class);
-            this.efectoEscudo = manager.get("escudo5.mp3",Sound.class);
-            this.efectoRalentizar = manager.get("ralentizacion.mp3",Sound.class);
+            //this.efectoEscudo = manager.get("escudo5.mp3",Sound.class);
+            //this.efectoRalentizar = manager.get("ralentizacion.mp3",Sound.class);
         }catch (Exception ex){
             manager.load("correr5.mp3", Sound.class);
             manager.load("salto3.mp3",Sound.class);
@@ -123,7 +119,6 @@ public class Personaje {
     public void render(SpriteBatch batch){
 
         color.setColor(chroma);
-
 
         if (estado == Estado.IDLE){
             color.setRegion(colorPersonaje[0][0]);
@@ -227,7 +222,6 @@ public class Personaje {
         //Cuando es invulnerable
         if((this.invulnerabilidad = invulnerabilidad)==true){
             this.invulnerabilidad=invulnerabilidad;
-            efectoEscudo.play();
             //Cuando se acaba el efecto
         }else{
             this.invulnerabilidad=invulnerabilidad;
@@ -243,7 +237,6 @@ public class Personaje {
         //Cuando se ralentiza
         if((this.relentizado = relentizado)==true){
             this.relentizado=relentizado;
-            efectoRalentizar.play();
             //Cuando se pasa el efecto
         }else{
             this.relentizado=relentizado;
@@ -260,8 +253,12 @@ public class Personaje {
         this.chroma = color;
     }
 
-    public boolean getCorriendo(){
-        return estado == Estado.CORRIENDO;
+    public void isCorriendo(Sound correr){
+        if(estado == Estado.CORRIENDO){
+            correr.resume();
+        }else{
+            correr.pause();
+        }
     }
 
 }

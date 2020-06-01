@@ -335,10 +335,10 @@ class PantallaPlay extends Pantalla {
     private void iniciarPersonaje() {
         Color chroma = Juego.colores.get(preferencias.getInteger("ColorPersonaje"));
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, chroma, Estado.CORRIENDO, juego);
-        //efectoCorrer.loop();
         personaje.sprite.setScale(.7f);
         personaje.color.setScale(.7f);
         vidaJugador = 100;
+
     }
 
     private void crearOjo(){
@@ -383,7 +383,6 @@ class PantallaPlay extends Pantalla {
     public void render(float delta) {
         //Update
         if (estadoJuego == EstadoJuego.JUGANDO){
-            verificarCorriendo();
             update(delta);
         }
 
@@ -448,13 +447,13 @@ class PantallaPlay extends Pantalla {
 
     }
 
-    private void verificarCorriendo() {
-        if (personaje.getCorriendo()){
-            efectoCorrer.resume();
-        }else{
+    /*private void verificarCorriendo() {
+        if (!personaje.getCorriendo()){
             efectoCorrer.pause();
+        }else{
+            efectoCorrer.resume();
         }
-    }
+    }*/
 
     private void dibujarTextoScore() {
         int bestScore = preferencias.getInteger("BestScore");
@@ -618,6 +617,7 @@ class PantallaPlay extends Pantalla {
         public EscenaPausa (final Viewport vista, final SpriteBatch batch){
 
             super(vista, batch);
+            preferencias.flush();
 
             //ver qué onda con cómo pausar los audios
             //efectoCorrer.pause();
@@ -666,7 +666,6 @@ class PantallaPlay extends Pantalla {
                     super.clicked(event, x, y);
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
-                    //efectoCorrer.loop();
                     musicaBG.setVolume(1);
                     efectoCorrer.resume();
                 }
@@ -825,8 +824,8 @@ class PantallaPlay extends Pantalla {
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
                     estadoJuego = EstadoJuego.PAUSADO;
-                    preferencias.flush();
                     Gdx.input.setInputProcessor(escenaPausa);
+                    preferencias.flush();
                 }
             });
 
@@ -861,8 +860,9 @@ class PantallaPlay extends Pantalla {
                     btnMusicOn.setVisible(false);
                     btnMusicOff.setVisible(true);
                     preferencias.putBoolean("Musica", false);
-                    musicaBG.pause();
                     preferencias.flush();
+                    musicaBG.pause();
+
                 }
             });
 
@@ -874,9 +874,10 @@ class PantallaPlay extends Pantalla {
                     btnMusicOff.setVisible(false);
                     btnMusicOn.setVisible(true);
                     preferencias.putBoolean("Musica", true);
+                    preferencias.flush();
                     musicaBG.play();
                     musicaBG.setLooping(true);
-                    preferencias.flush();
+
                 }
             });
 
@@ -886,6 +887,8 @@ class PantallaPlay extends Pantalla {
             this.addActor(btnMusicOn);
             this.addActor(btnMusicOff);
             this.addActor(btnAtras);
+
+            preferencias.flush();
 
         }
 
