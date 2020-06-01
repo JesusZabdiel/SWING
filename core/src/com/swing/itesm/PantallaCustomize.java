@@ -70,7 +70,7 @@ class PantallaCustomize extends Pantalla {
 
 
     private void iniciarPersonaje() {
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, actualColor, PantallaPlay.Estado.IDLE);
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, actualColor, PantallaPlay.Estado.IDLE,juego );
 
         personaje.sprite.setScale(2);
         personaje.color.setScale(2);

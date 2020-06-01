@@ -25,7 +25,7 @@ public class PantallaCargando implements Screen {
     private Texture texturaCargando;
     private Sprite spriteCargando;
 
-    public static AssetManager assetManager;
+    private  AssetManager assetManager;
 
     public PantallaCargando(Juego juego){
         this.juego = juego;
@@ -74,7 +74,6 @@ public class PantallaCargando implements Screen {
         assetManager.load("invulnerable_Small.png", Texture.class);
         assetManager.load("reloj.png", Texture.class);
 
-        //Sonido
         assetManager.load("correr5.mp3", Sound.class);
         assetManager.load("salto3.mp3",Sound.class);
         assetManager.load("muerte.mp3",Sound.class);
@@ -136,4 +135,6 @@ public class PantallaCargando implements Screen {
         texturaCargando.dispose();
 
     }
+
+
 }

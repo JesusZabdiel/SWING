@@ -1,9 +1,8 @@
 package com.swing.itesm;
 
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +14,9 @@ import com.swing.itesm.PantallaPlay.Estado;
 
 
 public class Personaje {
+
+    private Juego juego;
+
     private Color chroma;
     private Animation animacionTrazo;
     private Animation animacionColor;
@@ -42,7 +44,11 @@ public class Personaje {
     private Sound efectoRalentizar;
 
 
-    public Personaje(Texture textura, Texture relleno, Color chroma, Estado estado){
+    public Personaje(Texture textura, Texture relleno, Color chroma, Estado estado, Juego juego){
+
+        this.juego = juego;
+        manager = juego.getAssetManager();
+
         TextureRegion regionTrazo = new TextureRegion(textura);
         TextureRegion regionColor = new TextureRegion(relleno);
 
@@ -68,23 +74,31 @@ public class Personaje {
         this.chroma = chroma;
         this.invulnerabilidad = false;
 
+
         //Tomo el assetmanager de PantallaCargando y uso sus efectos aqui
-        this.efectoCorrer = PantallaCargando.assetManager.get("correr5.mp3",Sound.class);
-        //Si pongo efecto correr aqui, sigue sonando en el aire pero ya no se traba
-        //efectoCorrer.loop();
-        this.efectoGancho = PantallaCargando.assetManager.get("salto3.mp3",Sound.class);
-        this.efectoEscudo = PantallaCargando.assetManager.get("escudo5.mp3",Sound.class);
-        this.efectoRalentizar = PantallaCargando.assetManager.get("ralentizacion.mp3",Sound.class);
+        this.efectoCorrer = manager.get("correr5.mp3",Sound.class);
+        this.efectoGancho = manager.get("salto3.mp3",Sound.class);
+        this.efectoEscudo = manager.get("escudo5.mp3",Sound.class);
+        this.efectoRalentizar = manager.get("ralentizacion.mp3",Sound.class);
+
+        efectoCorrer.loop();
+
     }
 
     public void render(SpriteBatch batch){
+
         color.setColor(chroma);
+
+        if (estado != Estado.CORRIENDO){
+            efectoCorrer.pause();
+        }
 
         if (estado == Estado.IDLE){
             color.setRegion(colorPersonaje[0][0]);
             sprite.setRegion(texturaPersonaje[0][0]);
 
         }else if (estado == Estado.CORRIENDO){
+            efectoCorrer.resume();
             color.setRotation(0);
             sprite.setRotation(0);
             TextureRegion regionColor = (TextureRegion)animacionColor.getKeyFrame(timerAnimacion);
@@ -92,13 +106,11 @@ public class Personaje {
             color.setRegion(regionColor);
             sprite.setRegion(regionTrazo);
 
-
         }else if (estado==Estado.SALTANDO) {
             color.setRotation(-30);
             sprite.setRotation(-30);
             color.setRegion(colorPersonaje[1][0]);
             sprite.setRegion(texturaPersonaje[1][0]);
-
 
         }else if (estado==Estado.CAYENDO){
             color.setRegion(colorPersonaje[1][1]);
@@ -110,13 +122,11 @@ public class Personaje {
             sprite.setRotation(-30+sacudida);
             color.setRegion(300,190,150,200);
             sprite.setRegion(300,190,150,200);
-            //efectoGancho.play();
         }else if (estado==Estado.BAJANDO){
             color.setRotation(-30);
             sprite.setRotation(-30);
             color.setRegion(colorPersonaje[1][3]);
             sprite.setRegion(texturaPersonaje[1][3]);
-            //efectoGancho.play();
         }
 
         color.draw(batch);
@@ -129,7 +139,6 @@ public class Personaje {
         timerMovimiento+= delta;
         if(relentizado){
             timerMovimiento = timerMovimiento/1.08f;
-
         }
 
 
@@ -217,4 +226,5 @@ public class Personaje {
     public void setColor(Color color){
         this.chroma = color;
     }
+
 }

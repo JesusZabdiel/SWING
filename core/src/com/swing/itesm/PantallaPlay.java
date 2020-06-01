@@ -50,7 +50,7 @@ class PantallaPlay extends Pantalla {
     private Music musicaBG;
 
     //Efectos sonido
-    //private Sound efectoGancho;
+    private Sound efectoGancho;
     private Sound efectoCorrer;
     private Sound efectoMuerte;
     private Sound efectoSalud;
@@ -217,12 +217,6 @@ class PantallaPlay extends Pantalla {
         }
     }
 
-    private void setLowSpeed() {
-        juegoRalentizado = true;
-        speedAuxiliar = speed;
-        speed = SPEED_LENTA;
-    }
-
     private void controlarInvulnerabilidad(float delta) {
         if (personaje.isInvulnerable()) {
             tiempoItemInvulnerable += delta;
@@ -278,6 +272,7 @@ class PantallaPlay extends Pantalla {
 
     private void verificarFinDeJuego() {
         if(vidaJugador <= 0){
+            efectoMuerte.play();
             estadoJuego = EstadoJuego.PERDIO;
             escenaGameOver = new EscenaGameOver(vista, batch);
             Gdx.input.setInputProcessor(escenaGameOver);
@@ -326,7 +321,7 @@ class PantallaPlay extends Pantalla {
 
     private void iniciarPersonaje() {
         Color chroma = Juego.colores.get(preferencias.getInteger("ColorPersonaje"));
-        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, chroma, Estado.CORRIENDO);
+        personaje = new Personaje(texturaPersonaje, rellenoPersonaje, chroma, Estado.CORRIENDO, juego);
         //efectoCorrer.loop();
         personaje.sprite.setScale(.7f);
         personaje.color.setScale(.7f);
@@ -341,8 +336,8 @@ class PantallaPlay extends Pantalla {
         //El asset manager no carga la textura ojo en pantalla cargando
 
         //Sonido
-        efectoCorrer=manager.get("correr5.mp3");
-        //efectoGancho=manager.get("salto3.mp3");
+        efectoCorrer = manager.get("correr5.mp3");
+        efectoGancho = manager.get("salto3.mp3");
         efectoMuerte=manager.get("muerte.mp3");
         efectoSalud=manager.get("salud.mp3");
         efectoEscudo=manager.get("escudo5.mp3");
@@ -602,7 +597,7 @@ class PantallaPlay extends Pantalla {
             super(vista, batch);
 
             //ver qué onda con cómo pausar los audios
-            efectoCorrer.pause();
+            //efectoCorrer.pause();
             efectoEscudo.pause();
             efectoRalentizar.pause();
             Texture texturaFondoGameOver = new Texture("negro.png");
@@ -648,7 +643,7 @@ class PantallaPlay extends Pantalla {
                     super.clicked(event, x, y);
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
-                    efectoCorrer.loop();
+                    //efectoCorrer.loop();
                     musicaBG.setVolume(1);
                 }
             });
@@ -686,7 +681,6 @@ class PantallaPlay extends Pantalla {
             efectoCorrer.stop();
             efectoEscudo.stop();
             efectoRalentizar.stop();
-            efectoMuerte.play();
             Texture texturaFondoGameOver = new Texture("negro.png");
             Image imgGameOver = new Image(texturaFondoGameOver);
             imgGameOver.setPosition(0,0);
