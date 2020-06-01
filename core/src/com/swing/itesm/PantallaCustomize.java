@@ -53,8 +53,6 @@ class PantallaCustomize extends Pantalla {
         cargarPreferencias();
         iniciarPersonaje();
 
-
-
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         crearPantallaCustomize();
 
@@ -71,10 +69,8 @@ class PantallaCustomize extends Pantalla {
 
     private void iniciarPersonaje() {
         personaje = new Personaje(texturaPersonaje, rellenoPersonaje, actualColor, PantallaPlay.Estado.IDLE,juego );
-
         personaje.sprite.setScale(2);
         personaje.color.setScale(2);
-
         personaje.sprite.setPosition(ANCHO/3-personaje.sprite.getWidth(),ALTO/10+personaje.sprite.getHeight());
         personaje.color.setPosition(ANCHO/3-personaje.sprite.getWidth(),ALTO/10+personaje.sprite.getHeight());
 
@@ -155,7 +151,6 @@ class PantallaCustomize extends Pantalla {
 
         assetManager.finishLoading();
         texturaPantalla = assetManager.get("fondo.png");
-
         texturaPersonaje = assetManager.get("ninjaTrazo.png");
         rellenoPersonaje = assetManager.get("ninjaRelleno.png");
     }
