@@ -118,7 +118,7 @@ class PantallaMenu extends Pantalla {
 
 
         //******** Boton Provisional Pantalla config **********
-        Texture texturaBtnConfig = new Texture("btnConfig.png");
+        Texture texturaBtnConfig = new Texture("Configuración.png");
         TextureRegionDrawable trdBtnConfiguracion = new TextureRegionDrawable(new TextureRegion(texturaBtnConfig));
 
 
@@ -130,7 +130,7 @@ class PantallaMenu extends Pantalla {
         ImageButton btnComoJugar = new ImageButton(trdComoJugar);
         ImageButton btnPersonalizacion = new ImageButton(trdPersonalizacion);
 
-        int separacion = 35;
+        int separacion = 25;
         btnJugar.setPosition(80,480);
         btnComoJugar.setPosition(80, btnJugar.getY()-btnComoJugar.getHeight()-separacion);
         btnPersonalizacion.setPosition(80,btnComoJugar.getY()-btnPersonalizacion.getHeight()-separacion);
