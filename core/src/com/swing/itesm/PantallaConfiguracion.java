@@ -116,7 +116,7 @@ public class PantallaConfiguracion extends Pantalla {
             btnMusicOff.setVisible(false);
         }else{
             btnMusicOff.setVisible(true);
-            btnEfectosOn.setVisible(false);
+            btnMusicOn.setVisible(false);
         }
 
 
