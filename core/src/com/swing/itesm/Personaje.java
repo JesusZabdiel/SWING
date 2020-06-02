@@ -104,7 +104,7 @@ public class Personaje {
             //this.efectoEscudo = manager.get("escudo5.mp3",Sound.class);
             //this.efectoRalentizar = manager.get("ralentizacion.mp3",Sound.class);
         }catch (Exception ex){
-            manager.load("correr5.mp3", Sound.class);
+            manager.load("correr5.mp3", Music.class);
             manager.load("salto3.mp3",Sound.class);
             manager.load("muerte.mp3",Sound.class);
             manager.load("salud.mp3",Sound.class);

@@ -51,7 +51,7 @@ class PantallaPlay extends Pantalla {
 
     //Efectos sonido
     private Sound efectoGancho;
-    private Sound efectoCorrer;
+    private Music efectoCorrer;
     private Sound efectoMuerte;
     private Sound efectoSalud;
     private Sound efectoEscudo;
@@ -668,7 +668,8 @@ class PantallaPlay extends Pantalla {
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
                     musicaBG.setVolume(0.5f);
-                    efectoCorrer.resume();
+                    //El .resume() no existe en la clase music
+                    //efectoCorrer.resume();
                 }
             });
             //Listener Menu
