@@ -132,7 +132,6 @@ public class PantallaCargando implements Screen {
     @Override
     public void dispose() {
         assetManager.unload("cargando.png");
-        assetManager.unload("song18.mp3");
         texturaCargando.dispose();
 
     }

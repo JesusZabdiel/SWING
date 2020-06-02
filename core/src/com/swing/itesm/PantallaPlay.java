@@ -676,6 +676,7 @@ class PantallaPlay extends Pantalla {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
+                    manager.load("song18.mp3", Music.class);
                     juego.setScreen(new PantallaMenu(juego));
 
                 }
