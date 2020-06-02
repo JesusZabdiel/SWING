@@ -23,10 +23,10 @@ public class Juego extends Game {
 	public void create () {
 		assetManager.setLoader(TiledMap.class,
 				new TmxMapLoader(new InternalFileHandleResolver()));
-		assetManager.load("Redhead_From_Mars.mp3", Music.class);
+		assetManager.load("song18.mp3", Music.class);
 
 		assetManager.finishLoading();
-		musicaMenu = assetManager.get("Redhead_From_Mars.mp3");
+		musicaMenu = assetManager.get("song18.mp3");
 
 
 		//pantalla inicial

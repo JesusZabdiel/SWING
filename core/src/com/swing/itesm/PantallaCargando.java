@@ -81,7 +81,7 @@ public class PantallaCargando implements Screen {
         assetManager.load("escudo5.mp3",Sound.class);
         assetManager.load("golpe2.mp3",Sound.class);
         assetManager.load("ralentizacion.mp3",Sound.class);
-        assetManager.load("BGMusic.mp3", Music.class);
+        assetManager.load("AugustUltraAmbienceLoop.wav", Music.class);
 
         assetManager.finishLoading();
 
@@ -132,6 +132,7 @@ public class PantallaCargando implements Screen {
     @Override
     public void dispose() {
         assetManager.unload("cargando.png");
+        assetManager.unload("song18.mp3");
         texturaCargando.dispose();
 
     }

@@ -19,13 +19,14 @@ public class PantallaConfiguracion extends Pantalla {
 
     private Stage escenaConfiguracion;
     private  final AssetManager assetManager;
-    private Texture texturaFondo;
-    private final float BUTTON_SPACING = 50;
+    private Texture texturaFondo, acento;
+    private final float BUTTON_SPACING = 20;
 
 
     private Preferences preferencias;
     private boolean musicOn;
     private  boolean efectsOn;
+    private float yButtonEffect, yButtonMusic;
 
 
     public PantallaConfiguracion(Juego juego) {
@@ -42,6 +43,7 @@ public class PantallaConfiguracion extends Pantalla {
         cargarTexturas();
         crearPantallaConfiguracion();
 
+
     }
 
     private void cargarPreferencias() {
@@ -54,10 +56,12 @@ public class PantallaConfiguracion extends Pantalla {
     }
 
     private void cargarTexturas() {
+        assetManager.load("acento.png", Texture.class);
         assetManager.load("fondo.png", Texture.class);
         assetManager.finishLoading();
 
         texturaFondo = assetManager.get("fondo.png");
+        acento = assetManager.get("acento.png");
 
     }
 
@@ -90,14 +94,14 @@ public class PantallaConfiguracion extends Pantalla {
         final ImageButton btnMusicOn = new ImageButton(trdMusicaOn);
         final ImageButton btnMusicOff = new ImageButton(trdMusicaOff);
 
-        float  xButtonEfect = ANCHO/2 + BUTTON_SPACING;
-        float  yButtonEfeect = ALTO/2 + BUTTON_SPACING ;
+        float  xButtonEfect = ANCHO/2 + 150;
+        yButtonEffect = ALTO/2 + BUTTON_SPACING ;
 
-        float xButtonMusic = ANCHO/2 + BUTTON_SPACING;
-        float yButtonMusic = ALTO/2 - BUTTON_SPACING - btnMusicOn.getHeight();
+        float xButtonMusic = ANCHO/2 + 150;
+        yButtonMusic = ALTO/2 - BUTTON_SPACING - btnMusicOn.getHeight();
 
-        btnEfectosOn.setPosition(xButtonEfect,yButtonEfeect);
-        btnEfectosOff.setPosition(xButtonEfect,yButtonEfeect);
+        btnEfectosOn.setPosition(xButtonEfect, yButtonEffect);
+        btnEfectosOff.setPosition(xButtonEfect, yButtonEffect);
         btnMusicOn.setPosition(xButtonMusic, yButtonMusic);
         btnMusicOff.setPosition(xButtonMusic, yButtonMusic);
         btnMenu.setPosition(80, ALTO-40-btnMenu.getHeight());
@@ -197,6 +201,7 @@ public class PantallaConfiguracion extends Pantalla {
         batch.begin();
 
         batch.draw(texturaFondo,0,0);
+        batch.draw(acento, 380,300);
         batch.end();
         escenaConfiguracion.draw();
         batch.begin();
@@ -209,8 +214,8 @@ public class PantallaConfiguracion extends Pantalla {
         Texto configText = new Texto("fontScore.fnt");
         String textoEfectos = "Efectos ";
         String textoMusic = "Musica ";
-        configText.render(batch, textoEfectos, ANCHO/2-ANCHO/5,ALTO/2+BUTTON_SPACING);
-        configText.render(batch, textoMusic, ANCHO/2-ANCHO/5,ALTO/2 -BUTTON_SPACING);
+        configText.render(batch, textoEfectos, ANCHO/3, yButtonEffect+70);
+        configText.render(batch, textoMusic, ANCHO/3,yButtonMusic+70);
 
 
     }
@@ -227,6 +232,8 @@ public class PantallaConfiguracion extends Pantalla {
 
     @Override
     public void dispose() {
+        assetManager.unload("acento.png");
+        assetManager.unload("fondo.png");
 
     }
 }

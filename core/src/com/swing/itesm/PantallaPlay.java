@@ -128,6 +128,7 @@ class PantallaPlay extends Pantalla {
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
         if(preferencias.getBoolean("Musica")){
             musicaBG.play();
+            musicaBG.setVolume(0.5f);
             musicaBG.setLooping(true);
         }
         if (efectsOn){
@@ -356,7 +357,7 @@ class PantallaPlay extends Pantalla {
         efectoEscudo=manager.get("escudo5.mp3");
         efectoGolpe=manager.get("golpe2.mp3");
         efectoRalentizar=manager.get("ralentizacion.mp3");
-        musicaBG = manager.get("BGMusic.mp3");
+        musicaBG = manager.get("AugustUltraAmbienceLoop.wav");
 
         //Texturas
         backGround1 = manager.get("layers/1.png");
@@ -471,8 +472,8 @@ class PantallaPlay extends Pantalla {
         Texto configText = new Texto("fontScore.fnt");
         String textoEfectos = "Efectos ";
         String textoMusic = "Musica ";
-        configText.render(batch, textoEfectos, ANCHO/2-ANCHO/5,ALTO/2+50);
-        configText.render(batch, textoMusic, ANCHO/2-ANCHO/5,ALTO/2 -50);
+        configText.render(batch, textoEfectos, ANCHO/3,ALTO/2+90);
+        configText.render(batch, textoMusic, ANCHO/3,ALTO/2 -50);
 
 
     }
@@ -531,7 +532,7 @@ class PantallaPlay extends Pantalla {
         manager.unload("pause.png");
         manager.unload("Obstaculo.png");
         manager.unload("ojo.png");
-        manager.unload("BGMusic.mp3");
+        manager.unload("AugustUltraAmbienceLoop.wav");
 
     }
 
@@ -627,7 +628,7 @@ class PantallaPlay extends Pantalla {
             Image imgGameOver = new Image(texturaFondoGameOver);
             imgGameOver.setColor(0,0,0,0.7f);
             imgGameOver.setPosition(0,0);
-            musicaBG.setVolume(0.5f);
+            musicaBG.setVolume(0.3f);
 
 
             // Boton Jugar
@@ -666,7 +667,7 @@ class PantallaPlay extends Pantalla {
                     super.clicked(event, x, y);
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
-                    musicaBG.setVolume(1);
+                    musicaBG.setVolume(0.5f);
                     efectoCorrer.resume();
                 }
             });
@@ -790,13 +791,13 @@ class PantallaPlay extends Pantalla {
             final ImageButton btnMusicOn = new ImageButton(trdMusicaOn);
             final ImageButton btnMusicOff = new ImageButton(trdMusicaOff);
 
-            float  xButtonEfect = ANCHO/2 + 50;
-            float  yButtonEfeect = ALTO/2 + 50 ;
-            float xButtonMusic = ANCHO/2 + 50;
-            float yButtonMusic = ALTO/2 - 50 - btnMusicOn.getHeight();
+            float  xButtonEfect = ANCHO/2 + 150;
+            float yButtonEffect = ALTO/2 + 20 ;
+            float xButtonMusic = ANCHO/2 + 150;
+            float yButtonMusic = ALTO/2 - 20 - btnMusicOn.getHeight();
 
-            btnEfectosOn.setPosition(xButtonEfect,yButtonEfeect);
-            btnEfectosOff.setPosition(xButtonEfect,yButtonEfeect);
+            btnEfectosOn.setPosition(xButtonEfect,yButtonEffect);
+            btnEfectosOff.setPosition(xButtonEfect,yButtonEffect);
             btnMusicOn.setPosition(xButtonMusic, yButtonMusic);
             btnMusicOff.setPosition(xButtonMusic, yButtonMusic);
             btnAtras.setPosition(80, ALTO-40-btnAtras.getHeight());
