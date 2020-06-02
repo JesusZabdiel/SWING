@@ -209,14 +209,11 @@ public class Personaje {
         gravedad = gravedad * -1;
         enElAire = true;
         estado = Estado.SUBIENDO;
-        if(efectosOn){
+        if(preferences.getBoolean("Efectos")){
             efectoGancho.play();
         }
 
-
     }
-
-
 
     public void setInvulnerabilidad(boolean invulnerabilidad) {
         //Cuando es invulnerable
@@ -253,12 +250,5 @@ public class Personaje {
         this.chroma = color;
     }
 
-    public void isCorriendo(Sound correr){
-        if(estado == Estado.CORRIENDO){
-            correr.resume();
-        }else{
-            correr.pause();
-        }
-    }
 
 }

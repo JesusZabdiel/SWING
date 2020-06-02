@@ -131,9 +131,9 @@ class PantallaPlay extends Pantalla {
             musicaBG.setVolume(0.5f);
             musicaBG.setLooping(true);
         }
-        if (efectsOn){
+        /*if (efectsOn){
             efectoCorrer.loop();
-        }
+        }*/
 
 
     }
@@ -838,6 +838,7 @@ class PantallaPlay extends Pantalla {
                     super.clicked(event, x, y);
                     btnEfectosOn.setVisible(false);
                     btnEfectosOff.setVisible(true);
+                    efectsOn = false;
                     preferencias.putBoolean("Efectos", false);
                     preferencias.flush();
                 }
@@ -849,6 +850,7 @@ class PantallaPlay extends Pantalla {
                     super.clicked(event, x, y);
                     btnEfectosOn.setVisible(true);
                     btnEfectosOff.setVisible(false);
+                    efectsOn = true;
                     preferencias.putBoolean("Efectos", true);
                     preferencias.flush();
                 }
@@ -861,6 +863,7 @@ class PantallaPlay extends Pantalla {
                     super.clicked(event, x, y);
                     btnMusicOn.setVisible(false);
                     btnMusicOff.setVisible(true);
+                    musicOn = false;
                     preferencias.putBoolean("Musica", false);
                     preferencias.flush();
                     musicaBG.pause();
@@ -875,6 +878,7 @@ class PantallaPlay extends Pantalla {
                     super.clicked(event, x, y);
                     btnMusicOff.setVisible(false);
                     btnMusicOn.setVisible(true);
+                    musicOn = true;
                     preferencias.putBoolean("Musica", true);
                     preferencias.flush();
                     musicaBG.play();
