@@ -354,9 +354,9 @@ class PantallaPlay extends Pantalla {
         efectoGancho = manager.get("salto3.mp3");
         efectoMuerte=manager.get("muerte.mp3");
         efectoSalud=manager.get("salud.mp3");
-        efectoEscudo=manager.get("escudo5.mp3");
+        efectoEscudo=manager.get("escudo6.mp3");
         efectoGolpe=manager.get("golpe2.mp3");
-        efectoRalentizar=manager.get("ralentizacion.mp3");
+        efectoRalentizar=manager.get("ralentizar3.mp3");
         musicaBG = manager.get("AugustUltraAmbienceLoop.wav");
 
         //Texturas
@@ -514,9 +514,9 @@ class PantallaPlay extends Pantalla {
         manager.unload("salto3.mp3");
         manager.unload("muerte.mp3");
         manager.unload("salud.mp3");
-        manager.unload("escudo5.mp3");
+        manager.unload("escudo6.mp3");
         manager.unload("golpe2.mp3");
-        manager.unload("ralentizacion.mp3");
+        manager.unload("ralentizar3.mp3");
         manager.unload("layers/1.png");
         manager.unload("layers/2.png");
         manager.unload("layers/3.png");

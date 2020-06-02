@@ -108,9 +108,9 @@ public class Personaje {
             manager.load("salto3.mp3",Sound.class);
             manager.load("muerte.mp3",Sound.class);
             manager.load("salud.mp3",Sound.class);
-            manager.load("escudo5.mp3",Sound.class);
+            manager.load("escudo6.mp3",Sound.class);
             manager.load("golpe2.mp3",Sound.class);
-            manager.load("ralentizacion.mp3",Sound.class);
+            manager.load("ralentizar3.mp3",Sound.class);
             manager.load("BGMusic.mp3", Music.class);
             manager.finishLoading();
         }
