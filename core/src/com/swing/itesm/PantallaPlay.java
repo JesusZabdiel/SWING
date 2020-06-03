@@ -727,7 +727,7 @@ class PantallaPlay extends Pantalla {
 
             ImageButton btnMenu = new ImageButton(trdMenu);
 
-            btnMenu.setPosition(ANCHO/2-btnMenu.getWidth()/2,2*ALTO/5);
+            btnMenu.setPosition(ANCHO/2-btnMenu.getWidth()/2,2*ALTO/5-100);
 
 
             this.addActor(imgGameOver);

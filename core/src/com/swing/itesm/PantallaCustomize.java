@@ -137,7 +137,7 @@ class PantallaCustomize extends Pantalla {
             personaje.setColor(Juego.colores.get(nuevoColor));
             actualColor = Juego.colores.get(nuevoColor);
         }else{
-            actualColor = Color.RED;
+            actualColor = Color.FIREBRICK;
             personaje.setColor(actualColor);
         }
 
