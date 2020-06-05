@@ -18,7 +18,7 @@ class PantallaAcerca extends Pantalla {
     private final Juego juego;
 
 
-    private Texture texturaFondoOptions;
+    private Texture texturaFondoOptions, creditosMusica;
 
     // Menu
     private Stage escenaMenu;  // botones,....
@@ -72,6 +72,7 @@ class PantallaAcerca extends Pantalla {
     private void cargarTexturas() {
 
         texturaFondoOptions = new Texture("creditos.png");
+        creditosMusica = new Texture("musica.png");
 
     }
 
@@ -86,6 +87,7 @@ class PantallaAcerca extends Pantalla {
         batch.begin();
 
         batch.draw(texturaFondoOptions,0,0);
+        batch.draw(creditosMusica, ANCHO/2-creditosMusica.getWidth()/2, 20);
 
         batch.end();
 
@@ -119,6 +121,7 @@ class PantallaAcerca extends Pantalla {
     public void dispose() {
 
         texturaFondoOptions.dispose();
+        creditosMusica.dispose();
 
     }
 
