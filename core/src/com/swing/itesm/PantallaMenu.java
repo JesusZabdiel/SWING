@@ -55,7 +55,7 @@ class PantallaMenu extends Pantalla {
         menu_2 = new Sprite(texturaMenu_2);
         pupila.setPosition(840,300);
         menu_2.setPosition(0,0);
-        if(preferencias.getBoolean("Musica")){
+        if(preferencias.getBoolean("Musica",true)){
             juego.musicaMenu.play();
             juego.musicaMenu.setLooping(true);
         }

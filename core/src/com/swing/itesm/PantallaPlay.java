@@ -126,7 +126,7 @@ class PantallaPlay extends Pantalla {
         crearVidaConstante();
         crearMarcador();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
-        if(preferencias.getBoolean("Musica")){
+        if(musicOn){
             musicaBG.play();
             musicaBG.setVolume(0.5f);
             musicaBG.setLooping(true);
