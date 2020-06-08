@@ -89,7 +89,7 @@ public class Personaje {
 
     private void cargarPreferencias() {
         preferences = Gdx.app.getPreferences("Preferencias");
-        efectosOn = preferences.getBoolean("Efectos");
+        efectosOn = preferences.getBoolean("Efectos", true);
     }
 
     private void verificarRecursos() {
@@ -204,7 +204,7 @@ public class Personaje {
         gravedad = gravedad * -1;
         enElAire = true;
         estado = Estado.SUBIENDO;
-        if(preferences.getBoolean("Efectos")){
+        if(preferences.getBoolean("Efectos",true)){
             efectoGancho.play();
         }
 
