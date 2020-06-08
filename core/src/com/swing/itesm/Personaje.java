@@ -46,11 +46,6 @@ public class Personaje {
     private Sound efectoGancho;
 
 
-    //
-
-
-
-
     public Personaje(Texture textura, Texture relleno, Color chroma, Estado estado, Juego juego){
 
 
@@ -99,7 +94,7 @@ public class Personaje {
 
     private void verificarRecursos() {
         try {
-            //this.efectoCorrer = manager.get("correr5.mp3",Sound.class);
+            //this.efectoCorrer = manager.get("correr5.mp3",Music.class);
             this.efectoGancho = manager.get("salto3.mp3",Sound.class);
             //this.efectoEscudo = manager.get("escudo5.mp3",Sound.class);
             //this.efectoRalentizar = manager.get("ralentizacion.mp3",Sound.class);
@@ -130,6 +125,7 @@ public class Personaje {
             TextureRegion regionTrazo = (TextureRegion)animacionTrazo.getKeyFrame(timerAnimacion);
             color.setRegion(regionColor);
             sprite.setRegion(regionTrazo);
+
 
         }else if (estado==Estado.SALTANDO) {
             color.setRotation(-30);
@@ -247,6 +243,11 @@ public class Personaje {
 
     public void setColor(Color color){
         this.chroma = color;
+    }
+
+
+    public boolean isCorriendo(){
+        return this.estado == Estado.CORRIENDO;
     }
 
 

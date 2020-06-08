@@ -131,10 +131,6 @@ class PantallaPlay extends Pantalla {
             musicaBG.setVolume(0.5f);
             musicaBG.setLooping(true);
         }
-        /*if (efectsOn){
-            efectoCorrer.loop();
-        }*/
-
 
     }
 
@@ -385,6 +381,16 @@ class PantallaPlay extends Pantalla {
         //Update
         if (estadoJuego == EstadoJuego.JUGANDO){
             update(delta);
+            if (personaje.isCorriendo() && efectsOn){
+                if (!efectoCorrer.isPlaying()){
+                    efectoCorrer.play();
+                }
+
+            }else{
+                if (efectoCorrer.isPlaying()){
+                    efectoCorrer.pause();
+                }
+            }
         }
 
         if (estadoJuego == EstadoJuego.JUGANDO) {
@@ -575,7 +581,6 @@ class PantallaPlay extends Pantalla {
             if(v.x >=ANCHO-100 && v.x <= texturaBtnPause.getWidth()+ANCHO-100
                     && v.y <= ALTO && v.y >= ALTO-texturaBtnPause.getHeight()){
                 estadoJuego = EstadoJuego.PAUSADO;
-                efectoCorrer.pause();
                 escenaPausa = new EscenaPausa(vista, batch);
                 Gdx.input.setInputProcessor(escenaPausa);
 
@@ -621,7 +626,7 @@ class PantallaPlay extends Pantalla {
             preferencias.flush();
 
             //ver qué onda con cómo pausar los audios
-            //efectoCorrer.pause();
+            efectoCorrer.pause();
             efectoEscudo.pause();
             efectoRalentizar.pause();
             Texture texturaFondoGameOver = new Texture("negro.png");
@@ -668,8 +673,10 @@ class PantallaPlay extends Pantalla {
                     estadoJuego = EstadoJuego.JUGANDO;
                     Gdx.input.setInputProcessor(new ProcesadorEntrada());
                     musicaBG.setVolume(0.5f);
-                    //El .resume() no existe en la clase music
-                    //efectoCorrer.resume();
+                    if(efectsOn){
+                        efectoCorrer.play();
+                    }
+
                 }
             });
             //Listener Menu
@@ -705,7 +712,6 @@ class PantallaPlay extends Pantalla {
             super(vista, batch);
             musicaBG.stop();
             efectoCorrer.stop();
-            efectoEscudo.stop();
             efectoRalentizar.stop();
             Texture texturaFondoGameOver = new Texture("negro.png");
             Image imgGameOver = new Image(texturaFondoGameOver);
