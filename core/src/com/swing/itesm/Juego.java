@@ -32,6 +32,7 @@ public class Juego extends Game {
 		//pantalla inicial
 		setScreen(new PantallaMenu(this));
 		colores = new Array<>();
+		colores.add(Color.RED);
 		colores.add(Color.FIREBRICK);
 		colores.add(Color.PURPLE);
 		colores.add(Color.BLUE);

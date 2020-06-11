@@ -59,7 +59,7 @@ class PantallaCustomize extends Pantalla {
     }
 
     private void cargarPreferencias() {
-        actualColor = Juego.colores.get(preferencias.getInteger("ColorPersonaje"));
+        actualColor = Juego.colores.get(preferencias.getInteger("ColorPersonaje",0));
     }
 
     private void crearObjetoPreferencias() {
@@ -137,7 +137,7 @@ class PantallaCustomize extends Pantalla {
             personaje.setColor(Juego.colores.get(nuevoColor));
             actualColor = Juego.colores.get(nuevoColor);
         }else{
-            actualColor = Color.FIREBRICK;
+            actualColor = Color.RED;
             personaje.setColor(actualColor);
         }
 
